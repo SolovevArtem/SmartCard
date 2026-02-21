@@ -3,238 +3,255 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ВидеоМиг - Админ панель</title>
+  <title>ВидеоМиг - Админ-панель</title>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
-    
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
     }
-    
+
     body {
-      font-family: 'Inter', sans-serif;
-      background: #FFFBF5;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
       padding: 2rem;
-      color: #2D1B1B;
     }
-    
+
     .container {
-      max-width: 1200px;
+      max-width: 1000px;
       margin: 0 auto;
     }
-    
-    header {
-      background: white;
-      padding: 2rem;
-      border-radius: 16px;
-      margin-bottom: 2rem;
-      box-shadow: 0 4px 12px rgba(255, 107, 107, 0.1);
-    }
-    
-    h1 {
-      font-size: 2rem;
-      margin-bottom: 0.5rem;
-      color: #FF6B6B;
-    }
-    
-    .subtitle {
-      color: #6B4E4E;
-    }
-    
-    .panel {
-      background: white;
-      padding: 2rem;
-      border-radius: 16px;
-      margin-bottom: 2rem;
-      box-shadow: 0 4px 12px rgba(255, 107, 107, 0.1);
-    }
-    
-    .panel h2 {
-      font-size: 1.5rem;
-      margin-bottom: 1.5rem;
-      color: #2D1B1B;
-    }
-    
-    .form-group {
-      margin-bottom: 1.5rem;
-    }
-    
-    label {
-      display: block;
-      font-weight: 600;
-      margin-bottom: 0.5rem;
-    }
-    
-    input, select {
-      width: 100%;
-      padding: 0.75rem;
-      border: 2px solid #FFE5D9;
-      border-radius: 8px;
-      font-family: 'Inter', sans-serif;
-      font-size: 1rem;
-    }
-    
-    input:focus {
-      outline: none;
-      border-color: #FF6B6B;
-    }
-    
-    .btn {
-      background: #FF6B6B;
+
+    .header {
+      text-align: center;
       color: white;
-      border: none;
-      padding: 1rem 2rem;
-      border-radius: 9999px;
-      font-size: 1rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s ease;
+      margin-bottom: 3rem;
     }
-    
-    .btn:hover {
-      background: #E84A4A;
-      transform: translateY(-2px);
-      box-shadow: 0 8px 20px rgba(255, 107, 107, 0.2);
+
+    .header h1 {
+      font-size: 2.5rem;
+      margin-bottom: 0.5rem;
     }
-    
-    .btn:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-      transform: none;
+
+    .header p {
+      opacity: 0.9;
+      font-size: 1.1rem;
     }
-    
-    .btn-secondary {
-      background: transparent;
-      color: #FF6B6B;
-      border: 2px solid #FF6B6B;
-      margin-left: 1rem;
-    }
-    
-    .btn-secondary:hover {
-      background: #FFF5EB;
-    }
-    
-    .result {
-      background: #FFF5EB;
-      padding: 1.5rem;
-      border-radius: 8px;
-      margin-top: 1.5rem;
-      display: none;
-    }
-    
-    .result.show {
-      display: block;
-    }
-    
-    .result h3 {
-      color: #FF6B6B;
-      margin-bottom: 1rem;
-    }
-    
-    .cards-list {
-      max-height: 400px;
-      overflow-y: auto;
+
+    .card {
       background: white;
-      padding: 1rem;
-      border-radius: 8px;
-      margin-top: 1rem;
+      border-radius: 12px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
     }
-    
-    .card-item {
-      padding: 0.75rem;
-      border-bottom: 1px solid #FFE5D9;
-      font-family: monospace;
-      font-size: 0.9rem;
+
+    .card h2 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      color: #333;
     }
-    
-    .card-item:last-child {
-      border-bottom: none;
-    }
-    
+
     .stats {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
       gap: 1rem;
-      margin-top: 1rem;
+      margin-bottom: 1rem;
     }
-    
+
     .stat-card {
-      background: #FFF5EB;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
       padding: 1.5rem;
-      border-radius: 12px;
+      border-radius: 8px;
       text-align: center;
     }
-    
-    .stat-value {
+
+    .stat-number {
       font-size: 2.5rem;
-      font-weight: 700;
-      color: #FF6B6B;
+      font-weight: bold;
       margin-bottom: 0.5rem;
     }
-    
+
     .stat-label {
-      color: #6B4E4E;
       font-size: 0.9rem;
+      opacity: 0.9;
     }
-    
-    .loading {
-      text-align: center;
-      padding: 2rem;
-      color: #6B4E4E;
+
+    .form-group {
+      margin-bottom: 1.5rem;
     }
-    
-    .spinner {
-      border: 3px solid #FFE5D9;
-      border-top-color: #FF6B6B;
-      border-radius: 50%;
-      width: 40px;
-      height: 40px;
-      animation: spin 1s linear infinite;
-      margin: 0 auto 1rem;
+
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+      color: #333;
     }
-    
-    @keyframes spin {
-      to { transform: rotate(360deg); }
+
+    .form-group input {
+      width: 100%;
+      padding: 0.75rem;
+      border: 2px solid #e0e0e0;
+      border-radius: 8px;
+      font-size: 1rem;
+      transition: border-color 0.3s;
     }
-    
+
+    .form-group input:focus {
+      outline: none;
+      border-color: #667eea;
+    }
+
+    .form-group small {
+      display: block;
+      margin-top: 0.5rem;
+      color: #666;
+    }
+
+    .btn {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      padding: 1rem 2rem;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+      width: 100%;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+    }
+
+    .btn:active {
+      transform: translateY(0);
+    }
+
+    .btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .btn-secondary {
+      background: #6c757d;
+      margin-top: 1rem;
+    }
+
     .alert {
       padding: 1rem;
       border-radius: 8px;
       margin-bottom: 1rem;
     }
-    
+
     .alert-success {
       background: #d4edda;
       color: #155724;
       border: 1px solid #c3e6cb;
     }
-    
+
     .alert-error {
       background: #f8d7da;
       color: #721c24;
       border: 1px solid #f5c6cb;
     }
+
+    .cards-list {
+      max-height: 400px;
+      overflow-y: auto;
+      margin-top: 1rem;
+    }
+
+    .card-item {
+      background: #f8f9fa;
+      padding: 1rem;
+      margin-bottom: 0.5rem;
+      border-radius: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .card-id {
+      font-family: monospace;
+      font-weight: bold;
+      color: #667eea;
+    }
+
+    .card-link {
+      color: #667eea;
+      text-decoration: none;
+      font-size: 0.9rem;
+    }
+
+    .card-link:hover {
+      text-decoration: underline;
+    }
+
+    .loading {
+      text-align: center;
+      padding: 2rem;
+      color: #666;
+    }
+
+    @media (max-width: 768px) {
+      body {
+        padding: 1rem;
+      }
+
+      .header h1 {
+        font-size: 2rem;
+      }
+
+      .stats {
+        grid-template-columns: 1fr;
+      }
+    }
   </style>
 </head>
 <body>
   <div class="container">
-    <header>
-      <h1>📹 ВидеоМиг - Админ панель</h1>
-      <p class="subtitle">Управление карточками для производства</p>
-    </header>
+    <div class="header">
+      <h1>📹 ВидеоМиг</h1>
+      <p>Генерация карточек для производства</p>
+      <p style="font-size: 0.9rem; margin-top: 0.5rem;">Создайте партию уникальных ссылок для программирования NFC-меток</p>
+    </div>
 
-    <!-- Генерация новых карточек -->
-    <div class="panel">
-      <h2>Генерация карточек для производства</h2>
-      <p style="color: #6B4E4E; margin-bottom: 1.5rem;">
-        Создайте партию уникальных ссылок для программирования NFC-меток
-      </p>
+    <!-- Статистика -->
+    <div class="card">
+      <h2>📊 Статистика карточек</h2>
+      <div id="statsAlert"></div>
+      <div class="stats">
+        <div class="stat-card">
+          <div class="stat-number" id="totalCards">0</div>
+          <div class="stat-label">Всего</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number" id="newCards">0</div>
+          <div class="stat-label">Новые</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number" id="activeCards">0</div>
+          <div class="stat-label">Активные</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number" id="filledCards">0</div>
+          <div class="stat-label">Заполненные</div>
+        </div>
+      </div>
+      <button class="btn btn-secondary" onclick="loadStats()">🔄 Обновить статистику</button>
+    </div>
+
+    <!-- Генерация карточек -->
+    <div class="card">
+      <h2>➕ Генерация карточек</h2>
+      <div id="generateAlert"></div>
       
-      <div id="alert" style="display: none;"></div>
-      
-      <form id="generateForm">
+      <form id="generateForm" onsubmit="generateCards(event)">
         <div class="form-group">
           <label for="count">Количество карточек</label>
           <input 
@@ -243,186 +260,64 @@
             name="count" 
             min="1" 
             max="1000" 
-            value="10"
+            value="10" 
             required
           >
-          <small style="color: #6B4E4E;">Максимум 1000 карточек за раз</small>
+          <small>Максимум 1000 карточек за раз</small>
         </div>
-        
+
         <div class="form-group">
           <label for="batchName">Название партии (опционально)</label>
           <input 
             type="text" 
             id="batchName" 
             name="batchName" 
-            placeholder="Например: Новый год 2026"
+            placeholder="Например: Партия для свадьбы"
           >
         </div>
-        
+
         <button type="submit" class="btn" id="generateBtn">
-          Сгенерировать карточки
-        </button>
-        <button type="button" class="btn btn-secondary" id="exportBtn" style="display: none;">
-          Скачать CSV
+          🚀 Сгенерировать карточки
         </button>
       </form>
-      
-      <div id="result" class="result">
-        <h3>Партия создана успешно! 🎉</h3>
-        <div class="stats">
-          <div class="stat-card">
-            <div class="stat-value" id="resultCount">0</div>
-            <div class="stat-label">Карточек создано</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-value" id="resultBatch">-</div>
-            <div class="stat-label">ID партии</div>
-          </div>
-        </div>
-        
-        <h4 style="margin-top: 1.5rem; margin-bottom: 0.5rem;">Сгенерированные ссылки:</h4>
-        <div class="cards-list" id="cardsList"></div>
-        
-        <p style="margin-top: 1rem; color: #6B4E4E;">
-          💡 Скачайте CSV файл и используйте для программирования NFC-меток
-        </p>
-      </div>
-    </div>
 
-    <!-- Статистика -->
-    <div class="panel">
-      <h2>Статистика карточек</h2>
-      <button type="button" class="btn" onclick="loadStats()">
-        Обновить статистику
-      </button>
-      
-      <div id="statsContainer" class="stats" style="margin-top: 1.5rem;">
-        <div class="loading">
-          <div class="spinner"></div>
-          <p>Загрузка...</p>
-        </div>
-      </div>
+      <div id="cardsList"></div>
     </div>
   </div>
 
   <script>
-    const API_BASE = 'http://localhost:3001';
-    let currentBatchId = null;
-
-    // Генерация карточек
-    document.getElementById('generateForm').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      
-      const btn = document.getElementById('generateBtn');
-      const resultDiv = document.getElementById('result');
-      const alert = document.getElementById('alert');
-      
-      btn.disabled = true;
-      btn.textContent = 'Генерация...';
-      resultDiv.classList.remove('show');
-      alert.style.display = 'none';
-      
-      const formData = {
-        count: parseInt(document.getElementById('count').value),
-        batchName: document.getElementById('batchName').value
-      };
-      
-      try {
-        const response = await fetch(`${API_BASE}/api/admin/generate-cards`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(formData)
-        });
-        
-        const data = await response.json();
-        
-        if (data.success) {
-          currentBatchId = data.batchId;
-          
-          // Показываем результат
-          document.getElementById('resultCount').textContent = data.count;
-          document.getElementById('resultBatch').textContent = data.batchId;
-          
-          // Заполняем список карточек
-          const cardsList = document.getElementById('cardsList');
-          cardsList.innerHTML = data.cards.map(card => `
-            <div class="card-item">
-              <strong>ID:</strong> ${card.id} → 
-              <strong>URL:</strong> ${card.qrUrl}
-            </div>
-          `).join('');
-          
-          resultDiv.classList.add('show');
-          document.getElementById('exportBtn').style.display = 'inline-block';
-          
-          // Показываем успех
-          alert.className = 'alert alert-success';
-          alert.textContent = `✅ Успешно создано ${data.count} карточек!`;
-          alert.style.display = 'block';
-          
-          // Обновляем статистику
-          loadStats();
-        } else {
-          throw new Error(data.error);
-        }
-      } catch (error) {
-        alert.className = 'alert alert-error';
-        alert.textContent = `❌ Ошибка: ${error.message}`;
-        alert.style.display = 'block';
-      } finally {
-        btn.disabled = false;
-        btn.textContent = 'Сгенерировать карточки';
-      }
-    });
-
-    // Экспорт CSV
-    document.getElementById('exportBtn').addEventListener('click', () => {
-      const url = currentBatchId 
-        ? `${API_BASE}/api/admin/export-cards?batchId=${currentBatchId}`
-        : `${API_BASE}/api/admin/export-cards`;
-      
-      window.open(url, '_blank');
+    // Загрузка статистики при открытии страницы
+    window.addEventListener('DOMContentLoaded', () => {
+      loadStats();
     });
 
     // Загрузка статистики
     async function loadStats() {
-      const container = document.getElementById('statsContainer');
-      container.innerHTML = `
-        <div class="loading">
-          <div class="spinner"></div>
-          <p>Загрузка...</p>
-        </div>
-      `;
+      const alertDiv = document.getElementById('statsAlert');
       
       try {
-        const response = await fetch(`${API_BASE}/api/stats`);
+        // ВАЖНО: используем относительный путь
+        const response = await fetch('/api/stats');
+        
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
         const data = await response.json();
         
         if (data.success) {
-          const stats = data.stats;
-          container.innerHTML = `
-            <div class="stat-card">
-              <div class="stat-value">${stats.total}</div>
-              <div class="stat-label">Всего карточек</div>
-            </div>
-            <div class="stat-card">
-              <div class="stat-value">${stats.new || 0}</div>
-              <div class="stat-label">Новых (не активированных)</div>
-            </div>
-            <div class="stat-card">
-              <div class="stat-value">${stats.active || 0}</div>
-              <div class="stat-label">Активных (не заполнено)</div>
-            </div>
-            <div class="stat-card">
-              <div class="stat-value">${stats.filled}</div>
-              <div class="stat-label">Заполненных</div>
-            </div>
-          `;
+          document.getElementById('totalCards').textContent = data.stats.total;
+          document.getElementById('newCards').textContent = data.stats.new;
+          document.getElementById('activeCards').textContent = data.stats.active;
+          document.getElementById('filledCards').textContent = data.stats.filled;
+          
+          alertDiv.innerHTML = '';
+        } else {
+          throw new Error(data.error || 'Неизвестная ошибка');
         }
       } catch (error) {
-        container.innerHTML = `
+        console.error('Error loading stats:', error);
+        alertDiv.innerHTML = `
           <div class="alert alert-error">
             ❌ Ошибка загрузки статистики: ${error.message}
           </div>
@@ -430,8 +325,86 @@
       }
     }
 
-    // Загружаем статистику при загрузке страницы
-    loadStats();
+    // Генерация карточек
+    async function generateCards(event) {
+      event.preventDefault();
+      
+      const alertDiv = document.getElementById('generateAlert');
+      const cardsListDiv = document.getElementById('cardsList');
+      const generateBtn = document.getElementById('generateBtn');
+      const count = parseInt(document.getElementById('count').value);
+      const batchName = document.getElementById('batchName').value;
+      
+      // Отключаем кнопку
+      generateBtn.disabled = true;
+      generateBtn.textContent = '⏳ Генерация...';
+      
+      try {
+        // ВАЖНО: используем относительный путь
+        const response = await fetch('/api/admin/generate-cards', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            count: count,
+            batchName: batchName || undefined
+          })
+        });
+        
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || `HTTP error! status: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        
+        if (data.success) {
+          alertDiv.innerHTML = `
+            <div class="alert alert-success">
+              ✅ Успешно создано ${data.count} карточек!<br>
+              Storage: ${data.storageType}
+            </div>
+          `;
+          
+          // Показываем список карточек
+          let cardsHTML = '<div class="cards-list">';
+          data.cards.forEach(card => {
+            cardsHTML += `
+              <div class="card-item">
+                <span class="card-id">${card.id}</span>
+                <a href="${card.nfcUrl}" target="_blank" class="card-link">
+                  ${card.nfcUrl}
+                </a>
+              </div>
+            `;
+          });
+          cardsHTML += '</div>';
+          
+          cardsListDiv.innerHTML = cardsHTML;
+          
+          // Обновляем статистику
+          loadStats();
+          
+          // Очищаем форму
+          document.getElementById('count').value = 10;
+          document.getElementById('batchName').value = '';
+        } else {
+          throw new Error(data.error || 'Неизвестная ошибка');
+        }
+      } catch (error) {
+        console.error('Error generating cards:', error);
+        alertDiv.innerHTML = `
+          <div class="alert alert-error">
+            ❌ Ошибка: ${error.message}
+          </div>
+        `;
+      } finally {
+        // Включаем кнопку обратно
+        generateBtn.disabled = false;
+        generateBtn.textContent = '🚀 Сгенерировать карточки';
+      }
+    }
   </script>
 </body>
 </html>
