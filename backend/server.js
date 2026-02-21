@@ -26,11 +26,28 @@ pool.query('SELECT NOW()', (err, res) => {
 });
 
 // ===== MIDDLEWARE =====
+// Разрешить запросы от frontend и админки
+const allowedOrigins = [
+  process.env.FRONTEND_URL,  // Vercel
+  process.env.ADMIN_URL,     // Railway backend
+  'http://localhost:3000',   // Локальная разработка
+  'http://localhost:3001'
+].filter(Boolean); // Убираем undefined
+
 app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:3000',
+  origin: (origin, callback) => {
+    // Разрешить запросы без origin (например, Postman)
+    if (!origin) return callback(null, true);
+    
+    // Проверяем что origin в списке разрешенных
+    if (allowedOrigins.some(allowed => origin.startsWith(allowed))) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true
 }));
-app.use(express.json());
 
 // ===== S3 SETUP (Cloudflare R2) =====
 const s3 = new AWS.S3({
