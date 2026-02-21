@@ -34,20 +34,22 @@ const allowedOrigins = [
   'http://localhost:3001'
 ].filter(Boolean); // Убираем undefined
 
-app.use(cors({
-  origin: (origin, callback) => {
-    // Разрешить запросы без origin (например, Postman)
-    if (!origin) return callback(null, true);
+// app.use(cors({
+//   origin: (origin, callback) => {
+//     // Разрешить запросы без origin (например, Postman)
+//     if (!origin) return callback(null, true);
     
-    // Проверяем что origin в списке разрешенных
-    if (allowedOrigins.some(allowed => origin.startsWith(allowed))) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
-  credentials: true
-}));
+//     // Проверяем что origin в списке разрешенных
+//     if (allowedOrigins.some(allowed => origin.startsWith(allowed))) {
+//       callback(null, true);
+//     } else {
+//       callback(new Error('Not allowed by CORS'));
+//     }
+//   },
+//   credentials: true
+// }));
+
+app.use(cors());
 
 // ===== S3 SETUP (Cloudflare R2) =====
 const s3 = new AWS.S3({
