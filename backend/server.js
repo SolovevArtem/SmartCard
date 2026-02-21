@@ -50,6 +50,8 @@ const allowedOrigins = [
 // }));
 
 app.use(cors());
+app.use(express.json());  // ← Эта строка ОБЯЗАТЕЛЬНА!
+
 
 // ===== S3 SETUP (Cloudflare R2) =====
 const s3 = new AWS.S3({
