@@ -38,17 +38,18 @@ function HomePage() {
   return (
     <div className="homepage">
       <div className="hero">
-        <h1>📹 ВидеоМиг</h1>
+        <p className="hero-eyebrow">NFC · Видео · Моменты</p>
+        <h1>ВидеоМиг</h1>
         <p className="subtitle">Моменты, которые остаются навсегда</p>
         <p className="description">
           Создайте уникальное видео-поздравление с помощью NFC-карточки
         </p>
-        <button 
-          className="cta-button" 
+        <button
+          className="cta-button"
           onClick={handleCreateDemo}
           disabled={loading}
         >
-          {loading ? 'Создаем...' : '🎁 Попробовать демо'}
+          {loading ? 'Создаем...' : 'Попробовать демо'}
         </button>
       </div>
     </div>
@@ -162,8 +163,8 @@ function CardPage() {
     return (
       <div className="card-view">
         <div className="card-header">
-          <h1>📹 ВидеоМиг</h1>
-          <p className="from">От: {card.sender_name}</p>
+          <h1>ВидеоМиг</h1>
+          <p className="from">От <span>{card.sender_name}</span></p>
         </div>
         
         <div className="card-content">
@@ -198,7 +199,7 @@ function CardPage() {
   return (
     <div className="card-form">
       <div className="form-header">
-        <h1>📹 ВидеоМиг</h1>
+        <h1>ВидеоМиг</h1>
         <p className="subtitle">Создайте видео-поздравление</p>
       </div>
 
@@ -265,7 +266,7 @@ function CardPage() {
           className="submit-button"
           disabled={uploading}
         >
-          {uploading ? '⏳ Загрузка...' : '🎁 Сохранить поздравление'}
+          {uploading ? 'Загрузка...' : 'Сохранить поздравление'}
         </button>
       </form>
     </div>
