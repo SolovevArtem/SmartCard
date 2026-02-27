@@ -38,11 +38,11 @@ function HomePage() {
   return (
     <div className="homepage">
       <div className="hero">
-        <p className="hero-eyebrow">NFC · Видео · Моменты</p>
+        <p className="hero-eyebrow">Видео · Моменты</p>
         <h1>ВидеоМиг</h1>
         <p className="subtitle">Моменты, которые остаются навсегда</p>
         <p className="description">
-          Создайте уникальное видео-поздравление с помощью NFC-карточки
+          Создайте уникальное видео-поздравление с помощью карточки
         </p>
         <button
           className="cta-button"
