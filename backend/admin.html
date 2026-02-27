@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ВидеоМиг - Админ-панель</title>
+  <title>OneTapGift — Админ-панель</title>
   <style>
     * {
       margin: 0;
@@ -11,11 +11,32 @@
       box-sizing: border-box;
     }
 
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes floatY {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(-8px); }
+    }
+
+    @keyframes shimmer {
+      0%   { background-position: -200% center; }
+      100% { background-position:  200% center; }
+    }
+
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      background: linear-gradient(160deg, #0D0021 0%, #1A0038 60%, #0D0821 100%);
       min-height: 100vh;
       padding: 2rem;
+      color: #ffffff;
     }
 
     .container {
@@ -27,30 +48,59 @@
       text-align: center;
       color: white;
       margin-bottom: 3rem;
+      animation: fadeInDown 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
     }
 
     .header h1 {
       font-size: 2.5rem;
       margin-bottom: 0.5rem;
+      background: linear-gradient(
+        90deg,
+        #ffffff 0%,
+        #FF6B9D 40%,
+        #00E5CC 70%,
+        #ffffff 100%
+      );
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: shimmer 4s linear infinite;
+      display: inline-block;
+    }
+
+    .header-icon {
+      font-size: 2rem;
+      display: inline-block;
+      animation: floatY 3.5s ease-in-out infinite;
+      margin-right: 0.5rem;
+      -webkit-text-fill-color: initial;
     }
 
     .header p {
-      opacity: 0.9;
-      font-size: 1.1rem;
+      opacity: 0.75;
+      font-size: 1rem;
     }
 
     .card {
-      background: white;
-      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 107, 157, 0.25);
+      border-radius: 16px;
       padding: 2rem;
       margin-bottom: 2rem;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      animation: fadeInUp 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
     }
 
+    .card:nth-child(2) { animation-delay: 0.1s; }
+    .card:nth-child(3) { animation-delay: 0.2s; }
+
     .card h2 {
-      font-size: 1.5rem;
-      margin-bottom: 1rem;
-      color: #333;
+      font-size: 1.3rem;
+      margin-bottom: 1.25rem;
+      color: #ffffff;
+      font-weight: 600;
     }
 
     .stats {
@@ -61,11 +111,24 @@
     }
 
     .stat-card {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      background: linear-gradient(135deg, #FF6B9D 0%, #FF4785 100%);
       color: white;
       padding: 1.5rem;
-      border-radius: 8px;
+      border-radius: 12px;
       text-align: center;
+      box-shadow: 0 4px 24px rgba(255, 107, 157, 0.35);
+      animation: fadeInUp 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .stat-card:nth-child(1) { animation-delay: 0.05s; }
+    .stat-card:nth-child(2) { animation-delay: 0.15s; }
+    .stat-card:nth-child(3) { animation-delay: 0.25s; }
+    .stat-card:nth-child(4) { animation-delay: 0.35s; }
+
+    .stat-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 32px rgba(255, 107, 157, 0.55);
     }
 
     .stat-number {
@@ -87,77 +150,95 @@
       display: block;
       margin-bottom: 0.5rem;
       font-weight: 500;
-      color: #333;
+      color: rgba(255, 255, 255, 0.75);
+      font-size: 0.9rem;
     }
 
     .form-group input {
       width: 100%;
-      padding: 0.75rem;
-      border: 2px solid #e0e0e0;
+      padding: 0.75rem 1rem;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.15);
       border-radius: 8px;
       font-size: 1rem;
-      transition: border-color 0.3s;
+      color: #ffffff;
+      transition: border-color 0.3s, background 0.3s;
+    }
+
+    .form-group input::placeholder {
+      color: rgba(255, 255, 255, 0.3);
     }
 
     .form-group input:focus {
       outline: none;
-      border-color: #667eea;
+      border-color: #FF6B9D;
+      background: rgba(255, 107, 157, 0.08);
     }
 
     .form-group small {
       display: block;
       margin-top: 0.5rem;
-      color: #666;
+      color: rgba(255, 255, 255, 0.4);
+      font-size: 0.82rem;
     }
 
     .btn {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      background: linear-gradient(135deg, #FF6B9D 0%, #FF4785 100%);
       color: white;
       border: none;
       padding: 1rem 2rem;
-      border-radius: 8px;
+      border-radius: 100px;
       font-size: 1rem;
       font-weight: 600;
       cursor: pointer;
-      transition: transform 0.2s, box-shadow 0.2s;
+      transition: transform 0.2s, box-shadow 0.2s, filter 0.2s;
       width: 100%;
     }
 
     .btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+      transform: scale(1.03) translateY(-2px);
+      box-shadow: 0 6px 24px rgba(255, 107, 157, 0.50);
+      filter: brightness(1.08);
     }
 
     .btn:active {
-      transform: translateY(0);
+      transform: scale(0.98);
     }
 
     .btn:disabled {
-      opacity: 0.6;
+      opacity: 0.5;
       cursor: not-allowed;
+      animation: none;
     }
 
     .btn-secondary {
-      background: #6c757d;
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.2);
       margin-top: 1rem;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.20);
+      box-shadow: none;
+      filter: none;
     }
 
     .alert {
       padding: 1rem;
-      border-radius: 8px;
+      border-radius: 10px;
       margin-bottom: 1rem;
     }
 
     .alert-success {
-      background: #d4edda;
-      color: #155724;
-      border: 1px solid #c3e6cb;
+      background: rgba(0, 200, 100, 0.12);
+      color: #7fffc4;
+      border: 1px solid rgba(0, 200, 100, 0.30);
     }
 
     .alert-error {
-      background: #f8d7da;
-      color: #721c24;
-      border: 1px solid #f5c6cb;
+      background: rgba(255, 71, 100, 0.12);
+      color: #ff9999;
+      border: 1px solid rgba(255, 71, 100, 0.30);
     }
 
     .cards-list {
@@ -167,7 +248,8 @@
     }
 
     .card-item {
-      background: #f8f9fa;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 107, 157, 0.15);
       padding: 1rem;
       margin-bottom: 0.5rem;
       border-radius: 8px;
@@ -179,11 +261,11 @@
     .card-id {
       font-family: monospace;
       font-weight: bold;
-      color: #667eea;
+      color: #FF6B9D;
     }
 
     .card-link {
-      color: #667eea;
+      color: #FF6B9D;
       text-decoration: none;
       font-size: 0.9rem;
     }
@@ -195,7 +277,7 @@
     .loading {
       text-align: center;
       padding: 2rem;
-      color: #666;
+      color: rgba(255, 255, 255, 0.4);
     }
 
     @media (max-width: 768px) {
@@ -216,9 +298,9 @@
 <body>
   <div class="container">
     <div class="header">
-      <h1>📹 ВидеоМиг</h1>
+      <h1><span class="header-icon">🎁</span>OneTapGift</h1>
       <p>Генерация карточек для производства</p>
-      <p style="font-size: 0.9rem; margin-top: 0.5rem;">Создайте партию уникальных ссылок для создания карточек</p>
+      <p style="font-size: 0.85rem; margin-top: 0.5rem; opacity: 0.55;">Создайте партию уникальных ссылок для создания карточек</p>
     </div>
 
     <!-- Статистика -->
@@ -250,17 +332,17 @@
     <div class="card">
       <h2>➕ Генерация карточек</h2>
       <div id="generateAlert"></div>
-      
+
       <form id="generateForm" onsubmit="generateCards(event)">
         <div class="form-group">
           <label for="count">Количество карточек</label>
-          <input 
-            type="number" 
-            id="count" 
-            name="count" 
-            min="1" 
-            max="1000" 
-            value="10" 
+          <input
+            type="number"
+            id="count"
+            name="count"
+            min="1"
+            max="1000"
+            value="10"
             required
           >
           <small>Максимум 1000 карточек за раз</small>
@@ -268,10 +350,10 @@
 
         <div class="form-group">
           <label for="batchName">Название партии (опционально)</label>
-          <input 
-            type="text" 
-            id="batchName" 
-            name="batchName" 
+          <input
+            type="text"
+            id="batchName"
+            name="batchName"
             placeholder="Например: Партия для свадьбы"
           >
         </div>
@@ -286,31 +368,23 @@
   </div>
 
   <script>
-    // Загрузка статистики при открытии страницы
     window.addEventListener('DOMContentLoaded', () => {
       loadStats();
     });
 
-    // Загрузка статистики
     async function loadStats() {
       const alertDiv = document.getElementById('statsAlert');
-      
       try {
-        // ВАЖНО: используем относительный путь
         const response = await fetch('/api/stats');
-        
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
-        
         const data = await response.json();
-        
         if (data.success) {
           document.getElementById('totalCards').textContent = data.stats.total;
           document.getElementById('newCards').textContent = data.stats.new;
           document.getElementById('activeCards').textContent = data.stats.active;
           document.getElementById('filledCards').textContent = data.stats.filled;
-          
           alertDiv.innerHTML = '';
         } else {
           throw new Error(data.error || 'Неизвестная ошибка');
@@ -325,40 +399,34 @@
       }
     }
 
-    // Генерация карточек
     async function generateCards(event) {
       event.preventDefault();
-      
       const alertDiv = document.getElementById('generateAlert');
       const cardsListDiv = document.getElementById('cardsList');
       const generateBtn = document.getElementById('generateBtn');
       const count = parseInt(document.getElementById('count').value);
       const batchName = document.getElementById('batchName').value;
-      
-      // Отключаем кнопку
+
       generateBtn.disabled = true;
       generateBtn.textContent = '⏳ Генерация...';
-      
+
       try {
-        // ВАЖНО: используем относительный путь
         const response = await fetch('/api/admin/generate-cards', {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             count: count,
             batchName: batchName || undefined
           })
         });
-        
+
         if (!response.ok) {
           const errorData = await response.json();
           throw new Error(errorData.error || `HTTP error! status: ${response.status}`);
         }
-        
+
         const data = await response.json();
-        
+
         if (data.success) {
           alertDiv.innerHTML = `
             <div class="alert alert-success">
@@ -366,8 +434,7 @@
               Storage: ${data.storageType}
             </div>
           `;
-          
-          // Показываем список карточек
+
           let cardsHTML = '<div class="cards-list">';
           data.cards.forEach(card => {
             cardsHTML += `
@@ -380,13 +447,9 @@
             `;
           });
           cardsHTML += '</div>';
-          
           cardsListDiv.innerHTML = cardsHTML;
-          
-          // Обновляем статистику
+
           loadStats();
-          
-          // Очищаем форму
           document.getElementById('count').value = 10;
           document.getElementById('batchName').value = '';
         } else {
@@ -400,7 +463,6 @@
           </div>
         `;
       } finally {
-        // Включаем кнопку обратно
         generateBtn.disabled = false;
         generateBtn.textContent = '🚀 Сгенерировать карточки';
       }
