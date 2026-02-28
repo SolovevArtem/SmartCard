@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { BrowserRouter as Router, Routes, Route, useParams, useNavigate } from 'react-router-dom';
 import './App.css';
 
@@ -125,18 +125,353 @@ function HomePage() {
   );
 }
 
-// ── Страница карточки ──
-function CardPage() {
-  const { cardId } = useParams();
-  const [card, setCard] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+// ── Просмотр заполненной карточки ──
+function CardView({ card }) {
+  const videoRef = useRef(null);
+  const [currentPhoto, setCurrentPhoto] = useState(0);
+  const photos = card.photos_urls || [];
+
+  // Автоплей видео через 4с (muted — обязательно для iOS)
+  useEffect(() => {
+    if (!card.video_url) return;
+    const t = setTimeout(() => {
+      if (videoRef.current) {
+        videoRef.current.muted = true;
+        videoRef.current.play().catch(() => {});
+      }
+    }, 4000);
+    return () => clearTimeout(t);
+  }, [card.video_url]);
+
+  // Scroll reveal через IntersectionObserver
+  useEffect(() => {
+    const els = document.querySelectorAll('.reveal');
+    const obs = new IntersectionObserver(
+      (entries) => entries.forEach((e) => { if (e.isIntersecting) e.target.classList.add('visible'); }),
+      { threshold: 0.18 }
+    );
+    els.forEach((el) => obs.observe(el));
+    return () => obs.disconnect();
+  }, []);
+
+  const prevPhoto = () => setCurrentPhoto((p) => Math.max(p - 1, 0));
+  const nextPhoto = () => setCurrentPhoto((p) => Math.min(p + 1, photos.length - 1));
+
+  return (
+    <div>
+      {/* ── Intro экран ── */}
+      <section className="view-intro">
+        <span className="intro-gift" aria-hidden="true">🎁</span>
+        <p className="intro-surprise">✨ Для вас особый сюрприз</p>
+        <h1 className="intro-name">{card.sender_name}</h1>
+        <p className="intro-tagline">подготовил(а) для вас что-то особенное</p>
+        <span className="intro-scroll-hint" aria-hidden="true">↓</span>
+      </section>
+
+      {/* ── Основной контент ── */}
+      <div className="view-content">
+
+        {/* Видео */}
+        {card.video_url && (
+          <div className="view-section reveal">
+            <p className="view-section-title">Видео-поздравление</p>
+            <div className="video-container">
+              <video ref={videoRef} controls playsInline muted>
+                <source src={card.video_url} type="video/mp4" />
+                Ваш браузер не поддерживает видео
+              </video>
+            </div>
+          </div>
+        )}
+
+        {/* Сообщение */}
+        {card.message && (
+          <div className="view-section reveal">
+            <p className="view-section-title">Слова от {card.sender_name}</p>
+            <div className="view-message">{card.message}</div>
+          </div>
+        )}
+
+        {/* Фото */}
+        {photos.length > 0 && (
+          <div className="view-section reveal">
+            <p className="view-section-title">
+              Фотографии{photos.length > 1 ? ` · ${currentPhoto + 1} / ${photos.length}` : ''}
+            </p>
+            {photos.length === 1 ? (
+              <img src={photos[0]} alt="Фото" className="single-photo" />
+            ) : (
+              <div className="carousel-wrapper">
+                <div className="carousel-track-container">
+                  <div
+                    className="carousel-track"
+                    style={{ transform: `translateX(-${currentPhoto * 100}%)` }}
+                  >
+                    {photos.map((url, i) => (
+                      <img key={i} src={url} alt={`Фото ${i + 1}`} className="carousel-slide" />
+                    ))}
+                  </div>
+                </div>
+                <div className="carousel-controls">
+                  <button
+                    className="carousel-btn"
+                    onClick={prevPhoto}
+                    disabled={currentPhoto === 0}
+                    aria-label="Предыдущее фото"
+                  >‹</button>
+                  <div className="carousel-dots">
+                    {photos.map((_, i) => (
+                      <span
+                        key={i}
+                        className={`carousel-dot ${i === currentPhoto ? 'active' : ''}`}
+                        onClick={() => setCurrentPhoto(i)}
+                        aria-label={`Фото ${i + 1}`}
+                      />
+                    ))}
+                  </div>
+                  <button
+                    className="carousel-btn"
+                    onClick={nextPhoto}
+                    disabled={currentPhoto === photos.length - 1}
+                    aria-label="Следующее фото"
+                  >›</button>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+
+      </div>
+    </div>
+  );
+}
+
+// ── Пошаговый wizard создания карточки ──
+function CardWizard({ cardId, onComplete }) {
+  const [step, setStep] = useState(0);
   const [uploading, setUploading] = useState(false);
 
   const [senderName, setSenderName] = useState('');
   const [message, setMessage] = useState('');
   const [videoFile, setVideoFile] = useState(null);
   const [photoFiles, setPhotoFiles] = useState([]);
+  const [photoPreviewUrls, setPhotoPreviewUrls] = useState([]);
+
+  const videoInputRef = useRef(null);
+  const photoInputRef = useRef(null);
+
+  // Авто-переход со step 0 через 2с если пользователь не нажал сам
+  useEffect(() => {
+    if (step !== 0) return;
+    const t = setTimeout(() => setStep(1), 2500);
+    return () => clearTimeout(t);
+  }, [step]);
+
+  const handlePhotoChange = (e) => {
+    const files = Array.from(e.target.files).slice(0, 10);
+    setPhotoFiles(files);
+    setPhotoPreviewUrls(files.map((f) => URL.createObjectURL(f)));
+  };
+
+  const handleSubmit = async () => {
+    setUploading(true);
+    try {
+      const formData = new FormData();
+      formData.append('senderName', senderName);
+      formData.append('message', message);
+      if (videoFile) formData.append('video', videoFile);
+      photoFiles.forEach((photo) => formData.append('photos', photo));
+
+      const response = await fetch(`${API_URL}/api/cards/${cardId}/upload`, {
+        method: 'POST',
+        body: formData
+      });
+      const data = await response.json();
+      if (data.success) {
+        onComplete();
+      } else {
+        alert('Ошибка: ' + data.error);
+        setUploading(false);
+      }
+    } catch (err) {
+      console.error('Upload error:', err);
+      alert('Ошибка загрузки. Попробуйте ещё раз.');
+      setUploading(false);
+    }
+  };
+
+  return (
+    <div className="wizard-wrapper">
+
+      {/* ── Step 0: Welcome ── */}
+      {step === 0 && (
+        <div className="wizard-screen" key="step-0">
+          <span className="wizard-welcome-icon">🎁</span>
+          <h1 className="wizard-title">Создайте незабываемую открытку</h1>
+          <p className="wizard-subtitle">Это займёт пару минут</p>
+          <button className="cta-button" onClick={() => setStep(1)}>
+            Начать →
+          </button>
+        </div>
+      )}
+
+      {/* ── Step 1: Name ── */}
+      {step === 1 && (
+        <div className="wizard-screen" key="step-1">
+          <div className="wizard-progress">
+            {[1, 2, 3].map((i) => (
+              <div key={i} className={`progress-dot ${1 >= i ? 'active' : ''}`} />
+            ))}
+          </div>
+          <p className="wizard-question">Как вас зовут?</p>
+          <p className="wizard-hint">Шаг 1 из 3</p>
+          <input
+            className="wizard-input"
+            type="text"
+            placeholder="Ваше имя"
+            value={senderName}
+            onChange={(e) => setSenderName(e.target.value)}
+            autoFocus
+            onKeyDown={(e) => { if (e.key === 'Enter' && senderName.trim()) setStep(2); }}
+          />
+          <div className="wizard-nav">
+            <button
+              className="cta-button"
+              onClick={() => setStep(2)}
+              disabled={!senderName.trim()}
+            >
+              Далее →
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* ── Step 2: Video ── */}
+      {step === 2 && (
+        <div className="wizard-screen" key="step-2">
+          <div className="wizard-progress">
+            {[1, 2, 3].map((i) => (
+              <div key={i} className={`progress-dot ${2 >= i ? 'active' : ''}`} />
+            ))}
+          </div>
+          <p className="wizard-question">Загрузите видео</p>
+          <p className="wizard-hint">Шаг 2 из 3 · Необязательно</p>
+
+          {/* Скрытый системный input */}
+          <input
+            type="file"
+            ref={videoInputRef}
+            accept="video/*"
+            style={{ display: 'none' }}
+            onChange={(e) => setVideoFile(e.target.files[0] || null)}
+          />
+
+          <div
+            className={`upload-zone ${videoFile ? 'upload-zone--filled' : ''}`}
+            onClick={() => videoInputRef.current.click()}
+          >
+            {videoFile ? (
+              <div className="upload-preview">
+                <span>✅</span>
+                <span>{videoFile.name}</span>
+              </div>
+            ) : (
+              <div className="upload-prompt">
+                <span className="upload-icon">🎬</span>
+                <p>Нажмите для выбора видео</p>
+              </div>
+            )}
+          </div>
+          <p className="upload-max">Максимум 50 MB</p>
+
+          <div className="wizard-nav">
+            <button className="cta-button" onClick={() => setStep(3)}>Далее →</button>
+            <button className="btn-skip" onClick={() => { setVideoFile(null); setStep(3); }}>
+              Пропустить
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* ── Step 3: Photos + Message + Submit ── */}
+      {step === 3 && (
+        <div className="wizard-screen" key="step-3">
+          <div className="wizard-progress">
+            {[1, 2, 3].map((i) => (
+              <div key={i} className={`progress-dot ${3 >= i ? 'active' : ''}`} />
+            ))}
+          </div>
+          <p className="wizard-question">Добавьте фото</p>
+          <p className="wizard-hint">Шаг 3 из 3 · До 10 фотографий</p>
+
+          {/* Скрытый input фото */}
+          <input
+            type="file"
+            ref={photoInputRef}
+            accept="image/*"
+            multiple
+            style={{ display: 'none' }}
+            onChange={handlePhotoChange}
+          />
+
+          <div
+            className={`upload-zone ${photoFiles.length > 0 ? 'upload-zone--filled' : ''}`}
+            onClick={() => photoInputRef.current.click()}
+          >
+            {photoFiles.length > 0 ? (
+              <div className="upload-preview">
+                <span>✅</span>
+                <span>Выбрано {photoFiles.length} фото</span>
+              </div>
+            ) : (
+              <div className="upload-prompt">
+                <span className="upload-icon">📸</span>
+                <p>Нажмите для выбора фотографий</p>
+              </div>
+            )}
+          </div>
+
+          {photoPreviewUrls.length > 0 && (
+            <div className="photo-thumbs">
+              {photoPreviewUrls.map((url, i) => (
+                <img key={i} src={url} alt={`Превью ${i + 1}`} className="photo-thumb" />
+              ))}
+            </div>
+          )}
+
+          <p className="wizard-question" style={{ fontSize: '1.1rem', marginTop: '1.25rem' }}>
+            Напишите поздравление
+          </p>
+          <textarea
+            className="wizard-textarea"
+            placeholder="Тёплые слова от вас…"
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            rows={4}
+          />
+
+          <div className="wizard-nav">
+            <button
+              className="cta-button"
+              onClick={handleSubmit}
+              disabled={uploading}
+            >
+              {uploading ? 'Отправляем…' : '✉️ Отправить поздравление'}
+            </button>
+          </div>
+        </div>
+      )}
+
+    </div>
+  );
+}
+
+// ── Страница карточки ──
+function CardPage() {
+  const { cardId } = useParams();
+  const [card, setCard] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     loadCard();
@@ -144,10 +479,8 @@ function CardPage() {
 
   const loadCard = async () => {
     try {
-      console.log('Loading card:', cardId);
       const response = await fetch(`${API_URL}/api/cards/${cardId}`);
       const data = await response.json();
-      console.log('Card data:', data);
       if (data.success) {
         setCard(data.card);
       } else {
@@ -158,40 +491,6 @@ function CardPage() {
       setError('Ошибка подключения к серверу');
     } finally {
       setLoading(false);
-    }
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!videoFile) {
-      alert('Пожалуйста, загрузите видео');
-      return;
-    }
-    setUploading(true);
-    try {
-      const formData = new FormData();
-      formData.append('senderName', senderName);
-      formData.append('message', message);
-      formData.append('video', videoFile);
-      photoFiles.forEach((photo) => {
-        formData.append('photos', photo);
-      });
-      const response = await fetch(`${API_URL}/api/cards/${cardId}/upload`, {
-        method: 'POST',
-        body: formData
-      });
-      const data = await response.json();
-      if (data.success) {
-        alert('✅ Поздравление успешно сохранено!');
-        loadCard();
-      } else {
-        alert('Ошибка: ' + data.error);
-      }
-    } catch (error) {
-      console.error('Error uploading:', error);
-      alert('Ошибка загрузки. Попробуйте еще раз.');
-    } finally {
-      setUploading(false);
     }
   };
 
@@ -215,107 +514,10 @@ function CardPage() {
   }
 
   if (card.status === 'filled') {
-    return (
-      <div className="card-view">
-        <div className="card-header">
-          <h1>OneTapGift</h1>
-          <p className="from">От <span>{card.sender_name}</span></p>
-        </div>
-        <div className="card-content">
-          {card.video_url && (
-            <div className="video-container">
-              <video controls>
-                <source src={card.video_url} type="video/mp4" />
-                Ваш браузер не поддерживает видео
-              </video>
-            </div>
-          )}
-          {card.message && (
-            <div className="message-box">
-              <p>{card.message}</p>
-            </div>
-          )}
-          {card.photos_urls && card.photos_urls.length > 0 && (
-            <div className="photos-grid">
-              {card.photos_urls.map((url, index) => (
-                <img key={index} src={url} alt={`Фото ${index + 1}`} />
-              ))}
-            </div>
-          )}
-        </div>
-      </div>
-    );
+    return <CardView card={card} />;
   }
 
-  return (
-    <div className="card-form">
-      <div className="form-header">
-        <h1>OneTapGift</h1>
-        <p className="subtitle">Создайте видео-поздравление</p>
-      </div>
-
-      <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label>Ваше имя</label>
-          <input
-            type="text"
-            value={senderName}
-            onChange={(e) => setSenderName(e.target.value)}
-            placeholder="Иван Иванов"
-            required
-          />
-        </div>
-
-        <div className="form-group">
-          <label>Видео-поздравление *</label>
-          <div className="file-upload">
-            <input
-              type="file"
-              accept="video/*"
-              onChange={(e) => setVideoFile(e.target.files[0])}
-              required
-            />
-            {videoFile && (
-              <p className="file-name">
-                ✅ {videoFile.name} ({(videoFile.size / 1024 / 1024).toFixed(1)} MB)
-              </p>
-            )}
-          </div>
-          <small>Максимум 50 MB</small>
-        </div>
-
-        <div className="form-group">
-          <label>Фотографии (опционально)</label>
-          <div className="file-upload">
-            <input
-              type="file"
-              accept="image/*"
-              multiple
-              onChange={(e) => setPhotoFiles(Array.from(e.target.files))}
-            />
-            {photoFiles.length > 0 && (
-              <p className="file-name">✅ Выбрано фото: {photoFiles.length}</p>
-            )}
-          </div>
-          <small>До 10 фотографий</small>
-        </div>
-
-        <div className="form-group">
-          <label>Текст поздравления</label>
-          <textarea
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            placeholder="Напишите ваше поздравление..."
-            rows="4"
-          />
-        </div>
-
-        <button type="submit" className="submit-button" disabled={uploading}>
-          {uploading ? 'Загрузка...' : 'Сохранить поздравление'}
-        </button>
-      </form>
-    </div>
-  );
+  return <CardWizard cardId={cardId} onComplete={loadCard} />;
 }
 
 // ── Главный компонент ──
