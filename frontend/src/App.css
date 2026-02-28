@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Nunito:wght@300;400;500;600;700&display=swap');
 
 /* ── Design Tokens ── */
 :root {
@@ -32,7 +32,7 @@
 }
 
 body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Nunito', -apple-system, BlinkMacSystemFont, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background: var(--bg-deep);
@@ -128,28 +128,12 @@ body {
   gap: 0.5rem;
 }
 
-.logo-icon {
-  font-size: 1.5rem;
-  display: inline-block;
-  animation: floatY 3.5s ease-in-out infinite;
-}
-
 .logo-text {
-  font-size: 1.2rem;
+  font-size: 1.25rem;
   font-weight: 700;
   letter-spacing: -0.02em;
-  background: linear-gradient(
-    90deg,
-    var(--text-primary) 0%,
-    var(--accent-pink)  40%,
-    var(--accent-teal)  70%,
-    var(--text-primary) 100%
-  );
-  background-size: 200% auto;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  animation: shimmer 4s linear infinite;
+  color: var(--text-primary);
+  font-family: 'Space Grotesk', sans-serif;
 }
 
 .nav-cta {
@@ -163,7 +147,7 @@ body {
   border-radius: 100px;
   cursor: pointer;
   transition: transform 0.2s, filter 0.2s;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Nunito', sans-serif;
 }
 
 .nav-cta:hover {
@@ -184,7 +168,7 @@ body {
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: 5rem 2rem 4rem;
+  padding: 2rem 2rem 4rem;
   position: relative;
   overflow: hidden;
 }
@@ -217,12 +201,13 @@ body {
   animation: fadeInDown 0.75s 0.1s cubic-bezier(0.22, 1, 0.36, 1) both;
   position: relative;
   z-index: 1;
+  font-family: 'Space Grotesk', sans-serif;
 }
 
 .hero-sub {
   font-size: 1.15rem;
-  color: var(--text-secondary);
-  font-weight: 300;
+  color: rgba(255, 230, 180, 0.85);
+  font-weight: 400;
   letter-spacing: 0.02em;
   margin-bottom: 2.75rem;
   animation: fadeInDown 0.75s 0.22s cubic-bezier(0.22, 1, 0.36, 1) both;
@@ -244,6 +229,7 @@ body {
   color: var(--text-primary);
   margin-bottom: 3rem;
   animation: fadeInUp 0.6s ease both;
+  font-family: 'Space Grotesk', sans-serif;
 }
 
 .steps-row {
@@ -416,7 +402,7 @@ body {
   cursor: pointer;
   animation: pulseGlow 2.5s ease-in-out infinite;
   transition: transform 0.2s ease, filter 0.2s ease;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Nunito', sans-serif;
   position: relative;
   z-index: 1;
 }
@@ -504,7 +490,7 @@ body {
 }
 
 .error-screen h2 {
-  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-family: 'Space Grotesk', sans-serif;
   font-size: 1.75rem;
   font-weight: 300;
   color: var(--text-secondary);
@@ -529,7 +515,7 @@ body {
   cursor: pointer;
   margin-top: 0.5rem;
   transition: transform 0.2s, filter 0.2s;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Nunito', sans-serif;
 }
 
 .error-screen button:hover {
@@ -556,7 +542,7 @@ body {
 }
 
 .form-header h1 {
-  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-family: 'Space Grotesk', sans-serif;
   font-size: 2.75rem;
   font-weight: 300;
   background: linear-gradient(135deg, var(--text-primary) 30%, var(--accent-pink) 100%);
@@ -608,7 +594,7 @@ form {
   border-bottom: 1px solid rgba(255, 255, 255, 0.12);
   color: var(--text-primary);
   font-size: 0.95rem;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Nunito', sans-serif;
   font-weight: 300;
   transition: border-color 0.25s;
   resize: none;
@@ -644,7 +630,7 @@ form {
   cursor: pointer;
   color: var(--text-muted);
   font-size: 0.82rem;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Nunito', sans-serif;
 }
 
 .file-name {
@@ -676,7 +662,7 @@ form {
   border-radius: 100px;
   cursor: pointer;
   transition: transform 0.2s, filter 0.2s;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Nunito', sans-serif;
   margin-top: 0.5rem;
 }
 
@@ -706,7 +692,7 @@ form {
 }
 
 .card-header h1 {
-  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-family: 'Space Grotesk', sans-serif;
   font-size: 3.25rem;
   font-weight: 300;
   background: linear-gradient(135deg, var(--text-primary) 30%, var(--accent-pink) 100%);
@@ -756,7 +742,7 @@ form {
   font-weight: 300;
   line-height: 1.9;
   font-style: italic;
-  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-family: 'Space Grotesk', sans-serif;
 }
 
 .photos-grid {
@@ -844,11 +830,12 @@ form {
   color: var(--text-primary);
   margin-bottom: 0.75rem;
   line-height: 1.2;
+  font-family: 'Space Grotesk', sans-serif;
 }
 
 .wizard-subtitle {
   font-size: 0.95rem;
-  color: var(--text-secondary);
+  color: rgba(255, 230, 180, 0.85);
   margin-bottom: 2.5rem;
   line-height: 1.6;
 }
@@ -897,7 +884,7 @@ form {
   border-bottom: 2px solid rgba(255, 255, 255, 0.15);
   color: var(--text-primary);
   font-size: 1.25rem;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Nunito', sans-serif;
   font-weight: 400;
   padding: 0.5rem 0;
   text-align: center;
@@ -922,7 +909,7 @@ form {
   border-radius: 12px;
   color: var(--text-primary);
   font-size: 0.95rem;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Nunito', sans-serif;
   font-weight: 300;
   padding: 1rem;
   text-align: left;
@@ -965,7 +952,7 @@ form {
   border-radius: 100px;
   cursor: pointer;
   transition: background 0.2s, color 0.2s;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Nunito', sans-serif;
   white-space: nowrap;
 }
 
@@ -1201,7 +1188,7 @@ form {
   font-weight: 300;
   line-height: 1.9;
   font-style: italic;
-  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-family: 'Space Grotesk', sans-serif;
 }
 
 /* Carousel */
@@ -1291,6 +1278,113 @@ form {
 .carousel-dot.active {
   background: var(--accent-pink);
   transform: scale(1.35);
+}
+
+/* ═══════════════════════════════════════
+   FLOATING PARTICLES & ILLUSTRATIONS
+═══════════════════════════════════════ */
+
+.particles {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.particle {
+  position: absolute;
+  border-radius: 50%;
+  animation: floatParticle var(--dur, 4s) var(--delay, 0s) ease-in-out infinite alternate;
+}
+
+@keyframes floatParticle {
+  0%   { transform: translateY(0) rotate(0deg); opacity: 0.3; }
+  100% { transform: translateY(-18px) rotate(45deg); opacity: 0.55; }
+}
+
+.particle--1 {
+  width: 8px;
+  height: 8px;
+  background: var(--accent-pink);
+}
+
+.particle--2 {
+  width: 6px;
+  height: 6px;
+  background: var(--accent-gold);
+  border-radius: 2px;
+}
+
+.particle--3 {
+  width: 9px;
+  height: 9px;
+  background: var(--accent-teal);
+  opacity: 0.22;
+}
+
+.particle--4 {
+  width: 5px;
+  height: 13px;
+  background: var(--accent-pink);
+  border-radius: 3px;
+  opacity: 0.2;
+}
+
+/* Hero SVG illustration */
+.hero-illustration {
+  width: 220px;
+  height: 130px;
+  margin-bottom: 1.75rem;
+  animation: floatY 5s ease-in-out infinite;
+  position: relative;
+  z-index: 1;
+}
+
+/* Step icon SVG */
+.step-svg-icon {
+  width: 52px;
+  height: 52px;
+  margin: 0.5rem auto 1.25rem;
+  display: block;
+  animation: floatY 4s ease-in-out infinite;
+}
+
+.step-card:nth-child(1) .step-svg-icon { animation-delay: 0s; }
+.step-card:nth-child(3) .step-svg-icon { animation-delay: 1.4s; }
+.step-card:nth-child(5) .step-svg-icon { animation-delay: 2.8s; }
+
+/* Feature card SVG icons */
+.feature-svg-icon {
+  width: 40px;
+  height: 40px;
+  margin-bottom: 0.75rem;
+  display: block;
+  animation: floatY 4.5s ease-in-out infinite;
+}
+
+.feature-card:nth-child(1) .feature-svg-icon { animation-delay: 0s; }
+.feature-card:nth-child(2) .feature-svg-icon { animation-delay: 1.1s; }
+.feature-card:nth-child(3) .feature-svg-icon { animation-delay: 2.2s; }
+.feature-card:nth-child(4) .feature-svg-icon { animation-delay: 3.3s; }
+
+/* Wizard welcome SVG */
+.wizard-illustration {
+  width: 100px;
+  height: 80px;
+  margin-bottom: 1.25rem;
+  animation: floatY 4s ease-in-out infinite;
+  display: block;
+}
+
+/* View intro SVG */
+.view-intro-illustration {
+  width: 120px;
+  height: 100px;
+  margin-bottom: 1.5rem;
+  animation: floatY 5s ease-in-out infinite;
+  position: relative;
+  z-index: 1;
 }
 
 /* ═══════════════════════════════════════
