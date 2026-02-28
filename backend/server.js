@@ -299,15 +299,8 @@ app.post('/api/cards/:cardId/upload',
       const videoFile = req.files.video ? req.files.video[0] : null;
       const photoFiles = req.files.photos || [];
 
-      if (!videoFile) {
-        return res.status(400).json({
-          success: false,
-          error: 'Видео обязательно для загрузки'
-        });
-      }
-
-      // Для S3: multer-s3 уже загрузил файлы, возвращаем location
-      const videoUrl = videoFile.location;
+      // Видео необязательно
+      const videoUrl = videoFile ? videoFile.location : '';
       const photoUrls = photoFiles.map(f => f.location);
 
       const updatedData = {
