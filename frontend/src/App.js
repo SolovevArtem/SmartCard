@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { BrowserRouter as Router, Routes, Route, useParams, useNavigate } from 'react-router-dom';
 import './App.css';
 
@@ -292,6 +292,7 @@ function HomePage() {
 function CardView({ card }) {
   const videoRef = useRef(null);
   const [currentPhoto, setCurrentPhoto] = useState(0);
+  const autoTimer = useRef(null);
   const photos = card.photos_urls || [];
 
   // Автоплей видео через 4с (muted — обязательно для iOS)
@@ -308,7 +309,7 @@ function CardView({ card }) {
 
   // Scroll reveal через IntersectionObserver
   useEffect(() => {
-    const els = document.querySelectorAll('.reveal');
+    const els = document.querySelectorAll('.reveal, .reveal-right, .reveal-left');
     const obs = new IntersectionObserver(
       (entries) => entries.forEach((e) => { if (e.isIntersecting) e.target.classList.add('visible'); }),
       { threshold: 0.18 }
@@ -317,8 +318,37 @@ function CardView({ card }) {
     return () => obs.disconnect();
   }, []);
 
+  // Авто-карусель: через 4с бездействия переходим к следующему фото
+  const resetAutoRotate = useCallback(() => {
+    if (photos.length <= 1) return;
+    clearTimeout(autoTimer.current);
+    autoTimer.current = setTimeout(() => {
+      setCurrentPhoto((p) => (p + 1) % photos.length);
+    }, 4000);
+  }, [photos.length]);
+
+  useEffect(() => {
+    resetAutoRotate();
+    return () => clearTimeout(autoTimer.current);
+  }, [currentPhoto, resetAutoRotate]);
+
   const prevPhoto = () => setCurrentPhoto((p) => Math.max(p - 1, 0));
   const nextPhoto = () => setCurrentPhoto((p) => Math.min(p + 1, photos.length - 1));
+
+  // Скачать фото на устройство
+  const downloadPhoto = async (url, index) => {
+    try {
+      const resp = await fetch(url, { mode: 'cors' });
+      const blob = await resp.blob();
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = `photo-${index + 1}.jpg`;
+      a.click();
+      URL.revokeObjectURL(a.href);
+    } catch {
+      window.open(url, '_blank');
+    }
+  };
 
   return (
     <div>
@@ -337,7 +367,7 @@ function CardView({ card }) {
 
         {/* Видео */}
         {card.video_url && (
-          <div className="view-section reveal">
+          <div className="view-section reveal-right">
             <p className="view-section-title">Видео-поздравление</p>
             <div className="video-container">
               <video ref={videoRef} controls playsInline muted>
@@ -350,7 +380,7 @@ function CardView({ card }) {
 
         {/* Сообщение */}
         {card.message && (
-          <div className="view-section reveal">
+          <div className="view-section reveal-left">
             <p className="view-section-title">Слова от {card.sender_name}</p>
             <div className="view-message">{card.message}</div>
           </div>
@@ -358,14 +388,30 @@ function CardView({ card }) {
 
         {/* Фото */}
         {photos.length > 0 && (
-          <div className="view-section reveal">
+          <div className="view-section reveal-right">
             <p className="view-section-title">
               Фотографии{photos.length > 1 ? ` · ${currentPhoto + 1} / ${photos.length}` : ''}
             </p>
             {photos.length === 1 ? (
-              <img src={photos[0]} alt="Фото" className="single-photo" />
+              <>
+                <img src={photos[0]} alt="Фото" className="single-photo" />
+                <div className="single-photo-download">
+                  <button className="download-btn" onClick={() => downloadPhoto(photos[0], 0)}>
+                    ↓ Сохранить
+                  </button>
+                </div>
+              </>
             ) : (
-              <div className="carousel-wrapper">
+              <div
+                className="carousel-wrapper"
+                onMouseMove={resetAutoRotate}
+                onTouchStart={resetAutoRotate}
+              >
+                <div className="carousel-download">
+                  <button className="download-btn" onClick={() => downloadPhoto(photos[currentPhoto], currentPhoto)}>
+                    ↓ Сохранить
+                  </button>
+                </div>
                 <div className="carousel-track-container">
                   <div
                     className="carousel-track"
@@ -411,9 +457,20 @@ function CardView({ card }) {
 }
 
 // ── Пошаговый wizard создания карточки ──
+const UPLOAD_MSGS = [
+  'Пишем текст...',
+  'Завязываем бантик...',
+  'Проверяем орфографию...',
+  'Упаковываем подарок...',
+  'Пишем пожелания...',
+  'Добавляем блёстки...',
+  'Запечатываем конверт...',
+];
+
 function CardWizard({ cardId, onComplete }) {
   const [step, setStep] = useState(0);
   const [uploading, setUploading] = useState(false);
+  const [uploadMsgIdx, setUploadMsgIdx] = useState(0);
 
   const [senderName, setSenderName] = useState('');
   const [message, setMessage] = useState('');
@@ -430,6 +487,13 @@ function CardWizard({ cardId, onComplete }) {
     const t = setTimeout(() => setStep(1), 2500);
     return () => clearTimeout(t);
   }, [step]);
+
+  // Крутим сообщения во время загрузки
+  useEffect(() => {
+    if (!uploading) return;
+    const t = setInterval(() => setUploadMsgIdx((i) => (i + 1) % UPLOAD_MSGS.length), 1600);
+    return () => clearInterval(t);
+  }, [uploading]);
 
   const handlePhotoChange = (e) => {
     const files = Array.from(e.target.files).slice(0, 10);
@@ -466,6 +530,19 @@ function CardWizard({ cardId, onComplete }) {
 
   return (
     <div className="wizard-wrapper">
+
+      {/* ── Uploading overlay ── */}
+      {uploading && (
+        <div className="uploading-screen">
+          <FloatingParticles count={14} />
+          <div className="uploading-icon">🎁</div>
+          <p className="uploading-msg" key={uploadMsgIdx}>{UPLOAD_MSGS[uploadMsgIdx]}</p>
+          <div className="uploading-bar">
+            <div className="uploading-bar-fill" />
+          </div>
+          <p className="uploading-sub">Создаём вашу открытку</p>
+        </div>
+      )}
 
       {/* ── Step 0: Welcome ── */}
       {step === 0 && (
