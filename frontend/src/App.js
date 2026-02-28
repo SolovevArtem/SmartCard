@@ -95,6 +95,22 @@ const IconNoApp = () => (
   </svg>
 );
 
+// ── Social media icons ──
+const IconTelegram = () => (
+  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="22" height="22">
+    <path d="M22 2L11 13" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+    <path d="M22 2L15 22L11 13L2 9L22 2Z" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+  </svg>
+);
+
+const IconInstagram = () => (
+  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="22" height="22">
+    <rect x="2" y="2" width="20" height="20" rx="5" stroke="currentColor" strokeWidth="1.8"/>
+    <circle cx="12" cy="12" r="4.5" stroke="currentColor" strokeWidth="1.8"/>
+    <circle cx="17.5" cy="6.5" r="1.2" fill="currentColor"/>
+  </svg>
+);
+
 // ── Hero SVG gift illustration ──
 const HeroIllustration = () => (
   <div className="hero-illustration" aria-hidden="true">
@@ -276,13 +292,31 @@ function HomePage() {
         </div>
       </section>
 
-      {/* ── Sticky Bottom CTA ── */}
-      <div className="sticky-cta">
-        <p>Создай свою первую открытку прямо сейчас</p>
-        <button className="cta-button cta-small" onClick={handleCreate} disabled={loading}>
-          {loading ? 'Создаём...' : 'Создать открытку'}
-        </button>
-      </div>
+      {/* ── Social Footer ── */}
+      <footer className="social-footer">
+        <p className="social-label">Следите за нами</p>
+        <div className="social-links">
+          <a
+            href="https://t.me/s0lart"
+            target="_blank"
+            rel="noreferrer"
+            className="social-link"
+            aria-label="Telegram"
+          >
+            <IconTelegram />
+          </a>
+          <a
+            href="https://instagram.com/s0lart"
+            target="_blank"
+            rel="noreferrer"
+            className="social-link"
+            aria-label="Instagram"
+          >
+            <IconInstagram />
+          </a>
+        </div>
+        <p className="social-handle">@s0lart</p>
+      </footer>
 
     </div>
   );
@@ -485,8 +519,19 @@ function CardWizard({ cardId, onComplete }) {
   const [photoFiles, setPhotoFiles] = useState([]);
   const [photoPreviewUrls, setPhotoPreviewUrls] = useState([]);
 
+  const [isPreview, setIsPreview] = useState(false);
+  const [videoPreviewUrl, setVideoPreviewUrl] = useState('');
+
   const videoInputRef = useRef(null);
   const photoInputRef = useRef(null);
+
+  // Создаём object URL для превью видео, отзываем при смене файла
+  useEffect(() => {
+    if (!videoFile) { setVideoPreviewUrl(''); return; }
+    const url = URL.createObjectURL(videoFile);
+    setVideoPreviewUrl(url);
+    return () => URL.revokeObjectURL(url);
+  }, [videoFile]);
 
   // Авто-переход со step 0 через 2с если пользователь не нажал сам
   useEffect(() => {
@@ -537,6 +582,52 @@ function CardWizard({ cardId, onComplete }) {
       setUploading(false);
     }
   };
+
+  // ── Режим предпросмотра ──
+  if (isPreview) {
+    return (
+      <div>
+        {uploading && (
+          <div className="uploading-screen">
+            <FloatingParticles count={14} />
+            <div className="uploading-ring" aria-hidden="true">
+              <svg width="72" height="72" viewBox="0 0 72 72">
+                <defs>
+                  <linearGradient id="ringGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stopColor="#FF6B9D" />
+                    <stop offset="100%" stopColor="#00E5CC" />
+                  </linearGradient>
+                </defs>
+                <circle className="uploading-ring-track" cx="36" cy="36" r="28" />
+                <circle className="uploading-ring-fill" cx="36" cy="36" r="28" stroke="url(#ringGrad2)" />
+              </svg>
+            </div>
+            <div className="uploading-icon">🎁</div>
+            <p className="uploading-msg" key={uploadMsgIdx}>{UPLOAD_MSGS[uploadMsgIdx]}</p>
+            <p className="uploading-sub">Создаём вашу открытку</p>
+          </div>
+        )}
+        <div className="preview-bar">
+          <button className="preview-back-btn" onClick={() => setIsPreview(false)}>
+            ← Редактировать
+          </button>
+          <span className="preview-label">✦ Предпросмотр</span>
+          <button className="cta-button cta-small" onClick={handleSubmit} disabled={uploading}>
+            ✉️ Отправить
+          </button>
+        </div>
+        <div className="preview-content">
+          <CardView card={{
+            sender_name: senderName || 'Имя отправителя',
+            video_url: videoPreviewUrl,
+            message: message,
+            photos_urls: photoPreviewUrls,
+            status: 'filled',
+          }} />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="wizard-wrapper">
@@ -715,12 +806,15 @@ function CardWizard({ cardId, onComplete }) {
 
           <div className="wizard-nav">
             <button className="btn-back" onClick={() => setStep(2)}>← Назад</button>
+            <button className="btn-skip" onClick={() => setIsPreview(true)}>
+              👁 Предпросмотр
+            </button>
             <button
               className="cta-button"
               onClick={handleSubmit}
               disabled={uploading}
             >
-              {uploading ? 'Отправляем…' : '✉️ Отправить поздравление'}
+              {uploading ? 'Отправляем…' : '✉️ Отправить'}
             </button>
           </div>
         </div>
