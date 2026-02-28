@@ -307,12 +307,12 @@ function CardView({ card }) {
     return () => clearTimeout(t);
   }, [card.video_url]);
 
-  // Scroll reveal через IntersectionObserver
+  // Scroll reveal через IntersectionObserver (threshold 0.06 — срабатывает сразу при появлении)
   useEffect(() => {
     const els = document.querySelectorAll('.reveal, .reveal-right, .reveal-left');
     const obs = new IntersectionObserver(
       (entries) => entries.forEach((e) => { if (e.isIntersecting) e.target.classList.add('visible'); }),
-      { threshold: 0.18 }
+      { threshold: 0.06 }
     );
     els.forEach((el) => obs.observe(el));
     return () => obs.disconnect();
@@ -332,23 +332,9 @@ function CardView({ card }) {
     return () => clearTimeout(autoTimer.current);
   }, [currentPhoto, resetAutoRotate]);
 
-  const prevPhoto = () => setCurrentPhoto((p) => Math.max(p - 1, 0));
-  const nextPhoto = () => setCurrentPhoto((p) => Math.min(p + 1, photos.length - 1));
-
-  // Скачать фото на устройство
-  const downloadPhoto = async (url, index) => {
-    try {
-      const resp = await fetch(url, { mode: 'cors' });
-      const blob = await resp.blob();
-      const a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
-      a.download = `photo-${index + 1}.jpg`;
-      a.click();
-      URL.revokeObjectURL(a.href);
-    } catch {
-      window.open(url, '_blank');
-    }
-  };
+  // Бесконечная прокрутка: оба конца замыкаются
+  const prevPhoto = () => setCurrentPhoto((p) => (p - 1 + photos.length) % photos.length);
+  const nextPhoto = () => setCurrentPhoto((p) => (p + 1) % photos.length);
 
   return (
     <div>
@@ -396,9 +382,13 @@ function CardView({ card }) {
               <>
                 <img src={photos[0]} alt="Фото" className="single-photo" />
                 <div className="single-photo-download">
-                  <button className="download-btn" onClick={() => downloadPhoto(photos[0], 0)}>
-                    ↓ Сохранить
-                  </button>
+                  <a
+                    className="download-btn"
+                    href={photos[0]}
+                    download="photo-1.jpg"
+                    target="_blank"
+                    rel="noreferrer"
+                  >↓ Сохранить</a>
                 </div>
               </>
             ) : (
@@ -408,9 +398,13 @@ function CardView({ card }) {
                 onTouchStart={resetAutoRotate}
               >
                 <div className="carousel-download">
-                  <button className="download-btn" onClick={() => downloadPhoto(photos[currentPhoto], currentPhoto)}>
-                    ↓ Сохранить
-                  </button>
+                  <a
+                    className="download-btn"
+                    href={photos[currentPhoto]}
+                    download={`photo-${currentPhoto + 1}.jpg`}
+                    target="_blank"
+                    rel="noreferrer"
+                  >↓ Сохранить</a>
                 </div>
                 <div className="carousel-track-container">
                   <div
@@ -426,7 +420,6 @@ function CardView({ card }) {
                   <button
                     className="carousel-btn"
                     onClick={prevPhoto}
-                    disabled={currentPhoto === 0}
                     aria-label="Предыдущее фото"
                   >‹</button>
                   <div className="carousel-dots">
@@ -442,7 +435,6 @@ function CardView({ card }) {
                   <button
                     className="carousel-btn"
                     onClick={nextPhoto}
-                    disabled={currentPhoto === photos.length - 1}
                     aria-label="Следующее фото"
                   >›</button>
                 </div>
@@ -458,13 +450,28 @@ function CardView({ card }) {
 
 // ── Пошаговый wizard создания карточки ──
 const UPLOAD_MSGS = [
-  'Пишем текст...',
-  'Завязываем бантик...',
-  'Проверяем орфографию...',
-  'Упаковываем подарок...',
-  'Пишем пожелания...',
-  'Добавляем блёстки...',
-  'Запечатываем конверт...',
+  'Выбираем красивую бумагу...',
+  'Пишем текст поздравления...',
+  'Завязываем атласную ленточку...',
+  'Подбираем идеальный конверт...',
+  'Складываем открытку по линии...',
+  'Проверяем орфографию дважды...',
+  'Упаковываем с любовью...',
+  'Украшаем золотыми звёздочками...',
+  'Добавляем блёстки и конфетти...',
+  'Пишем пожелания от чистого сердца...',
+  'Приклеиваем красивую марку...',
+  'Перевязываем золотой нитью...',
+  'Прячем маленький сюрприз внутри...',
+  'Запечатываем конверт с трепетом...',
+  'Надуваем воздушные шарики рядом...',
+  'Раскладываем лепестки роз на столе...',
+  'Вкладываем частичку себя...',
+  'Добавляем капельку волшебства...',
+  'Ставим печать с сердечком...',
+  'Проверяем, что всё идеально...',
+  'Делаем финальные штрихи...',
+  'Отправляем с улыбкой...',
 ];
 
 function CardWizard({ cardId, onComplete }) {
@@ -488,10 +495,13 @@ function CardWizard({ cardId, onComplete }) {
     return () => clearTimeout(t);
   }, [step]);
 
-  // Крутим сообщения во время загрузки
+  // Крутим сообщения последовательно, без повтора, каждые 8с
   useEffect(() => {
     if (!uploading) return;
-    const t = setInterval(() => setUploadMsgIdx((i) => (i + 1) % UPLOAD_MSGS.length), 1600);
+    setUploadMsgIdx(0);
+    const t = setInterval(() => {
+      setUploadMsgIdx((i) => Math.min(i + 1, UPLOAD_MSGS.length - 1));
+    }, 8000);
     return () => clearInterval(t);
   }, [uploading]);
 
@@ -535,11 +545,20 @@ function CardWizard({ cardId, onComplete }) {
       {uploading && (
         <div className="uploading-screen">
           <FloatingParticles count={14} />
+          <div className="uploading-ring" aria-hidden="true">
+            <svg width="72" height="72" viewBox="0 0 72 72">
+              <defs>
+                <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stopColor="#FF6B9D" />
+                  <stop offset="100%" stopColor="#00E5CC" />
+                </linearGradient>
+              </defs>
+              <circle className="uploading-ring-track" cx="36" cy="36" r="28" />
+              <circle className="uploading-ring-fill" cx="36" cy="36" r="28" stroke="url(#ringGrad)" />
+            </svg>
+          </div>
           <div className="uploading-icon">🎁</div>
           <p className="uploading-msg" key={uploadMsgIdx}>{UPLOAD_MSGS[uploadMsgIdx]}</p>
-          <div className="uploading-bar">
-            <div className="uploading-bar-fill" />
-          </div>
           <p className="uploading-sub">Создаём вашу открытку</p>
         </div>
       )}
@@ -577,6 +596,7 @@ function CardWizard({ cardId, onComplete }) {
             onKeyDown={(e) => { if (e.key === 'Enter' && senderName.trim()) setStep(2); }}
           />
           <div className="wizard-nav">
+            <button className="btn-back" onClick={() => setStep(0)}>← Назад</button>
             <button
               className="cta-button"
               onClick={() => setStep(2)}
@@ -627,6 +647,7 @@ function CardWizard({ cardId, onComplete }) {
           <p className="upload-max">Максимум 50 MB</p>
 
           <div className="wizard-nav">
+            <button className="btn-back" onClick={() => setStep(1)}>← Назад</button>
             <button className="cta-button" onClick={() => setStep(3)}>Далее →</button>
             <button className="btn-skip" onClick={() => { setVideoFile(null); setStep(3); }}>
               Пропустить
@@ -693,6 +714,7 @@ function CardWizard({ cardId, onComplete }) {
           />
 
           <div className="wizard-nav">
+            <button className="btn-back" onClick={() => setStep(2)}>← Назад</button>
             <button
               className="cta-button"
               onClick={handleSubmit}

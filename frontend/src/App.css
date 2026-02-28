@@ -961,6 +961,26 @@ form {
   color: var(--text-secondary);
 }
 
+.btn-back {
+  flex: 0 0 auto;
+  background: transparent;
+  color: var(--text-muted);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 1rem 1.25rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  border-radius: 100px;
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s;
+  font-family: 'Nunito', sans-serif;
+  white-space: nowrap;
+}
+
+.btn-back:hover {
+  color: var(--text-secondary);
+  border-color: rgba(255, 255, 255, 0.28);
+}
+
 /* Upload zone */
 .upload-zone {
   width: 100%;
@@ -1056,6 +1076,7 @@ form {
   opacity: 0;
   transform: translateY(40px);
   transition: opacity 0.75s ease, transform 0.75s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform, opacity;
 }
 
 .reveal.visible {
@@ -1067,6 +1088,7 @@ form {
   opacity: 0;
   transform: translateX(60px);
   transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform, opacity;
 }
 
 .reveal-right.visible {
@@ -1078,6 +1100,7 @@ form {
   opacity: 0;
   transform: translateX(-60px);
   transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform, opacity;
 }
 
 .reveal-left.visible {
@@ -1175,11 +1198,12 @@ form {
 }
 
 .intro-scroll-hint {
-  font-size: 1.4rem;
+  font-size: 2rem;
   animation: scrollPulse 1.8s ease-in-out infinite;
   position: relative;
   z-index: 1;
-  color: var(--text-muted);
+  color: var(--accent-pink);
+  text-shadow: 0 0 22px rgba(255, 107, 157, 0.6);
 }
 
 /* View content sections */
@@ -1315,6 +1339,9 @@ form {
 }
 
 .download-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
   background: rgba(13, 0, 33, 0.72);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
@@ -1327,6 +1354,7 @@ form {
   cursor: pointer;
   font-family: 'Nunito', sans-serif;
   transition: background 0.2s, color 0.2s;
+  text-decoration: none;
 }
 
 .download-btn:hover {
@@ -1485,30 +1513,27 @@ form {
   z-index: 1;
 }
 
-.uploading-bar {
-  width: 240px;
-  height: 4px;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 100px;
-  overflow: hidden;
-  margin-bottom: 1.25rem;
+/* Circular ring loader */
+.uploading-ring {
+  width: 72px;
+  height: 72px;
+  margin-bottom: 1.5rem;
   position: relative;
   z-index: 1;
+  animation: spin 1.1s linear infinite;
 }
 
-.uploading-bar-fill {
-  height: 100%;
-  background: linear-gradient(90deg, var(--accent-pink), var(--accent-teal), var(--accent-pink));
-  background-size: 200% auto;
-  border-radius: 100px;
-  animation: uploaderProgress 3s ease-in-out infinite, shimmer 1.8s linear infinite;
+.uploading-ring-track {
+  stroke: rgba(255, 255, 255, 0.08);
+  stroke-width: 5;
+  fill: none;
 }
 
-@keyframes uploaderProgress {
-  0%   { width: 12%; }
-  40%  { width: 65%; }
-  80%  { width: 88%; }
-  100% { width: 88%; }
+.uploading-ring-fill {
+  stroke-width: 5;
+  fill: none;
+  stroke-linecap: round;
+  stroke-dasharray: 120 56;
 }
 
 .uploading-sub {
