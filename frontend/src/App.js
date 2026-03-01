@@ -401,12 +401,28 @@ function CardView({ card }) {
         {/* Сообщение */}
         {card.message && (
           <div className="view-section reveal-left">
-            <div className="message-letter">
-              <div className="message-letter-header">
-                <span className="message-letter-seal">✉</span>
-                <p className="message-letter-from">— {card.sender_name}</p>
+            <div className="message-envelope">
+              <svg
+                className="envelope-flap"
+                viewBox="0 0 320 72"
+                preserveAspectRatio="none"
+                fill="none"
+                aria-hidden="true"
+              >
+                <rect x="0" y="0" width="320" height="72" fill="#FDFBF9"/>
+                <path d="M0 72 L0 36 L160 0 L320 36 L320 72"
+                  stroke="rgba(232,155,136,0.30)" strokeWidth="1.5" fill="none"/>
+                <line x1="0" y1="36" x2="320" y2="36"
+                  stroke="rgba(232,155,136,0.18)" strokeWidth="1"/>
+                <path d="M155 18 Q155 13 160 15.5 Q165 13 165 18 Q165 22.5 160 26 Q155 22.5 155 18z"
+                  fill="#D18973" opacity="0.65"/>
+                <text x="22"  y="62" fontSize="10" fill="#C77B6B" opacity="0.35" fontFamily="serif">✦</text>
+                <text x="282" y="60" fontSize="8"  fill="#E89B88" opacity="0.35" fontFamily="serif">✦</text>
+              </svg>
+              <div className="envelope-body">
+                <div className="envelope-message">{card.message}</div>
+                <p className="envelope-from">— {card.sender_name}</p>
               </div>
-              <div className="message-letter-body">{card.message}</div>
             </div>
           </div>
         )}
