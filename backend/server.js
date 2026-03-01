@@ -441,11 +441,8 @@ async function runCleanup() {
       SELECT id, video_url, photos_urls
       FROM cards
       WHERE is_demo = false
-        AND (
-          (status = 'filled'           AND filled_at  < NOW() - INTERVAL '${CLEANUP_DAYS} days')
-          OR
-          (status IN ('new', 'active') AND created_at < NOW() - INTERVAL '${CLEANUP_DAYS} days')
-        )
+        AND status = 'filled'
+        AND filled_at < NOW() - INTERVAL '${CLEANUP_DAYS} days'
     `);
 
     console.log(`[cleanup] ${rows.length} card(s) to delete`);
