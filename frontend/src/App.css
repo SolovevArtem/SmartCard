@@ -1755,59 +1755,42 @@ form {
   }
 }
 
-/* ── Message letter illustration ── */
-.message-letter {
-  background: #FDFBF9;
+/* ── Envelope card for message ── */
+.message-envelope {
   border: 1px solid rgba(232, 155, 136, 0.30);
   border-radius: 4px;
-  padding: 2rem 2rem 2.5rem;
-  position: relative;
+  overflow: hidden;
+  background: #FDFBF9;
   box-shadow:
     0 8px 30px rgba(209, 137, 115, 0.12),
     0 2px 8px  rgba(209, 137, 115, 0.08);
 }
 
-.message-letter::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 4px;
-  background: linear-gradient(90deg,
-    var(--accent-pink-deep) 0%,
-    var(--accent-pink)      50%,
-    var(--accent-gold)      100%);
-  border-radius: 4px 4px 0 0;
-  opacity: 0.6;
+.envelope-flap {
+  display: block;
+  width: 100%;
+  height: 72px;
 }
 
-.message-letter-header {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
+.envelope-body {
+  padding: 1.5rem 2rem 2.5rem;
+}
+
+.envelope-message {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.1rem;
+  font-style: italic;
+  line-height: 1.95;
+  color: var(--text-primary);
   margin-bottom: 1.25rem;
-  padding-bottom: 0.85rem;
-  border-bottom: 1px solid rgba(232, 155, 136, 0.20);
 }
 
-.message-letter-seal {
-  font-size: 1.25rem;
-  color: var(--accent-pink);
-  line-height: 1;
-}
-
-.message-letter-from {
+.envelope-from {
   font-size: 0.7rem;
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--accent-gold);
   font-weight: 500;
   margin: 0;
-}
-
-.message-letter-body {
-  font-family: 'DM Serif Display', serif;
-  font-size: 1.1rem;
-  font-style: italic;
-  line-height: 1.95;
-  color: var(--text-primary);
+  text-align: right;
 }
