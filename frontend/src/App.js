@@ -29,69 +29,69 @@ function FloatingParticles({ count = 14 }) {
 // ── SVG Icons ──
 const IconEnvelope = () => (
   <svg className="step-svg-icon" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <rect x="6" y="14" width="40" height="28" rx="4" stroke="#FF6B9D" strokeWidth="2"/>
-    <path d="M6 18l20 14 20-14" stroke="#FFB800" strokeWidth="2" strokeLinecap="round"/>
-    <circle cx="38" cy="16" r="6" fill="#FF4785" opacity="0.85"/>
+    <rect x="6" y="14" width="40" height="28" rx="4" stroke="#E89B88" strokeWidth="2"/>
+    <path d="M6 18l20 14 20-14" stroke="#C77B6B" strokeWidth="2" strokeLinecap="round"/>
+    <circle cx="38" cy="16" r="6" fill="#D18973" opacity="0.85"/>
     <path d="M35 16l2 2 4-4" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
   </svg>
 );
 
 const IconClapperboard = () => (
   <svg className="step-svg-icon" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <rect x="6" y="18" width="40" height="26" rx="3" stroke="#FF6B9D" strokeWidth="2"/>
-    <rect x="6" y="10" width="40" height="10" rx="2" stroke="#FFB800" strokeWidth="2"/>
-    <line x1="14" y1="10" x2="18" y2="20" stroke="#FFB800" strokeWidth="2"/>
-    <line x1="24" y1="10" x2="28" y2="20" stroke="#FFB800" strokeWidth="2"/>
-    <line x1="34" y1="10" x2="38" y2="20" stroke="#FFB800" strokeWidth="2"/>
-    <path d="M21 28l10 5-10 5V28z" fill="#00E5CC" opacity="0.8"/>
+    <rect x="6" y="18" width="40" height="26" rx="3" stroke="#E89B88" strokeWidth="2"/>
+    <rect x="6" y="10" width="40" height="10" rx="2" stroke="#C77B6B" strokeWidth="2"/>
+    <line x1="14" y1="10" x2="18" y2="20" stroke="#C77B6B" strokeWidth="2"/>
+    <line x1="24" y1="10" x2="28" y2="20" stroke="#C77B6B" strokeWidth="2"/>
+    <line x1="34" y1="10" x2="38" y2="20" stroke="#C77B6B" strokeWidth="2"/>
+    <path d="M21 28l10 5-10 5V28z" fill="#A8C9A4" opacity="0.8"/>
   </svg>
 );
 
 const IconPhoneSpark = () => (
   <svg className="step-svg-icon" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <rect x="14" y="6" width="20" height="36" rx="4" stroke="#FF6B9D" strokeWidth="2"/>
-    <circle cx="24" cy="38" r="2" fill="#FF6B9D" opacity="0.7"/>
-    <line x1="19" y1="10" x2="29" y2="10" stroke="#FF6B9D" strokeWidth="1.5" strokeLinecap="round" opacity="0.5"/>
-    <path d="M38 12l2-4" stroke="#FFB800" strokeWidth="1.5" strokeLinecap="round"/>
-    <path d="M42 16l4-2" stroke="#FFB800" strokeWidth="1.5" strokeLinecap="round"/>
-    <path d="M40 20l4 1" stroke="#00E5CC" strokeWidth="1.5" strokeLinecap="round"/>
-    <circle cx="40" cy="15" r="2" fill="#FFB800" opacity="0.9"/>
-    <circle cx="36" cy="24" r="1.5" fill="#00E5CC" opacity="0.7"/>
-    <circle cx="44" cy="24" r="1" fill="#FF6B9D" opacity="0.6"/>
+    <rect x="14" y="6" width="20" height="36" rx="4" stroke="#E89B88" strokeWidth="2"/>
+    <circle cx="24" cy="38" r="2" fill="#E89B88" opacity="0.7"/>
+    <line x1="19" y1="10" x2="29" y2="10" stroke="#E89B88" strokeWidth="1.5" strokeLinecap="round" opacity="0.5"/>
+    <path d="M38 12l2-4" stroke="#C77B6B" strokeWidth="1.5" strokeLinecap="round"/>
+    <path d="M42 16l4-2" stroke="#C77B6B" strokeWidth="1.5" strokeLinecap="round"/>
+    <path d="M40 20l4 1" stroke="#A8C9A4" strokeWidth="1.5" strokeLinecap="round"/>
+    <circle cx="40" cy="15" r="2" fill="#C77B6B" opacity="0.9"/>
+    <circle cx="36" cy="24" r="1.5" fill="#A8C9A4" opacity="0.7"/>
+    <circle cx="44" cy="24" r="1" fill="#E89B88" opacity="0.6"/>
   </svg>
 );
 
 const IconVideo = () => (
   <svg className="feature-svg-icon" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <rect x="3" y="9" width="24" height="18" rx="3" stroke="#FF6B9D" strokeWidth="1.8"/>
-    <path d="M27 16l10-5v14l-10-5V16z" stroke="#FFB800" strokeWidth="1.8" strokeLinejoin="round"/>
+    <rect x="3" y="9" width="24" height="18" rx="3" stroke="#E89B88" strokeWidth="1.8"/>
+    <path d="M27 16l10-5v14l-10-5V16z" stroke="#C77B6B" strokeWidth="1.8" strokeLinejoin="round"/>
   </svg>
 );
 
 const IconPhotos = () => (
   <svg className="feature-svg-icon" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <rect x="4" y="8" width="24" height="20" rx="3" stroke="#FF6B9D" strokeWidth="1.8"/>
-    <rect x="10" y="14" width="24" height="20" rx="3" stroke="#00E5CC" strokeWidth="1.8" opacity="0.7"/>
-    <circle cx="12" cy="16" r="2.5" fill="#FFB800" opacity="0.8"/>
-    <path d="M4 24l6-5 5 5 4-4 9 8" stroke="#FF6B9D" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" opacity="0.6"/>
+    <rect x="4" y="8" width="24" height="20" rx="3" stroke="#E89B88" strokeWidth="1.8"/>
+    <rect x="10" y="14" width="24" height="20" rx="3" stroke="#A8C9A4" strokeWidth="1.8" opacity="0.7"/>
+    <circle cx="12" cy="16" r="2.5" fill="#C77B6B" opacity="0.8"/>
+    <path d="M4 24l6-5 5 5 4-4 9 8" stroke="#E89B88" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" opacity="0.6"/>
   </svg>
 );
 
 const IconMessage = () => (
   <svg className="feature-svg-icon" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <rect x="4" y="6" width="32" height="22" rx="4" stroke="#FFB800" strokeWidth="1.8"/>
-    <path d="M10 30l4-8h12l4 8" stroke="#FFB800" strokeWidth="1.5" strokeLinejoin="round" opacity="0.6"/>
-    <line x1="10" y1="14" x2="30" y2="14" stroke="#FF6B9D" strokeWidth="1.5" strokeLinecap="round" opacity="0.7"/>
-    <line x1="10" y1="20" x2="24" y2="20" stroke="#FF6B9D" strokeWidth="1.5" strokeLinecap="round" opacity="0.5"/>
+    <rect x="4" y="6" width="32" height="22" rx="4" stroke="#C77B6B" strokeWidth="1.8"/>
+    <path d="M10 30l4-8h12l4 8" stroke="#C77B6B" strokeWidth="1.5" strokeLinejoin="round" opacity="0.6"/>
+    <line x1="10" y1="14" x2="30" y2="14" stroke="#E89B88" strokeWidth="1.5" strokeLinecap="round" opacity="0.7"/>
+    <line x1="10" y1="20" x2="24" y2="20" stroke="#E89B88" strokeWidth="1.5" strokeLinecap="round" opacity="0.5"/>
   </svg>
 );
 
 const IconNoApp = () => (
   <svg className="feature-svg-icon" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <rect x="10" y="4" width="20" height="32" rx="4" stroke="#00E5CC" strokeWidth="1.8"/>
-    <circle cx="20" cy="32" r="1.5" fill="#00E5CC" opacity="0.7"/>
-    <path d="M15 7h10" stroke="#00E5CC" strokeWidth="1.5" strokeLinecap="round" opacity="0.5"/>
-    <path d="M16 18l3 3 6-6" stroke="#FFB800" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+    <rect x="10" y="4" width="20" height="32" rx="4" stroke="#A8C9A4" strokeWidth="1.8"/>
+    <circle cx="20" cy="32" r="1.5" fill="#A8C9A4" opacity="0.7"/>
+    <path d="M15 7h10" stroke="#A8C9A4" strokeWidth="1.5" strokeLinecap="round" opacity="0.5"/>
+    <path d="M16 18l3 3 6-6" stroke="#C77B6B" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
   </svg>
 );
 
@@ -116,31 +116,31 @@ const HeroIllustration = () => (
   <div className="hero-illustration" aria-hidden="true">
     <svg viewBox="0 0 220 130" fill="none" xmlns="http://www.w3.org/2000/svg">
       {/* Box body */}
-      <rect x="55" y="62" width="110" height="62" rx="5" stroke="#FF6B9D" strokeWidth="2" strokeOpacity="0.55"/>
+      <rect x="55" y="62" width="110" height="62" rx="5" stroke="#E89B88" strokeWidth="2" strokeOpacity="0.55"/>
       {/* Box lid */}
-      <rect x="48" y="44" width="124" height="22" rx="4" stroke="#FF6B9D" strokeWidth="2" strokeOpacity="0.55"/>
+      <rect x="48" y="44" width="124" height="22" rx="4" stroke="#E89B88" strokeWidth="2" strokeOpacity="0.55"/>
       {/* Vertical ribbon */}
-      <line x1="110" y1="44" x2="110" y2="124" stroke="#FFB800" strokeWidth="2.5" strokeOpacity="0.65"/>
+      <line x1="110" y1="44" x2="110" y2="124" stroke="#C77B6B" strokeWidth="2.5" strokeOpacity="0.65"/>
       {/* Horizontal ribbon on lid */}
-      <line x1="48" y1="55" x2="172" y2="55" stroke="#FFB800" strokeWidth="2.5" strokeOpacity="0.65"/>
+      <line x1="48" y1="55" x2="172" y2="55" stroke="#C77B6B" strokeWidth="2.5" strokeOpacity="0.65"/>
       {/* Bow left loop */}
-      <path d="M90 44 Q95 22 110 44" stroke="#FF6B9D" strokeWidth="2" strokeOpacity="0.8" fill="none"/>
+      <path d="M90 44 Q95 22 110 44" stroke="#E89B88" strokeWidth="2" strokeOpacity="0.8" fill="none"/>
       {/* Bow right loop */}
-      <path d="M130 44 Q125 22 110 44" stroke="#FF6B9D" strokeWidth="2" strokeOpacity="0.8" fill="none"/>
+      <path d="M130 44 Q125 22 110 44" stroke="#E89B88" strokeWidth="2" strokeOpacity="0.8" fill="none"/>
       {/* Bow knot */}
-      <circle cx="110" cy="44" r="4" fill="#FFB800" opacity="0.9"/>
+      <circle cx="110" cy="44" r="4" fill="#C77B6B" opacity="0.9"/>
       {/* Sparkles */}
-      <circle cx="28"  cy="22" r="3.5" fill="#00E5CC" opacity="0.55"/>
-      <circle cx="192" cy="28" r="2.5" fill="#FFB800" opacity="0.65"/>
-      <circle cx="18"  cy="80" r="2"   fill="#FF6B9D" opacity="0.45"/>
-      <circle cx="198" cy="90" r="3"   fill="#00E5CC" opacity="0.4"/>
-      <circle cx="42"  cy="115" r="2"  fill="#FFB800" opacity="0.5"/>
-      <circle cx="180" cy="115" r="2.5" fill="#FF6B9D" opacity="0.4"/>
+      <circle cx="28"  cy="22" r="3.5" fill="#A8C9A4" opacity="0.55"/>
+      <circle cx="192" cy="28" r="2.5" fill="#C77B6B" opacity="0.65"/>
+      <circle cx="18"  cy="80" r="2"   fill="#E89B88" opacity="0.45"/>
+      <circle cx="198" cy="90" r="3"   fill="#A8C9A4" opacity="0.4"/>
+      <circle cx="42"  cy="115" r="2"  fill="#C77B6B" opacity="0.5"/>
+      <circle cx="180" cy="115" r="2.5" fill="#E89B88" opacity="0.4"/>
       {/* Stars */}
-      <text x="168" y="20" fontSize="15" fill="#FFB800" opacity="0.75" fontFamily="serif">✦</text>
-      <text x="12"  y="48" fontSize="11" fill="#FF6B9D" opacity="0.65" fontFamily="serif">✦</text>
-      <text x="172" y="108" fontSize="9" fill="#00E5CC" opacity="0.55" fontFamily="serif">✦</text>
-      <text x="36"  y="36" fontSize="9" fill="#00E5CC" opacity="0.5" fontFamily="serif">✦</text>
+      <text x="168" y="20" fontSize="15" fill="#C77B6B" opacity="0.75" fontFamily="serif">✦</text>
+      <text x="12"  y="48" fontSize="11" fill="#E89B88" opacity="0.65" fontFamily="serif">✦</text>
+      <text x="172" y="108" fontSize="9" fill="#A8C9A4" opacity="0.55" fontFamily="serif">✦</text>
+      <text x="36"  y="36" fontSize="9" fill="#A8C9A4" opacity="0.5" fontFamily="serif">✦</text>
     </svg>
   </div>
 );
@@ -148,37 +148,37 @@ const HeroIllustration = () => (
 // ── Wizard welcome SVG (open envelope) ──
 const WizardIllustration = () => (
   <svg className="wizard-illustration" viewBox="0 0 100 80" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-    <rect x="10" y="28" width="80" height="50" rx="5" stroke="#FF6B9D" strokeWidth="2" strokeOpacity="0.6"/>
-    <path d="M10 33l40 28 40-28" stroke="#FFB800" strokeWidth="2" strokeOpacity="0.7" strokeLinecap="round"/>
+    <rect x="10" y="28" width="80" height="50" rx="5" stroke="#E89B88" strokeWidth="2" strokeOpacity="0.6"/>
+    <path d="M10 33l40 28 40-28" stroke="#C77B6B" strokeWidth="2" strokeOpacity="0.7" strokeLinecap="round"/>
     {/* Open flap */}
-    <path d="M10 33L50 6l40 27" stroke="#FF6B9D" strokeWidth="2" strokeOpacity="0.5" fill="none"/>
+    <path d="M10 33L50 6l40 27" stroke="#E89B88" strokeWidth="2" strokeOpacity="0.5" fill="none"/>
     {/* Heart inside */}
-    <path d="M42 20 Q42 14 50 18 Q58 14 58 20 Q58 26 50 32 Q42 26 42 20z" fill="#FF4785" opacity="0.7"/>
+    <path d="M42 20 Q42 14 50 18 Q58 14 58 20 Q58 26 50 32 Q42 26 42 20z" fill="#D18973" opacity="0.7"/>
     {/* Sparkles */}
-    <circle cx="6"  cy="20" r="2.5" fill="#00E5CC" opacity="0.55"/>
-    <circle cx="94" cy="18" r="2"   fill="#FFB800" opacity="0.7"/>
-    <circle cx="92" cy="68" r="1.5" fill="#FF6B9D" opacity="0.5"/>
-    <text x="78" y="12" fontSize="10" fill="#FFB800" opacity="0.75" fontFamily="serif">✦</text>
+    <circle cx="6"  cy="20" r="2.5" fill="#A8C9A4" opacity="0.55"/>
+    <circle cx="94" cy="18" r="2"   fill="#C77B6B" opacity="0.7"/>
+    <circle cx="92" cy="68" r="1.5" fill="#E89B88" opacity="0.5"/>
+    <text x="78" y="12" fontSize="10" fill="#C77B6B" opacity="0.75" fontFamily="serif">✦</text>
   </svg>
 );
 
 // ── View intro SVG (gift with sparkles) ──
 const ViewIntroIllustration = () => (
   <svg className="view-intro-illustration" viewBox="0 0 120 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-    <rect x="20" y="48" width="80" height="48" rx="5" stroke="#FF6B9D" strokeWidth="2" strokeOpacity="0.6"/>
-    <rect x="14" y="32" width="92" height="18" rx="4" stroke="#FF6B9D" strokeWidth="2" strokeOpacity="0.6"/>
-    <line x1="60" y1="32" x2="60" y2="96" stroke="#FFB800" strokeWidth="2.5" strokeOpacity="0.7"/>
-    <line x1="14" y1="41" x2="106" y2="41" stroke="#FFB800" strokeWidth="2.5" strokeOpacity="0.7"/>
-    <path d="M44 32 Q52 14 60 32" stroke="#FF6B9D" strokeWidth="2" strokeOpacity="0.8" fill="none"/>
-    <path d="M76 32 Q68 14 60 32" stroke="#FF6B9D" strokeWidth="2" strokeOpacity="0.8" fill="none"/>
-    <circle cx="60" cy="32" r="4" fill="#FFB800" opacity="0.9"/>
-    <circle cx="10"  cy="18" r="4" fill="#00E5CC" opacity="0.5"/>
-    <circle cx="110" cy="22" r="3" fill="#FFB800" opacity="0.6"/>
-    <circle cx="8"   cy="65" r="2" fill="#FF6B9D" opacity="0.45"/>
-    <circle cx="112" cy="75" r="3" fill="#00E5CC" opacity="0.4"/>
-    <text x="96" y="14" fontSize="13" fill="#FFB800" opacity="0.8" fontFamily="serif">✦</text>
-    <text x="4"  y="38" fontSize="10" fill="#FF6B9D" opacity="0.65" fontFamily="serif">✦</text>
-    <text x="98" y="95" fontSize="8"  fill="#00E5CC" opacity="0.5" fontFamily="serif">✦</text>
+    <rect x="20" y="48" width="80" height="48" rx="5" stroke="#E89B88" strokeWidth="2" strokeOpacity="0.6"/>
+    <rect x="14" y="32" width="92" height="18" rx="4" stroke="#E89B88" strokeWidth="2" strokeOpacity="0.6"/>
+    <line x1="60" y1="32" x2="60" y2="96" stroke="#C77B6B" strokeWidth="2.5" strokeOpacity="0.7"/>
+    <line x1="14" y1="41" x2="106" y2="41" stroke="#C77B6B" strokeWidth="2.5" strokeOpacity="0.7"/>
+    <path d="M44 32 Q52 14 60 32" stroke="#E89B88" strokeWidth="2" strokeOpacity="0.8" fill="none"/>
+    <path d="M76 32 Q68 14 60 32" stroke="#E89B88" strokeWidth="2" strokeOpacity="0.8" fill="none"/>
+    <circle cx="60" cy="32" r="4" fill="#C77B6B" opacity="0.9"/>
+    <circle cx="10"  cy="18" r="4" fill="#A8C9A4" opacity="0.5"/>
+    <circle cx="110" cy="22" r="3" fill="#C77B6B" opacity="0.6"/>
+    <circle cx="8"   cy="65" r="2" fill="#E89B88" opacity="0.45"/>
+    <circle cx="112" cy="75" r="3" fill="#A8C9A4" opacity="0.4"/>
+    <text x="96" y="14" fontSize="13" fill="#C77B6B" opacity="0.8" fontFamily="serif">✦</text>
+    <text x="4"  y="38" fontSize="10" fill="#E89B88" opacity="0.65" fontFamily="serif">✦</text>
+    <text x="98" y="95" fontSize="8"  fill="#A8C9A4" opacity="0.5" fontFamily="serif">✦</text>
   </svg>
 );
 
@@ -594,8 +594,8 @@ function CardWizard({ cardId, onComplete }) {
               <svg width="72" height="72" viewBox="0 0 72 72">
                 <defs>
                   <linearGradient id="ringGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stopColor="#FF6B9D" />
-                    <stop offset="100%" stopColor="#00E5CC" />
+                    <stop offset="0%" stopColor="#E89B88" />
+                    <stop offset="100%" stopColor="#A8C9A4" />
                   </linearGradient>
                 </defs>
                 <circle className="uploading-ring-track" cx="36" cy="36" r="28" />
@@ -640,8 +640,8 @@ function CardWizard({ cardId, onComplete }) {
             <svg width="72" height="72" viewBox="0 0 72 72">
               <defs>
                 <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stopColor="#FF6B9D" />
-                  <stop offset="100%" stopColor="#00E5CC" />
+                  <stop offset="0%" stopColor="#E89B88" />
+                  <stop offset="100%" stopColor="#A8C9A4" />
                 </linearGradient>
               </defs>
               <circle className="uploading-ring-track" cx="36" cy="36" r="28" />

@@ -1,27 +1,27 @@
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Nunito:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Poppins:wght@300;400;500;600;700&display=swap');
 
 /* ── Design Tokens ── */
 :root {
-  --bg-deep:           #0D0021;
-  --bg-mid:            #1A0038;
-  --bg-surface:        #0D0821;
+  --bg-deep:           #F5E6D3;
+  --bg-mid:            #E8D5C4;
+  --bg-surface:        #FDFBF9;
 
-  --accent-pink:       #FF6B9D;
-  --accent-pink-deep:  #FF4785;
-  --accent-gold:       #FFB800;
-  --accent-teal:       #00E5CC;
+  --accent-pink:       #E89B88;
+  --accent-pink-deep:  #D18973;
+  --accent-gold:       #C77B6B;
+  --accent-teal:       #A8C9A4;
 
-  --text-primary:      #FFFFFF;
-  --text-secondary:    rgba(255, 255, 255, 0.65);
-  --text-muted:        rgba(255, 255, 255, 0.35);
+  --text-primary:      #B56B5D;
+  --text-secondary:    rgba(181, 107, 93, 0.85);
+  --text-muted:        rgba(181, 107, 93, 0.60);
 
-  --glass-bg:          rgba(255, 255, 255, 0.08);
-  --glass-border:      rgba(255, 107, 157, 0.25);
+  --glass-bg:          rgba(253, 251, 249, 0.88);
+  --glass-border:      rgba(232, 155, 136, 0.25);
   --glass-blur:        16px;
 
-  --shadow-pink:       0 0 32px rgba(255, 107, 157, 0.35);
-  --shadow-pink-lg:    0 0 60px rgba(255, 107, 157, 0.50);
-  --shadow-gold:       0 0 24px rgba(255, 184, 0, 0.40);
+  --shadow-pink:       0 5px 20px rgba(209, 137, 115, 0.20);
+  --shadow-pink-lg:    0 10px 40px rgba(209, 137, 115, 0.30);
+  --shadow-gold:       0 5px 20px rgba(199, 123, 107, 0.25);
 }
 
 /* ── Resets ── */
@@ -32,7 +32,7 @@
 }
 
 body {
-  font-family: 'Nunito', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background: var(--bg-deep);
@@ -62,12 +62,12 @@ body {
 
 @keyframes pulseGlow {
   0%, 100% {
-    box-shadow: 0 0 18px rgba(255, 107, 157, 0.40),
-                0 4px 20px rgba(255, 71, 133, 0.25);
+    box-shadow: 0 0 18px rgba(232, 155, 136, 0.40),
+                0 4px 20px rgba(209, 137, 115, 0.25);
   }
   50% {
-    box-shadow: 0 0 44px rgba(255, 107, 157, 0.75),
-                0 4px 40px rgba(255, 71, 133, 0.55);
+    box-shadow: 0 0 44px rgba(232, 155, 136, 0.70),
+                0 4px 40px rgba(209, 137, 115, 0.50);
   }
 }
 
@@ -115,7 +115,7 @@ body {
   justify-content: space-between;
   align-items: center;
   padding: 1rem 2.5rem;
-  background: rgba(13, 0, 33, 0.78);
+  background: rgba(232, 213, 196, 0.78);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border-bottom: 1px solid var(--glass-border);
@@ -133,12 +133,12 @@ body {
   font-weight: 700;
   letter-spacing: -0.02em;
   color: var(--text-primary);
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: 'Playfair Display', sans-serif;
 }
 
 .nav-cta {
   background: linear-gradient(135deg, var(--accent-pink), var(--accent-pink-deep));
-  color: var(--text-primary);
+  color: #FFFFFF;
   border: none;
   padding: 0.55rem 1.4rem;
   font-size: 0.85rem;
@@ -147,7 +147,7 @@ body {
   border-radius: 100px;
   cursor: pointer;
   transition: transform 0.2s, filter 0.2s;
-  font-family: 'Nunito', sans-serif;
+  font-family: 'Poppins', sans-serif;
 }
 
 .nav-cta:hover {
@@ -180,8 +180,8 @@ body {
   height: 900px;
   background: radial-gradient(
     circle,
-    rgba(255, 107, 157, 0.18) 0%,
-    rgba(0, 229, 204, 0.07)   45%,
+    rgba(232, 155, 136, 0.18) 0%,
+    rgba(168, 201, 164, 0.07)   45%,
     transparent               70%
   );
   top: 50%;
@@ -201,12 +201,12 @@ body {
   animation: fadeInDown 0.75s 0.1s cubic-bezier(0.22, 1, 0.36, 1) both;
   position: relative;
   z-index: 1;
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: 'Playfair Display', sans-serif;
 }
 
 .hero-sub {
   font-size: 1.15rem;
-  color: rgba(255, 230, 180, 0.85);
+  color: #C77B6B;
   font-weight: 400;
   letter-spacing: 0.02em;
   margin-bottom: 2.75rem;
@@ -229,7 +229,7 @@ body {
   color: var(--text-primary);
   margin-bottom: 3rem;
   animation: fadeInUp 0.6s ease both;
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: 'Playfair Display', sans-serif;
 }
 
 .steps-row {
@@ -286,7 +286,7 @@ body {
   height: 30px;
   border-radius: 50%;
   background: var(--accent-gold);
-  color: #0D0021;
+  color: #FFFFFF;
   font-size: 0.8rem;
   font-weight: 800;
   display: flex;
@@ -392,7 +392,7 @@ body {
 /* ── CTA Button ── */
 .cta-button {
   background: linear-gradient(135deg, var(--accent-pink) 0%, var(--accent-pink-deep) 100%);
-  color: var(--text-primary);
+  color: #FFFFFF;
   border: none;
   padding: 1.1rem 3.25rem;
   font-size: 1rem;
@@ -402,7 +402,7 @@ body {
   cursor: pointer;
   animation: pulseGlow 2.5s ease-in-out infinite;
   transition: transform 0.2s ease, filter 0.2s ease;
-  font-family: 'Nunito', sans-serif;
+  font-family: 'Poppins', sans-serif;
   position: relative;
   z-index: 1;
 }
@@ -435,7 +435,7 @@ body {
   gap: 0.85rem;
   padding: 2.5rem 2rem;
   border-top: 1px solid var(--glass-border);
-  background: rgba(13, 0, 33, 0.55);
+  background: rgba(232, 213, 196, 0.55);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
 }
@@ -470,8 +470,8 @@ body {
 
 .social-link:hover {
   color: var(--accent-pink);
-  background: rgba(255, 107, 157, 0.1);
-  box-shadow: 0 0 18px rgba(255, 107, 157, 0.28);
+  background: rgba(232, 155, 136, 0.1);
+  box-shadow: 0 0 18px rgba(232, 155, 136, 0.28);
   transform: scale(1.1);
 }
 
@@ -492,7 +492,7 @@ body {
   justify-content: center;
   gap: 2rem;
   padding: 1rem 2rem;
-  background: rgba(13, 0, 33, 0.90);
+  background: rgba(232, 213, 196, 0.90);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border-top: 1px solid var(--glass-border);
@@ -526,7 +526,7 @@ body {
 .spinner {
   width: 28px;
   height: 28px;
-  border: 1px solid rgba(255, 107, 157, 0.2);
+  border: 1px solid rgba(232, 155, 136, 0.2);
   border-top-color: var(--accent-pink);
   border-radius: 50%;
   animation: spin 0.9s linear infinite;
@@ -545,7 +545,7 @@ body {
 }
 
 .error-screen h2 {
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: 'Playfair Display', sans-serif;
   font-size: 1.75rem;
   font-weight: 300;
   color: var(--text-secondary);
@@ -559,7 +559,7 @@ body {
 
 .error-screen button {
   background: linear-gradient(135deg, var(--accent-pink), var(--accent-pink-deep));
-  color: var(--text-primary);
+  color: #FFFFFF;
   border: none;
   padding: 0.75rem 1.75rem;
   font-size: 0.78rem;
@@ -570,7 +570,7 @@ body {
   cursor: pointer;
   margin-top: 0.5rem;
   transition: transform 0.2s, filter 0.2s;
-  font-family: 'Nunito', sans-serif;
+  font-family: 'Poppins', sans-serif;
 }
 
 .error-screen button:hover {
@@ -597,7 +597,7 @@ body {
 }
 
 .form-header h1 {
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: 'Playfair Display', sans-serif;
   font-size: 2.75rem;
   font-weight: 300;
   background: linear-gradient(135deg, var(--text-primary) 30%, var(--accent-pink) 100%);
@@ -646,10 +646,10 @@ form {
   padding: 0.65rem 0;
   background: transparent;
   border: none;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  border-bottom: 1px solid rgba(181, 107, 93, 0.15);
   color: var(--text-primary);
   font-size: 0.95rem;
-  font-family: 'Nunito', sans-serif;
+  font-family: 'Poppins', sans-serif;
   font-weight: 300;
   transition: border-color 0.25s;
   resize: none;
@@ -657,7 +657,7 @@ form {
 
 .form-group input[type="text"]::placeholder,
 .form-group textarea::placeholder {
-  color: rgba(255, 255, 255, 0.18);
+  color: rgba(181, 107, 93, 0.22);
 }
 
 .form-group input[type="text"]:focus,
@@ -667,17 +667,17 @@ form {
 }
 
 .file-upload {
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(181, 107, 93, 0.15);
   border-radius: 8px;
   padding: 1.25rem;
   text-align: center;
   transition: border-color 0.25s, background 0.25s;
-  background: rgba(255, 255, 255, 0.03);
+  background: rgba(209, 137, 115, 0.04);
 }
 
 .file-upload:hover {
   border-color: var(--glass-border);
-  background: rgba(255, 107, 157, 0.05);
+  background: rgba(232, 155, 136, 0.05);
 }
 
 .file-upload input[type="file"] {
@@ -685,7 +685,7 @@ form {
   cursor: pointer;
   color: var(--text-muted);
   font-size: 0.82rem;
-  font-family: 'Nunito', sans-serif;
+  font-family: 'Poppins', sans-serif;
 }
 
 .file-name {
@@ -707,7 +707,7 @@ form {
 .submit-button {
   width: 100%;
   background: linear-gradient(135deg, var(--accent-pink) 0%, var(--accent-pink-deep) 100%);
-  color: var(--text-primary);
+  color: #FFFFFF;
   border: none;
   padding: 1rem;
   font-size: 0.85rem;
@@ -717,7 +717,7 @@ form {
   border-radius: 100px;
   cursor: pointer;
   transition: transform 0.2s, filter 0.2s;
-  font-family: 'Nunito', sans-serif;
+  font-family: 'Poppins', sans-serif;
   margin-top: 0.5rem;
 }
 
@@ -747,7 +747,7 @@ form {
 }
 
 .card-header h1 {
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: 'Playfair Display', sans-serif;
   font-size: 3.25rem;
   font-weight: 300;
   background: linear-gradient(135deg, var(--text-primary) 30%, var(--accent-pink) 100%);
@@ -797,7 +797,7 @@ form {
   font-weight: 300;
   line-height: 1.9;
   font-style: italic;
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: 'Playfair Display', sans-serif;
 }
 
 .photos-grid {
@@ -848,8 +848,8 @@ form {
   height: 700px;
   background: radial-gradient(
     circle,
-    rgba(255, 107, 157, 0.14) 0%,
-    rgba(0, 229, 204, 0.06)   45%,
+    rgba(232, 155, 136, 0.14) 0%,
+    rgba(168, 201, 164, 0.06)   45%,
     transparent               70%
   );
   top: 50%;
@@ -885,12 +885,12 @@ form {
   color: var(--text-primary);
   margin-bottom: 0.75rem;
   line-height: 1.2;
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: 'Playfair Display', sans-serif;
 }
 
 .wizard-subtitle {
   font-size: 0.95rem;
-  color: rgba(255, 230, 180, 0.85);
+  color: #C77B6B;
   margin-bottom: 2.5rem;
   line-height: 1.6;
 }
@@ -906,14 +906,14 @@ form {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(181, 107, 93, 0.25);
   transition: background 0.3s, transform 0.3s;
 }
 
 .progress-dot.active {
   background: var(--accent-pink);
   transform: scale(1.3);
-  box-shadow: 0 0 8px rgba(255, 107, 157, 0.6);
+  box-shadow: 0 0 8px rgba(232, 155, 136, 0.6);
 }
 
 /* Step question label */
@@ -936,10 +936,10 @@ form {
   width: 100%;
   background: transparent;
   border: none;
-  border-bottom: 2px solid rgba(255, 255, 255, 0.15);
+  border-bottom: 2px solid rgba(181, 107, 93, 0.20);
   color: var(--text-primary);
   font-size: 1.25rem;
-  font-family: 'Nunito', sans-serif;
+  font-family: 'Poppins', sans-serif;
   font-weight: 400;
   padding: 0.5rem 0;
   text-align: center;
@@ -949,7 +949,7 @@ form {
 }
 
 .wizard-input::placeholder {
-  color: rgba(255, 255, 255, 0.2);
+  color: rgba(181, 107, 93, 0.25);
 }
 
 .wizard-input:focus {
@@ -959,12 +959,12 @@ form {
 
 .wizard-textarea {
   width: 100%;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(209, 137, 115, 0.06);
+  border: 1px solid rgba(181, 107, 93, 0.15);
   border-radius: 12px;
   color: var(--text-primary);
   font-size: 0.95rem;
-  font-family: 'Nunito', sans-serif;
+  font-family: 'Poppins', sans-serif;
   font-weight: 300;
   padding: 1rem;
   text-align: left;
@@ -976,12 +976,12 @@ form {
 }
 
 .wizard-textarea::placeholder {
-  color: rgba(255, 255, 255, 0.2);
+  color: rgba(181, 107, 93, 0.25);
 }
 
 .wizard-textarea:focus {
   outline: none;
-  border-color: rgba(255, 107, 157, 0.45);
+  border-color: rgba(232, 155, 136, 0.45);
 }
 
 /* Navigation buttons */
@@ -998,21 +998,21 @@ form {
 
 .btn-skip {
   flex: 0 0 auto;
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(209, 137, 115, 0.08);
   color: var(--text-muted);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(181, 107, 93, 0.15);
   padding: 1rem 1.5rem;
   font-size: 0.9rem;
   font-weight: 500;
   border-radius: 100px;
   cursor: pointer;
   transition: background 0.2s, color 0.2s;
-  font-family: 'Nunito', sans-serif;
+  font-family: 'Poppins', sans-serif;
   white-space: nowrap;
 }
 
 .btn-skip:hover {
-  background: rgba(255, 255, 255, 0.14);
+  background: rgba(181, 107, 93, 0.18);
   color: var(--text-secondary);
 }
 
@@ -1020,20 +1020,20 @@ form {
   flex: 0 0 auto;
   background: transparent;
   color: var(--text-muted);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(181, 107, 93, 0.15);
   padding: 1rem 1.25rem;
   font-size: 0.9rem;
   font-weight: 500;
   border-radius: 100px;
   cursor: pointer;
   transition: color 0.2s, border-color 0.2s;
-  font-family: 'Nunito', sans-serif;
+  font-family: 'Poppins', sans-serif;
   white-space: nowrap;
 }
 
 .btn-back:hover {
   color: var(--text-secondary);
-  border-color: rgba(255, 255, 255, 0.28);
+  border-color: rgba(181, 107, 93, 0.35);
 }
 
 /* Preview bar */
@@ -1047,7 +1047,7 @@ form {
   align-items: center;
   justify-content: space-between;
   padding: 0.75rem 1.5rem;
-  background: rgba(13, 0, 33, 0.92);
+  background: rgba(232, 213, 196, 0.92);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border-bottom: 1px solid var(--glass-border);
@@ -1064,19 +1064,19 @@ form {
 .preview-back-btn {
   background: transparent;
   color: var(--text-secondary);
-  border: 1px solid rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(181, 107, 93, 0.18);
   padding: 0.5rem 1rem;
   border-radius: 100px;
   font-size: 0.8rem;
   font-weight: 500;
   cursor: pointer;
-  font-family: 'Nunito', sans-serif;
+  font-family: 'Poppins', sans-serif;
   transition: color 0.2s, border-color 0.2s;
 }
 
 .preview-back-btn:hover {
   color: var(--text-primary);
-  border-color: rgba(255, 255, 255, 0.32);
+  border-color: rgba(181, 107, 93, 0.40);
 }
 
 .preview-content {
@@ -1087,7 +1087,7 @@ form {
 .upload-zone {
   width: 100%;
   background: var(--glass-bg);
-  border: 2px dashed rgba(255, 107, 157, 0.3);
+  border: 2px dashed rgba(232, 155, 136, 0.3);
   border-radius: 16px;
   padding: 2.25rem 1.5rem;
   cursor: pointer;
@@ -1099,19 +1099,19 @@ form {
 
 .upload-zone:hover {
   border-color: var(--accent-pink);
-  background: rgba(255, 107, 157, 0.07);
-  box-shadow: 0 0 24px rgba(255, 107, 157, 0.15);
+  background: rgba(232, 155, 136, 0.07);
+  box-shadow: 0 0 24px rgba(232, 155, 136, 0.15);
 }
 
 .upload-zone--filled {
   border-style: solid;
   border-color: var(--accent-teal);
-  background: rgba(0, 229, 204, 0.06);
+  background: rgba(168, 201, 164, 0.06);
 }
 
 .upload-zone--filled:hover {
   border-color: var(--accent-teal);
-  box-shadow: 0 0 24px rgba(0, 229, 204, 0.18);
+  box-shadow: 0 0 24px rgba(168, 201, 164, 0.18);
 }
 
 .upload-prompt {
@@ -1165,7 +1165,7 @@ form {
   height: 64px;
   object-fit: cover;
   border-radius: 8px;
-  border: 1px solid rgba(255, 107, 157, 0.3);
+  border: 1px solid rgba(232, 155, 136, 0.3);
   animation: fadeInUp 0.3s ease both;
 }
 
@@ -1231,8 +1231,8 @@ form {
   height: 800px;
   background: radial-gradient(
     circle,
-    rgba(255, 107, 157, 0.20) 0%,
-    rgba(155, 89, 182, 0.08) 45%,
+    rgba(232, 155, 136, 0.20) 0%,
+    rgba(244, 199, 184, 0.08) 45%,
     transparent 68%
   );
   top: 50%;
@@ -1305,7 +1305,7 @@ form {
   position: relative;
   z-index: 1;
   color: var(--accent-pink);
-  text-shadow: 0 0 22px rgba(255, 107, 157, 0.6);
+  text-shadow: 0 0 22px rgba(232, 155, 136, 0.6);
 }
 
 /* View content sections */
@@ -1336,7 +1336,7 @@ form {
   font-weight: 300;
   line-height: 1.9;
   font-style: italic;
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: 'Playfair Display', sans-serif;
 }
 
 /* Carousel */
@@ -1401,8 +1401,8 @@ form {
 }
 
 .carousel-btn:hover {
-  background: rgba(255, 107, 157, 0.18);
-  box-shadow: 0 0 18px rgba(255, 107, 157, 0.30);
+  background: rgba(232, 155, 136, 0.18);
+  box-shadow: 0 0 18px rgba(232, 155, 136, 0.30);
   transform: scale(1.08);
 }
 
@@ -1422,7 +1422,7 @@ form {
   width: 7px;
   height: 7px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(181, 107, 93, 0.25);
   transition: background 0.3s, transform 0.3s;
   cursor: pointer;
 }
@@ -1444,7 +1444,7 @@ form {
   display: inline-flex;
   align-items: center;
   gap: 0.3rem;
-  background: rgba(13, 0, 33, 0.72);
+  background: rgba(232, 213, 196, 0.72);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   color: var(--text-secondary);
@@ -1454,13 +1454,13 @@ form {
   font-size: 0.75rem;
   font-weight: 500;
   cursor: pointer;
-  font-family: 'Nunito', sans-serif;
+  font-family: 'Poppins', sans-serif;
   transition: background 0.2s, color 0.2s;
   text-decoration: none;
 }
 
 .download-btn:hover {
-  background: rgba(255, 107, 157, 0.18);
+  background: rgba(232, 155, 136, 0.18);
   color: var(--text-primary);
 }
 
@@ -1606,7 +1606,7 @@ form {
 .uploading-msg {
   font-size: 1.4rem;
   font-weight: 600;
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: 'Playfair Display', sans-serif;
   color: var(--text-primary);
   margin-bottom: 2.25rem;
   min-height: 2rem;
@@ -1626,7 +1626,7 @@ form {
 }
 
 .uploading-ring-track {
-  stroke: rgba(255, 255, 255, 0.08);
+  stroke: rgba(209, 137, 115, 0.08);
   stroke-width: 5;
   fill: none;
 }

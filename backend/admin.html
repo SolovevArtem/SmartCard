@@ -33,10 +33,10 @@
 
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background: linear-gradient(160deg, #0D0021 0%, #1A0038 60%, #0D0821 100%);
+      background: linear-gradient(160deg, #E8D5C4 0%, #F5E6D3 60%, #FDFBF9 100%);
       min-height: 100vh;
       padding: 2rem;
-      color: #ffffff;
+      color: #B56B5D;
     }
 
     .container {
@@ -46,7 +46,7 @@
 
     .header {
       text-align: center;
-      color: white;
+      color: #B56B5D;
       margin-bottom: 3rem;
       animation: fadeInDown 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
     }
@@ -56,10 +56,10 @@
       margin-bottom: 0.5rem;
       background: linear-gradient(
         90deg,
-        #ffffff 0%,
-        #FF6B9D 40%,
-        #00E5CC 70%,
-        #ffffff 100%
+        #D18973 0%,
+        #E89B88 40%,
+        #C77B6B 70%,
+        #B56B5D 100%
       );
       background-size: 200% auto;
       -webkit-background-clip: text;
@@ -78,15 +78,15 @@
     }
 
     .header p {
-      opacity: 0.75;
+      color: rgba(181, 107, 93, 0.75);
       font-size: 1rem;
     }
 
     .card {
-      background: rgba(255, 255, 255, 0.08);
+      background: rgba(253, 251, 249, 0.88);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
-      border: 1px solid rgba(255, 107, 157, 0.25);
+      border: 1px solid rgba(232, 155, 136, 0.25);
       border-radius: 16px;
       padding: 2rem;
       margin-bottom: 2rem;
@@ -99,7 +99,7 @@
     .card h2 {
       font-size: 1.3rem;
       margin-bottom: 1.25rem;
-      color: #ffffff;
+      color: #B56B5D;
       font-weight: 600;
     }
 
@@ -111,12 +111,12 @@
     }
 
     .stat-card {
-      background: linear-gradient(135deg, #FF6B9D 0%, #FF4785 100%);
+      background: linear-gradient(135deg, #E89B88 0%, #D18973 100%);
       color: white;
       padding: 1.5rem;
       border-radius: 12px;
       text-align: center;
-      box-shadow: 0 4px 24px rgba(255, 107, 157, 0.35);
+      box-shadow: 0 4px 24px rgba(232, 155, 136, 0.35);
       animation: fadeInUp 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
       transition: transform 0.2s, box-shadow 0.2s;
     }
@@ -128,7 +128,7 @@
 
     .stat-card:hover {
       transform: translateY(-3px);
-      box-shadow: 0 8px 32px rgba(255, 107, 157, 0.55);
+      box-shadow: 0 8px 32px rgba(232, 155, 136, 0.45);
     }
 
     .stat-number {
@@ -150,40 +150,40 @@
       display: block;
       margin-bottom: 0.5rem;
       font-weight: 500;
-      color: rgba(255, 255, 255, 0.75);
+      color: rgba(181, 107, 93, 0.85);
       font-size: 0.9rem;
     }
 
     .form-group input {
       width: 100%;
       padding: 0.75rem 1rem;
-      background: rgba(255, 255, 255, 0.06);
-      border: 1px solid rgba(255, 255, 255, 0.15);
+      background: rgba(253, 251, 249, 0.95);
+      border: 1px solid rgba(181, 107, 93, 0.25);
       border-radius: 8px;
       font-size: 1rem;
-      color: #ffffff;
+      color: #B56B5D;
       transition: border-color 0.3s, background 0.3s;
     }
 
     .form-group input::placeholder {
-      color: rgba(255, 255, 255, 0.3);
+      color: rgba(181, 107, 93, 0.45);
     }
 
     .form-group input:focus {
       outline: none;
-      border-color: #FF6B9D;
-      background: rgba(255, 107, 157, 0.08);
+      border-color: #E89B88;
+      background: rgba(232, 155, 136, 0.08);
     }
 
     .form-group small {
       display: block;
       margin-top: 0.5rem;
-      color: rgba(255, 255, 255, 0.4);
+      color: rgba(181, 107, 93, 0.55);
       font-size: 0.82rem;
     }
 
     .btn {
-      background: linear-gradient(135deg, #FF6B9D 0%, #FF4785 100%);
+      background: linear-gradient(135deg, #E89B88 0%, #D18973 100%);
       color: white;
       border: none;
       padding: 1rem 2rem;
@@ -197,7 +197,7 @@
 
     .btn:hover {
       transform: scale(1.03) translateY(-2px);
-      box-shadow: 0 6px 24px rgba(255, 107, 157, 0.50);
+      box-shadow: 0 6px 24px rgba(232, 155, 136, 0.40);
       filter: brightness(1.08);
     }
 
@@ -212,13 +212,13 @@
     }
 
     .btn-secondary {
-      background: rgba(255, 255, 255, 0.12);
-      border: 1px solid rgba(255, 255, 255, 0.2);
+      background: rgba(232, 213, 196, 0.50);
+      border: 1px solid rgba(181, 107, 93, 0.25);
       margin-top: 1rem;
     }
 
     .btn-secondary:hover {
-      background: rgba(255, 255, 255, 0.20);
+      background: rgba(232, 213, 196, 0.70);
       box-shadow: none;
       filter: none;
     }
@@ -248,8 +248,8 @@
     }
 
     .card-item {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 107, 157, 0.15);
+      background: rgba(253, 251, 249, 0.80);
+      border: 1px solid rgba(232, 155, 136, 0.20);
       padding: 1rem;
       margin-bottom: 0.5rem;
       border-radius: 8px;
@@ -261,11 +261,11 @@
     .card-id {
       font-family: monospace;
       font-weight: bold;
-      color: #FF6B9D;
+      color: #E89B88;
     }
 
     .card-link {
-      color: #FF6B9D;
+      color: #E89B88;
       text-decoration: none;
       font-size: 0.9rem;
     }
@@ -277,7 +277,7 @@
     .loading {
       text-align: center;
       padding: 2rem;
-      color: rgba(255, 255, 255, 0.4);
+      color: rgba(181, 107, 93, 0.55);
     }
 
     @media (max-width: 768px) {
