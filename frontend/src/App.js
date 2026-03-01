@@ -214,7 +214,7 @@ function HomePage() {
       {/* ── Sticky Navbar ── */}
       <nav className="sticky-nav">
         <div className="nav-logo">
-          <span className="logo-text">OneTapGift</span>
+          <span className="logo-text">Умная открытка</span>
         </div>
         <button className="nav-cta" onClick={handleCreate} disabled={loading}>
           {loading ? '...' : 'Создать →'}
@@ -401,8 +401,13 @@ function CardView({ card }) {
         {/* Сообщение */}
         {card.message && (
           <div className="view-section reveal-left">
-            <p className="view-section-title">Слова от {card.sender_name}</p>
-            <div className="view-message">{card.message}</div>
+            <div className="message-letter">
+              <div className="message-letter-header">
+                <span className="message-letter-seal">✉</span>
+                <p className="message-letter-from">— {card.sender_name}</p>
+              </div>
+              <div className="message-letter-body">{card.message}</div>
+            </div>
           </div>
         )}
 
@@ -532,13 +537,6 @@ function CardWizard({ cardId, onComplete }) {
     setVideoPreviewUrl(url);
     return () => URL.revokeObjectURL(url);
   }, [videoFile]);
-
-  // Авто-переход со step 0 через 2с если пользователь не нажал сам
-  useEffect(() => {
-    if (step !== 0) return;
-    const t = setTimeout(() => setStep(1), 2500);
-    return () => clearTimeout(t);
-  }, [step]);
 
   // Крутим сообщения последовательно, без повтора, каждые 8с
   useEffect(() => {

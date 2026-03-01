@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Poppins:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Poppins:wght@300;400;500;600;700&display=swap');
 
 /* ── Design Tokens ── */
 :root {
@@ -133,7 +133,7 @@ body {
   font-weight: 700;
   letter-spacing: -0.02em;
   color: var(--text-primary);
-  font-family: 'Playfair Display', sans-serif;
+  font-family: 'DM Serif Display', sans-serif;
 }
 
 .nav-cta {
@@ -201,7 +201,7 @@ body {
   animation: fadeInDown 0.75s 0.1s cubic-bezier(0.22, 1, 0.36, 1) both;
   position: relative;
   z-index: 1;
-  font-family: 'Playfair Display', sans-serif;
+  font-family: 'DM Serif Display', sans-serif;
 }
 
 .hero-sub {
@@ -229,7 +229,7 @@ body {
   color: var(--text-primary);
   margin-bottom: 3rem;
   animation: fadeInUp 0.6s ease both;
-  font-family: 'Playfair Display', sans-serif;
+  font-family: 'DM Serif Display', sans-serif;
 }
 
 .steps-row {
@@ -545,7 +545,7 @@ body {
 }
 
 .error-screen h2 {
-  font-family: 'Playfair Display', sans-serif;
+  font-family: 'DM Serif Display', sans-serif;
   font-size: 1.75rem;
   font-weight: 300;
   color: var(--text-secondary);
@@ -597,7 +597,7 @@ body {
 }
 
 .form-header h1 {
-  font-family: 'Playfair Display', sans-serif;
+  font-family: 'DM Serif Display', sans-serif;
   font-size: 2.75rem;
   font-weight: 300;
   background: linear-gradient(135deg, var(--text-primary) 30%, var(--accent-pink) 100%);
@@ -747,7 +747,7 @@ form {
 }
 
 .card-header h1 {
-  font-family: 'Playfair Display', sans-serif;
+  font-family: 'DM Serif Display', sans-serif;
   font-size: 3.25rem;
   font-weight: 300;
   background: linear-gradient(135deg, var(--text-primary) 30%, var(--accent-pink) 100%);
@@ -797,7 +797,7 @@ form {
   font-weight: 300;
   line-height: 1.9;
   font-style: italic;
-  font-family: 'Playfair Display', sans-serif;
+  font-family: 'DM Serif Display', sans-serif;
 }
 
 .photos-grid {
@@ -885,7 +885,7 @@ form {
   color: var(--text-primary);
   margin-bottom: 0.75rem;
   line-height: 1.2;
-  font-family: 'Playfair Display', sans-serif;
+  font-family: 'DM Serif Display', sans-serif;
 }
 
 .wizard-subtitle {
@@ -934,33 +934,34 @@ form {
 /* Styled text input */
 .wizard-input {
   width: 100%;
-  background: transparent;
-  border: none;
-  border-bottom: 2px solid rgba(181, 107, 93, 0.20);
+  background: rgba(255, 255, 255, 0.92);
+  border: 1.5px solid rgba(181, 107, 93, 0.25);
+  border-radius: 12px;
   color: var(--text-primary);
-  font-size: 1.25rem;
+  font-size: 1.15rem;
   font-family: 'Poppins', sans-serif;
   font-weight: 400;
-  padding: 0.5rem 0;
+  padding: 0.75rem 1.25rem;
   text-align: center;
   margin-bottom: 2rem;
-  transition: border-color 0.25s;
+  transition: border-color 0.25s, box-shadow 0.25s;
   caret-color: var(--accent-pink);
 }
 
 .wizard-input::placeholder {
-  color: rgba(181, 107, 93, 0.25);
+  color: rgba(181, 107, 93, 0.35);
 }
 
 .wizard-input:focus {
   outline: none;
-  border-bottom-color: var(--accent-pink);
+  border-color: var(--accent-pink);
+  box-shadow: 0 0 0 3px rgba(232, 155, 136, 0.15);
 }
 
 .wizard-textarea {
   width: 100%;
-  background: rgba(209, 137, 115, 0.06);
-  border: 1px solid rgba(181, 107, 93, 0.15);
+  background: rgba(255, 255, 255, 0.92);
+  border: 1.5px solid rgba(181, 107, 93, 0.25);
   border-radius: 12px;
   color: var(--text-primary);
   font-size: 0.95rem;
@@ -1336,7 +1337,7 @@ form {
   font-weight: 300;
   line-height: 1.9;
   font-style: italic;
-  font-family: 'Playfair Display', sans-serif;
+  font-family: 'DM Serif Display', sans-serif;
 }
 
 /* Carousel */
@@ -1606,7 +1607,7 @@ form {
 .uploading-msg {
   font-size: 1.4rem;
   font-weight: 600;
-  font-family: 'Playfair Display', sans-serif;
+  font-family: 'DM Serif Display', sans-serif;
   color: var(--text-primary);
   margin-bottom: 2.25rem;
   min-height: 2rem;
@@ -1729,4 +1730,84 @@ form {
   .wizard-nav .cta-button {
     order: 1;
   }
+}
+
+/* ── Preview bar — compact for small phones ── */
+@media (max-width: 480px) {
+  .preview-bar {
+    padding: 0.5rem 0.75rem;
+    gap: 0.4rem;
+  }
+
+  .preview-label {
+    font-size: 0.58rem;
+    letter-spacing: 0.06em;
+  }
+
+  .preview-back-btn {
+    padding: 0.38rem 0.65rem;
+    font-size: 0.72rem;
+  }
+
+  .cta-button.cta-small {
+    padding: 0.5rem 0.9rem;
+    font-size: 0.78rem;
+  }
+}
+
+/* ── Message letter illustration ── */
+.message-letter {
+  background: #FDFBF9;
+  border: 1px solid rgba(232, 155, 136, 0.30);
+  border-radius: 4px;
+  padding: 2rem 2rem 2.5rem;
+  position: relative;
+  box-shadow:
+    0 8px 30px rgba(209, 137, 115, 0.12),
+    0 2px 8px  rgba(209, 137, 115, 0.08);
+}
+
+.message-letter::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 4px;
+  background: linear-gradient(90deg,
+    var(--accent-pink-deep) 0%,
+    var(--accent-pink)      50%,
+    var(--accent-gold)      100%);
+  border-radius: 4px 4px 0 0;
+  opacity: 0.6;
+}
+
+.message-letter-header {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.85rem;
+  border-bottom: 1px solid rgba(232, 155, 136, 0.20);
+}
+
+.message-letter-seal {
+  font-size: 1.25rem;
+  color: var(--accent-pink);
+  line-height: 1;
+}
+
+.message-letter-from {
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent-gold);
+  font-weight: 500;
+  margin: 0;
+}
+
+.message-letter-body {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.1rem;
+  font-style: italic;
+  line-height: 1.95;
+  color: var(--text-primary);
 }
