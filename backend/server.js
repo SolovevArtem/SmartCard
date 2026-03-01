@@ -6,6 +6,7 @@ const path = require('path');
 const crypto = require('crypto');
 const AWS = require('aws-sdk');
 const { Pool } = require('pg');
+const cron = require('node-cron');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -412,6 +413,60 @@ app.get('/', (req, res) => {
     }
   });
 });
+
+// ===== AUTOMATIC CLEANUP =====
+
+const CLEANUP_DAYS = parseInt(process.env.CLEANUP_DAYS || '90', 10);
+
+// Extract S3 key from a public URL and delete the object
+async function deleteS3File(url) {
+  if (!url) return;
+  try {
+    const urlObj = new URL(url);
+    // Pathname: /<bucket>/<cardId>/filename — key is everything after bucket
+    const parts = urlObj.pathname.split('/').filter(Boolean);
+    const key = parts.slice(1).join('/');
+    if (!key) return;
+    await s3.deleteObject({ Bucket: process.env.S3_BUCKET, Key: key }).promise();
+  } catch (err) {
+    console.error('[cleanup] S3 delete error:', url, err.message);
+    // Non-fatal — continue with remaining files
+  }
+}
+
+async function runCleanup() {
+  console.log(`[cleanup] Running — deleting cards older than ${CLEANUP_DAYS} days`);
+  try {
+    const { rows } = await pool.query(`
+      SELECT id, video_url, photos_urls
+      FROM cards
+      WHERE is_demo = false
+        AND (
+          (status = 'filled'           AND filled_at  < NOW() - INTERVAL '${CLEANUP_DAYS} days')
+          OR
+          (status IN ('new', 'active') AND created_at < NOW() - INTERVAL '${CLEANUP_DAYS} days')
+        )
+    `);
+
+    console.log(`[cleanup] ${rows.length} card(s) to delete`);
+
+    for (const card of rows) {
+      if (card.video_url) await deleteS3File(card.video_url);
+      for (const photoUrl of (card.photos_urls || [])) {
+        await deleteS3File(photoUrl);
+      }
+      await pool.query('DELETE FROM cards WHERE id = $1', [card.id]);
+      console.log(`[cleanup] Deleted card ${card.id}`);
+    }
+
+    console.log('[cleanup] Done.');
+  } catch (err) {
+    console.error('[cleanup] Unexpected error:', err);
+  }
+}
+
+// Run daily at 03:00 AM server time
+cron.schedule('0 3 * * *', runCleanup);
 
 // Запуск сервера
 app.listen(PORT, '0.0.0.0', () => {

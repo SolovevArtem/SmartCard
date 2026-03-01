@@ -6,11 +6,12 @@
     "start": "node server.js"
   },
   "dependencies": {
-    "express": "^4.18.2",
+    "aws-sdk": "^2.1490.0",
     "cors": "^2.8.5",
+    "express": "^4.18.2",
     "multer": "^1.4.5-lts.1",
     "multer-s3": "^2.10.0",
-    "aws-sdk": "^2.1490.0",
+    "node-cron": "^3.0.3",
     "pg": "^8.11.3"
   }
 }
