@@ -90,9 +90,14 @@ body {
 /* ── App Root ── */
 .App {
   min-height: 100vh;
-  background: linear-gradient(160deg, var(--bg-deep) 0%, var(--bg-mid) 50%, var(--bg-surface) 100%);
-  background-size: 400% 400%;
-  animation: gradientShift 16s ease infinite;
+  background: linear-gradient(
+    180deg,
+    var(--bg-mid)     0%,
+    #EDD9CA           20%,
+    var(--bg-deep)    45%,
+    #F9EEE5           75%,
+    var(--bg-surface) 100%
+  );
 }
 
 /* ═══════════════════════════════════════
@@ -1355,7 +1360,7 @@ form {
 
 .carousel-track {
   display: flex;
-  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: transform 0.55s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .carousel-slide {

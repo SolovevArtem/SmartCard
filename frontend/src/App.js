@@ -111,6 +111,29 @@ const IconInstagram = () => (
   </svg>
 );
 
+const IconOzon = () => (
+  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="22" height="22">
+    <circle cx="12" cy="12" r="5.5" stroke="currentColor" strokeWidth="1.8"/>
+    <ellipse cx="12" cy="12" rx="10.5" ry="4.5" stroke="currentColor" strokeWidth="1.5"/>
+  </svg>
+);
+
+const IconAvito = () => (
+  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="22" height="22">
+    <circle cx="8" cy="9" r="3" stroke="currentColor" strokeWidth="1.7"/>
+    <circle cx="16" cy="7" r="2" stroke="currentColor" strokeWidth="1.5"/>
+    <circle cx="16" cy="15" r="2.5" stroke="currentColor" strokeWidth="1.6"/>
+    <path d="M8 12 L8 18" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round"/>
+  </svg>
+);
+
+const IconWildberries = () => (
+  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="22" height="22">
+    <path d="M12 3 L20.5 12 L12 21 L3.5 12 Z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round"/>
+    <circle cx="12" cy="12" r="3" stroke="currentColor" strokeWidth="1.5"/>
+  </svg>
+);
+
 // ── Hero SVG gift illustration ──
 const HeroIllustration = () => (
   <div className="hero-illustration" aria-hidden="true">
@@ -249,8 +272,8 @@ function HomePage() {
           <div className="step-card">
             <div className="step-badge">2</div>
             <IconClapperboard />
-            <h3>Добавь видео и фото</h3>
-            <p>Загрузи воспоминания и личное поздравление</p>
+            <h3>Добавь видео, фото и текст</h3>
+            <p>Загрузи воспоминания, личное видео и напиши тёплые слова</p>
           </div>
 
           <div className="steps-arrow" aria-hidden="true">→</div>
@@ -314,6 +337,33 @@ function HomePage() {
           >
             <IconInstagram />
           </a>
+          <a
+            href="#"
+            target="_blank"
+            rel="noreferrer"
+            className="social-link"
+            aria-label="Ozon"
+          >
+            <IconOzon />
+          </a>
+          <a
+            href="#"
+            target="_blank"
+            rel="noreferrer"
+            className="social-link"
+            aria-label="Avito"
+          >
+            <IconAvito />
+          </a>
+          <a
+            href="#"
+            target="_blank"
+            rel="noreferrer"
+            className="social-link"
+            aria-label="Wildberries"
+          >
+            <IconWildberries />
+          </a>
         </div>
         <p className="social-handle">@s0lart</p>
       </footer>
@@ -327,6 +377,7 @@ function CardView({ card }) {
   const videoRef = useRef(null);
   const [currentPhoto, setCurrentPhoto] = useState(0);
   const autoTimer = useRef(null);
+  const touchStartX = useRef(null);
   const photos = card.photos_urls || [];
 
   // Автоплей видео через 4с (muted — обязательно для iOS)
@@ -369,6 +420,36 @@ function CardView({ card }) {
   // Бесконечная прокрутка: оба конца замыкаются
   const prevPhoto = () => setCurrentPhoto((p) => (p - 1 + photos.length) % photos.length);
   const nextPhoto = () => setCurrentPhoto((p) => (p + 1) % photos.length);
+
+  // Свайп для мобильных
+  const handleTouchStart = (e) => {
+    touchStartX.current = e.touches[0].clientX;
+    resetAutoRotate();
+  };
+  const handleTouchEnd = (e) => {
+    if (touchStartX.current === null) return;
+    const diff = touchStartX.current - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 40) diff > 0 ? nextPhoto() : prevPhoto();
+    touchStartX.current = null;
+  };
+
+  // Прямое скачивание фото на устройство без открытия вкладки
+  const downloadPhoto = async (url, index) => {
+    try {
+      const res = await fetch(url);
+      const blob = await res.blob();
+      const objectUrl = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = objectUrl;
+      a.download = `photo-${index}.jpg`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(objectUrl);
+    } catch {
+      window.open(url, '_blank');
+    }
+  };
 
   return (
     <div>
@@ -437,29 +518,24 @@ function CardView({ card }) {
               <>
                 <img src={photos[0]} alt="Фото" className="single-photo" />
                 <div className="single-photo-download">
-                  <a
+                  <button
                     className="download-btn"
-                    href={photos[0]}
-                    download="photo-1.jpg"
-                    target="_blank"
-                    rel="noreferrer"
-                  >↓ Сохранить</a>
+                    onClick={() => downloadPhoto(photos[0], 1)}
+                  >↓ Сохранить</button>
                 </div>
               </>
             ) : (
               <div
                 className="carousel-wrapper"
                 onMouseMove={resetAutoRotate}
-                onTouchStart={resetAutoRotate}
+                onTouchStart={handleTouchStart}
+                onTouchEnd={handleTouchEnd}
               >
                 <div className="carousel-download">
-                  <a
+                  <button
                     className="download-btn"
-                    href={photos[currentPhoto]}
-                    download={`photo-${currentPhoto + 1}.jpg`}
-                    target="_blank"
-                    rel="noreferrer"
-                  >↓ Сохранить</a>
+                    onClick={() => downloadPhoto(photos[currentPhoto], currentPhoto + 1)}
+                  >↓ Сохранить</button>
                 </div>
                 <div className="carousel-track-container">
                   <div
