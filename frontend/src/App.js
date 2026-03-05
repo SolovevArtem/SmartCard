@@ -1,13 +1,11 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useRef, useCallback, memo } from 'react';
 import { BrowserRouter as Router, Routes, Route, useParams, useNavigate } from 'react-router-dom';
 import './App.css';
 
 const API_URL = process.env.REACT_APP_API_URL || 'https://smartcard-production.up.railway.app';
 
-console.log('🔍 Using API_URL:', API_URL);
-
 // ── Floating Particles decoration ──
-function FloatingParticles({ count = 14 }) {
+const FloatingParticles = memo(function FloatingParticles({ count = 14 }) {
   return (
     <div className="particles" aria-hidden="true">
       {Array.from({ length: count }).map((_, i) => (
@@ -24,19 +22,19 @@ function FloatingParticles({ count = 14 }) {
       ))}
     </div>
   );
-}
+});
 
 // ── SVG Icons ──
-const IconEnvelope = () => (
+const IconEnvelope = memo(() => (
   <svg className="step-svg-icon" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
     <rect x="6" y="14" width="40" height="28" rx="4" stroke="#E89B88" strokeWidth="2"/>
     <path d="M6 18l20 14 20-14" stroke="#C77B6B" strokeWidth="2" strokeLinecap="round"/>
     <circle cx="38" cy="16" r="6" fill="#D18973" opacity="0.85"/>
     <path d="M35 16l2 2 4-4" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
   </svg>
-);
+));
 
-const IconClapperboard = () => (
+const IconClapperboard = memo(() => (
   <svg className="step-svg-icon" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
     <rect x="6" y="18" width="40" height="26" rx="3" stroke="#E89B88" strokeWidth="2"/>
     <rect x="6" y="10" width="40" height="10" rx="2" stroke="#C77B6B" strokeWidth="2"/>
@@ -45,9 +43,9 @@ const IconClapperboard = () => (
     <line x1="34" y1="10" x2="38" y2="20" stroke="#C77B6B" strokeWidth="2"/>
     <path d="M21 28l10 5-10 5V28z" fill="#A8C9A4" opacity="0.8"/>
   </svg>
-);
+));
 
-const IconPhoneSpark = () => (
+const IconPhoneSpark = memo(() => (
   <svg className="step-svg-icon" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
     <rect x="14" y="6" width="20" height="36" rx="4" stroke="#E89B88" strokeWidth="2"/>
     <circle cx="24" cy="38" r="2" fill="#E89B88" opacity="0.7"/>
@@ -59,83 +57,83 @@ const IconPhoneSpark = () => (
     <circle cx="36" cy="24" r="1.5" fill="#A8C9A4" opacity="0.7"/>
     <circle cx="44" cy="24" r="1" fill="#E89B88" opacity="0.6"/>
   </svg>
-);
+));
 
-const IconVideo = () => (
+const IconVideo = memo(() => (
   <svg className="feature-svg-icon" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
     <rect x="3" y="9" width="24" height="18" rx="3" stroke="#E89B88" strokeWidth="1.8"/>
     <path d="M27 16l10-5v14l-10-5V16z" stroke="#C77B6B" strokeWidth="1.8" strokeLinejoin="round"/>
   </svg>
-);
+));
 
-const IconPhotos = () => (
+const IconPhotos = memo(() => (
   <svg className="feature-svg-icon" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
     <rect x="4" y="8" width="24" height="20" rx="3" stroke="#E89B88" strokeWidth="1.8"/>
     <rect x="10" y="14" width="24" height="20" rx="3" stroke="#A8C9A4" strokeWidth="1.8" opacity="0.7"/>
     <circle cx="12" cy="16" r="2.5" fill="#C77B6B" opacity="0.8"/>
     <path d="M4 24l6-5 5 5 4-4 9 8" stroke="#E89B88" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" opacity="0.6"/>
   </svg>
-);
+));
 
-const IconMessage = () => (
+const IconMessage = memo(() => (
   <svg className="feature-svg-icon" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
     <rect x="4" y="6" width="32" height="22" rx="4" stroke="#C77B6B" strokeWidth="1.8"/>
     <path d="M10 30l4-8h12l4 8" stroke="#C77B6B" strokeWidth="1.5" strokeLinejoin="round" opacity="0.6"/>
     <line x1="10" y1="14" x2="30" y2="14" stroke="#E89B88" strokeWidth="1.5" strokeLinecap="round" opacity="0.7"/>
     <line x1="10" y1="20" x2="24" y2="20" stroke="#E89B88" strokeWidth="1.5" strokeLinecap="round" opacity="0.5"/>
   </svg>
-);
+));
 
-const IconNoApp = () => (
+const IconNoApp = memo(() => (
   <svg className="feature-svg-icon" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
     <rect x="10" y="4" width="20" height="32" rx="4" stroke="#A8C9A4" strokeWidth="1.8"/>
     <circle cx="20" cy="32" r="1.5" fill="#A8C9A4" opacity="0.7"/>
     <path d="M15 7h10" stroke="#A8C9A4" strokeWidth="1.5" strokeLinecap="round" opacity="0.5"/>
     <path d="M16 18l3 3 6-6" stroke="#C77B6B" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
   </svg>
-);
+));
 
 // ── Social media icons ──
-const IconTelegram = () => (
+const IconTelegram = memo(() => (
   <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="22" height="22">
     <path d="M22 2L11 13" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
     <path d="M22 2L15 22L11 13L2 9L22 2Z" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
   </svg>
-);
+));
 
-const IconInstagram = () => (
+const IconInstagram = memo(() => (
   <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="22" height="22">
     <rect x="2" y="2" width="20" height="20" rx="5" stroke="currentColor" strokeWidth="1.8"/>
     <circle cx="12" cy="12" r="4.5" stroke="currentColor" strokeWidth="1.8"/>
     <circle cx="17.5" cy="6.5" r="1.2" fill="currentColor"/>
   </svg>
-);
+));
 
-const IconOzon = () => (
+const IconOzon = memo(() => (
   <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="22" height="22">
     <circle cx="12" cy="12" r="5.5" stroke="currentColor" strokeWidth="1.8"/>
     <ellipse cx="12" cy="12" rx="10.5" ry="4.5" stroke="currentColor" strokeWidth="1.5"/>
   </svg>
-);
+));
 
-const IconAvito = () => (
+const IconAvito = memo(() => (
   <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="22" height="22">
     <circle cx="8" cy="9" r="3" stroke="currentColor" strokeWidth="1.7"/>
     <circle cx="16" cy="7" r="2" stroke="currentColor" strokeWidth="1.5"/>
     <circle cx="16" cy="15" r="2.5" stroke="currentColor" strokeWidth="1.6"/>
     <path d="M8 12 L8 18" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round"/>
   </svg>
-);
+));
 
-const IconWildberries = () => (
+const IconWildberries = memo(() => (
   <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="22" height="22">
     <path d="M12 3 L20.5 12 L12 21 L3.5 12 Z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round"/>
     <circle cx="12" cy="12" r="3" stroke="currentColor" strokeWidth="1.5"/>
   </svg>
-);
+));
 
 // ── Hero SVG gift illustration ──
-const HeroIllustration = () => (
+const HeroIllustration = memo(() => (
   <div className="hero-illustration" aria-hidden="true">
     <svg viewBox="0 0 220 130" fill="none" xmlns="http://www.w3.org/2000/svg">
       {/* Box body */}
@@ -166,10 +164,10 @@ const HeroIllustration = () => (
       <text x="36"  y="36" fontSize="9" fill="#A8C9A4" opacity="0.5" fontFamily="serif">✦</text>
     </svg>
   </div>
-);
+));
 
 // ── Wizard welcome SVG (open envelope) ──
-const WizardIllustration = () => (
+const WizardIllustration = memo(() => (
   <svg className="wizard-illustration" viewBox="0 0 100 80" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
     <rect x="10" y="28" width="80" height="50" rx="5" stroke="#E89B88" strokeWidth="2" strokeOpacity="0.6"/>
     <path d="M10 33l40 28 40-28" stroke="#C77B6B" strokeWidth="2" strokeOpacity="0.7" strokeLinecap="round"/>
@@ -183,10 +181,10 @@ const WizardIllustration = () => (
     <circle cx="92" cy="68" r="1.5" fill="#E89B88" opacity="0.5"/>
     <text x="78" y="12" fontSize="10" fill="#C77B6B" opacity="0.75" fontFamily="serif">✦</text>
   </svg>
-);
+));
 
 // ── View intro SVG (gift with sparkles) ──
-const ViewIntroIllustration = () => (
+const ViewIntroIllustration = memo(() => (
   <svg className="view-intro-illustration" viewBox="0 0 120 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
     <rect x="20" y="48" width="80" height="48" rx="5" stroke="#E89B88" strokeWidth="2" strokeOpacity="0.6"/>
     <rect x="14" y="32" width="92" height="18" rx="4" stroke="#E89B88" strokeWidth="2" strokeOpacity="0.6"/>
@@ -203,7 +201,7 @@ const ViewIntroIllustration = () => (
     <text x="4"  y="38" fontSize="10" fill="#E89B88" opacity="0.65" fontFamily="serif">✦</text>
     <text x="98" y="95" fontSize="8"  fill="#A8C9A4" opacity="0.5" fontFamily="serif">✦</text>
   </svg>
-);
+));
 
 // ── Главная страница (Лендинг) ──
 function HomePage() {
@@ -409,6 +407,7 @@ function CardView({ card }) {
   const videoRef = useRef(null);
   const [trackIndex, setTrackIndex] = useState(1);   // 1 = первое реальное фото
   const [carouselAnimate, setCarouselAnimate] = useState(true);
+  const [saving, setSaving] = useState(false);
   const autoTimer = useRef(null);
   const touchStartX = useRef(null);
   const photos = card.photos_urls || [];
@@ -430,7 +429,7 @@ function CardView({ card }) {
     return () => clearTimeout(t);
   }, [card.video_url]);
 
-  // Scroll reveal через IntersectionObserver (threshold 0.06 — срабатывает сразу при появлении)
+  // Scroll reveal через IntersectionObserver
   useEffect(() => {
     const els = document.querySelectorAll('.reveal, .reveal-right, .reveal-left');
     const obs = new IntersectionObserver(
@@ -489,21 +488,65 @@ function CardView({ card }) {
     touchStartX.current = null;
   };
 
-  // Прямое скачивание фото на устройство без открытия вкладки
-  const downloadPhoto = async (url, index) => {
+  // Сохранение файла: Web Share API (iOS фотопленка) → fallback download
+  const saveToLibrary = async (url, filename) => {
     try {
       const res = await fetch(url);
       const blob = await res.blob();
+
+      if (navigator.share && navigator.canShare) {
+        const ext = blob.type.includes('video') ? 'mp4' : 'jpg';
+        const file = new File([blob], filename || `media.${ext}`, { type: blob.type });
+        if (navigator.canShare({ files: [file] })) {
+          await navigator.share({ files: [file] });
+          return;
+        }
+      }
+
+      // Fallback: download link
       const objectUrl = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = objectUrl;
-      a.download = `photo-${index}.jpg`;
+      a.download = filename || 'photo.jpg';
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
       URL.revokeObjectURL(objectUrl);
-    } catch {
-      window.open(url, '_blank');
+    } catch (err) {
+      if (err?.name !== 'AbortError') {
+        window.open(url, '_blank');
+      }
+    }
+  };
+
+  // Сохранить все фото в фотопленку
+  const saveAllPhotos = async () => {
+    if (photos.length === 0) return;
+    setSaving(true);
+    try {
+      if (navigator.share && navigator.canShare) {
+        const files = await Promise.all(
+          photos.map(async (url, i) => {
+            const res = await fetch(url);
+            const blob = await res.blob();
+            return new File([blob], `photo-${i + 1}.jpg`, { type: blob.type });
+          })
+        );
+        if (navigator.canShare({ files })) {
+          await navigator.share({ files });
+          return;
+        }
+      }
+      // Fallback: скачать по одному
+      for (let i = 0; i < photos.length; i++) {
+        await saveToLibrary(photos[i], `photo-${i + 1}.jpg`);
+      }
+    } catch (err) {
+      if (err?.name !== 'AbortError') {
+        console.error('Save error:', err);
+      }
+    } finally {
+      setSaving(false);
     }
   };
 
@@ -522,7 +565,7 @@ function CardView({ card }) {
       {/* ── Основной контент ── */}
       <div className="view-content">
 
-        {/* Видео */}
+        {/* Видео — без рамки, edge-to-edge */}
         {card.video_url && (
           <div className="view-section reveal-right">
             <p className="view-section-title">Видео-поздравление</p>
@@ -576,7 +619,7 @@ function CardView({ card }) {
                 <div className="single-photo-download">
                   <button
                     className="download-btn"
-                    onClick={() => downloadPhoto(photos[0], 1)}
+                    onClick={() => saveToLibrary(photos[0], 'photo-1.jpg')}
                   >↓ Сохранить</button>
                 </div>
               </>
@@ -590,7 +633,7 @@ function CardView({ card }) {
                 <div className="carousel-download">
                   <button
                     className="download-btn"
-                    onClick={() => downloadPhoto(photos[realPhoto], realPhoto + 1)}
+                    onClick={() => saveToLibrary(photos[realPhoto], `photo-${realPhoto + 1}.jpg`)}
                   >↓ Сохранить</button>
                 </div>
                 <div className="carousel-track-container">
@@ -602,11 +645,11 @@ function CardView({ card }) {
                     }}
                     onTransitionEnd={handleTransitionEnd}
                   >
-                    <img key="clone-last" src={photos[N - 1]} alt="" className="carousel-slide" aria-hidden="true" />
+                    <img key="clone-last" src={photos[N - 1]} alt="" className="carousel-slide" aria-hidden="true" loading="lazy" />
                     {photos.map((url, i) => (
-                      <img key={i} src={url} alt={`Фото ${i + 1}`} className="carousel-slide" />
+                      <img key={i} src={url} alt={`Фото ${i + 1}`} className="carousel-slide" loading={i === 0 ? 'eager' : 'lazy'} />
                     ))}
-                    <img key="clone-first" src={photos[0]} alt="" className="carousel-slide" aria-hidden="true" />
+                    <img key="clone-first" src={photos[0]} alt="" className="carousel-slide" aria-hidden="true" loading="lazy" />
                   </div>
                 </div>
                 <div className="carousel-controls">
@@ -637,6 +680,32 @@ function CardView({ card }) {
         )}
 
       </div>
+
+      {/* ── Плавающая кнопка «Сохранить всё» ── */}
+      {photos.length > 0 && (
+        <button
+          className={`save-all-btn${saving ? ' save-all-btn--loading' : ''}`}
+          onClick={saveAllPhotos}
+          disabled={saving}
+          aria-label="Сохранить все фото в галерею"
+        >
+          {saving ? (
+            <>
+              <span className="save-all-spinner" />
+              Сохраняем…
+            </>
+          ) : (
+            <>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                <polyline points="7 10 12 15 17 10"/>
+                <line x1="12" y1="15" x2="12" y2="3"/>
+              </svg>
+              Сохранить фото
+            </>
+          )}
+        </button>
+      )}
     </div>
   );
 }
@@ -940,7 +1009,7 @@ function CardWizard({ cardId, onComplete }) {
           {photoPreviewUrls.length > 0 && (
             <div className="photo-thumbs">
               {photoPreviewUrls.map((url, i) => (
-                <img key={i} src={url} alt={`Превью ${i + 1}`} className="photo-thumb" />
+                <img key={i} src={url} alt={`Превью ${i + 1}`} className="photo-thumb" loading="lazy" />
               ))}
             </div>
           )}

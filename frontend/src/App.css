@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Poppins:wght@300;400;500;600;700&display=swap');
+/* Fonts loaded via <link> in index.html for non-blocking performance */
 
 /* ── Design Tokens ── */
 :root {
@@ -758,16 +758,17 @@ form {
 }
 
 .video-container {
-  border-radius: 12px;
   overflow: hidden;
+  margin-left: -2rem;
+  margin-right: -2rem;
   margin-bottom: 2rem;
-  background: #000;
 }
 
 .video-container video {
   width: 100%;
   display: block;
-  max-height: 480px;
+  max-height: 70vh;
+  object-fit: contain;
 }
 
 .message-box {
@@ -1882,4 +1883,69 @@ form {
   height: 1px;
   background: var(--glass-border);
   margin: 0.4rem 1rem;
+}
+
+/* ── Кнопка «Сохранить фото» (плавающая) ── */
+.save-all-btn {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.85rem 1.4rem;
+  background: linear-gradient(135deg, var(--accent-pink) 0%, var(--accent-gold) 100%);
+  color: #fff;
+  border: none;
+  border-radius: 50px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 20px rgba(209, 137, 115, 0.45);
+  transition: transform 0.2s, box-shadow 0.2s, opacity 0.2s;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.save-all-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 28px rgba(209, 137, 115, 0.55);
+}
+
+.save-all-btn:active {
+  transform: scale(0.96);
+}
+
+.save-all-btn:disabled {
+  opacity: 0.75;
+  cursor: default;
+  transform: none;
+}
+
+.save-all-btn--loading {
+  pointer-events: none;
+}
+
+@keyframes saveSpinner {
+  to { transform: rotate(360deg); }
+}
+
+.save-all-spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: saveSpinner 0.7s linear infinite;
+  flex-shrink: 0;
+}
+
+@media (max-width: 480px) {
+  .save-all-btn {
+    bottom: 1rem;
+    right: 1rem;
+    padding: 0.75rem 1.15rem;
+    font-size: 0.82rem;
+  }
 }
