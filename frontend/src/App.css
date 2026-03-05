@@ -120,7 +120,7 @@ body {
   justify-content: space-between;
   align-items: center;
   padding: 1rem 2.5rem;
-  background: rgba(232, 213, 196, 0.78);
+  background: rgba(232, 213, 196, 0.55);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border-bottom: 1px solid var(--glass-border);
@@ -141,29 +141,6 @@ body {
   font-family: 'DM Serif Display', sans-serif;
 }
 
-.nav-cta {
-  background: linear-gradient(135deg, var(--accent-pink), var(--accent-pink-deep));
-  color: #FFFFFF;
-  border: none;
-  padding: 0.55rem 1.4rem;
-  font-size: 0.85rem;
-  font-weight: 600;
-  letter-spacing: 0.02em;
-  border-radius: 100px;
-  cursor: pointer;
-  transition: transform 0.2s, filter 0.2s;
-  font-family: 'Poppins', sans-serif;
-}
-
-.nav-cta:hover {
-  transform: scale(1.06);
-  filter: brightness(1.12);
-}
-
-.nav-cta:disabled {
-  opacity: 0.45;
-  cursor: not-allowed;
-}
 
 /* ── Hero Section ── */
 .hero-section {
@@ -1798,4 +1775,111 @@ form {
   font-weight: 500;
   margin: 0;
   text-align: right;
+}
+
+/* ── Burger button ── */
+.burger-btn {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 50%;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background 0.2s, box-shadow 0.2s;
+}
+
+.burger-btn:hover {
+  background: rgba(232, 155, 136, 0.14);
+  box-shadow: 0 0 14px rgba(232, 155, 136, 0.22);
+}
+
+.burger-line {
+  display: block;
+  width: 18px;
+  height: 1.5px;
+  background: var(--accent-pink-deep);
+  border-radius: 2px;
+  transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.18s ease;
+}
+
+.burger-btn.open .burger-line:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+.burger-btn.open .burger-line:nth-child(2) { opacity: 0; transform: scaleX(0); }
+.burger-btn.open .burger-line:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+/* ── Nav backdrop ── */
+.nav-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 98;
+}
+
+/* ── Nav dropdown menu ── */
+.nav-menu {
+  position: fixed;
+  top: 62px;
+  left: 0;
+  right: 0;
+  z-index: 99;
+  background: rgba(232, 213, 196, 0.96);
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
+  border-bottom: 1px solid var(--glass-border);
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0;
+  transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.25s ease;
+}
+
+.nav-menu.open {
+  max-height: 340px;
+  opacity: 1;
+}
+
+.nav-menu-inner {
+  display: flex;
+  flex-direction: column;
+  padding: 1.25rem 2rem 1.75rem;
+  gap: 0.2rem;
+}
+
+.nav-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 0.8rem 1rem;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 0.92rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  font-family: 'Poppins', sans-serif;
+  background: none;
+  border: none;
+  width: 100%;
+  text-align: left;
+  transition: background 0.18s, color 0.18s;
+}
+
+.nav-menu-item:hover {
+  background: rgba(232, 155, 136, 0.14);
+  color: var(--accent-pink-deep);
+}
+
+.nav-menu-icon {
+  font-size: 0.9rem;
+  width: 1.4rem;
+  text-align: center;
+  opacity: 0.75;
+}
+
+.nav-menu-divider {
+  height: 1px;
+  background: var(--glass-border);
+  margin: 0.4rem 1rem;
 }

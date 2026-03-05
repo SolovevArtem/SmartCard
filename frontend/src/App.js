@@ -209,6 +209,12 @@ const ViewIntroIllustration = () => (
 function HomePage() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  const scrollTo = (id) => {
+    setMenuOpen(false);
+    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+  };
 
   const handleCreate = async () => {
     setLoading(true);
@@ -239,13 +245,39 @@ function HomePage() {
         <div className="nav-logo">
           <span className="logo-text">Умная открытка</span>
         </div>
-        <button className="nav-cta" onClick={handleCreate} disabled={loading}>
-          {loading ? '...' : 'Создать →'}
+        <button
+          className={`burger-btn${menuOpen ? ' open' : ''}`}
+          onClick={() => setMenuOpen(o => !o)}
+          aria-label={menuOpen ? 'Закрыть меню' : 'Открыть меню'}
+        >
+          <span className="burger-line" />
+          <span className="burger-line" />
+          <span className="burger-line" />
         </button>
       </nav>
 
+      {menuOpen && <div className="nav-backdrop" onClick={() => setMenuOpen(false)} />}
+
+      <div className={`nav-menu${menuOpen ? ' open' : ''}`} aria-hidden={!menuOpen}>
+        <div className="nav-menu-inner">
+          <button className="nav-menu-item" onClick={() => scrollTo('hero')}>
+            <span className="nav-menu-icon">✦</span> Главная
+          </button>
+          <button className="nav-menu-item" onClick={() => scrollTo('how')}>
+            <span className="nav-menu-icon">◎</span> Как это работает
+          </button>
+          <button className="nav-menu-item" onClick={() => scrollTo('features')}>
+            <span className="nav-menu-icon">◈</span> Возможности
+          </button>
+          <div className="nav-menu-divider" />
+          <button className="nav-menu-item" onClick={() => scrollTo('contacts')}>
+            <span className="nav-menu-icon">✉</span> Контакты
+          </button>
+        </div>
+      </div>
+
       {/* ── Hero ── */}
-      <section className="hero-section">
+      <section className="hero-section" id="hero">
         <FloatingParticles count={16} />
         <HeroIllustration />
         <h1 className="hero-title">Подарите незабываемые впечатления</h1>
@@ -256,7 +288,7 @@ function HomePage() {
       </section>
 
       {/* ── Как это работает ── */}
-      <section className="how-section">
+      <section className="how-section" id="how">
         <FloatingParticles count={8} />
         <h2 className="section-title">Как это работает</h2>
         <div className="steps-row">
@@ -288,7 +320,7 @@ function HomePage() {
       </section>
 
       {/* ── Возможности ── */}
-      <section className="features-section">
+      <section className="features-section" id="features">
         <FloatingParticles count={8} />
         <h2 className="section-title">Возможности</h2>
         <div className="features-grid">
@@ -316,7 +348,7 @@ function HomePage() {
       </section>
 
       {/* ── Social Footer ── */}
-      <footer className="social-footer">
+      <footer className="social-footer" id="contacts">
         <p className="social-label">Следите за нами</p>
         <div className="social-links">
           <a
