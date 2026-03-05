@@ -467,27 +467,7 @@ body {
   font-size: 0.9rem;
 }
 
-/* ── Social Footer ── */
-.social-footer {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.85rem;
-  padding: 2.5rem 2rem;
-  border-top: 1px solid var(--glass-border);
-  background: rgba(232, 213, 196, 0.55);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-}
-
-.social-label {
-  font-size: 0.65rem;
-  color: var(--text-muted);
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  font-weight: 300;
-}
-
+/* ── Social Link (shared) ── */
 .social-links {
   display: flex;
   gap: 1rem;
@@ -515,11 +495,65 @@ body {
   transform: scale(1.1);
 }
 
-.social-handle {
-  font-size: 0.75rem;
-  color: var(--text-muted);
-  font-weight: 300;
+/* ── Site Footer ── */
+.site-footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+  padding: 3rem 2rem 2.5rem;
+  border-top: 1px solid var(--glass-border);
+  background: rgba(232, 213, 196, 0.55);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.site-footer__social {
+  display: flex;
+  gap: 1rem;
+}
+
+.site-footer__brand {
+  font-family: 'Merriweather', Georgia, serif;
+  font-size: 1.35rem;
+  font-weight: 900;
   letter-spacing: 0.06em;
+  color: var(--accent-pink);
+}
+
+.site-footer__divider {
+  width: 60px;
+  height: 1.5px;
+  background: var(--glass-border);
+  border-radius: 9999px;
+}
+
+.site-footer__nav {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem 1.5rem;
+}
+
+.site-footer__nav-link {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  transition: color 0.2s;
+  padding: 0.25rem 0;
+}
+.site-footer__nav-link:hover {
+  color: var(--accent-pink);
+}
+
+.site-footer__copy {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  letter-spacing: 0.05em;
 }
 
 /* ── Sticky Bottom CTA ── */
@@ -1886,19 +1920,19 @@ form {
   font-family: 'Montserrat', sans-serif;
   font-size: 0.95rem;
   font-weight: 600;
-  color: #ce6a57;
+  color: #D9746B;
   line-height: 1.4;
   transition: color 0.2s, background 0.2s;
   -webkit-tap-highlight-color: transparent;
 }
 
 .faq-trigger:hover {
-  color: #b35340;
-  background: rgba(255, 126, 95, 0.08);
+  color: #c45e55;
+  background: rgba(217, 116, 107, 0.08);
 }
 
 .faq-trigger[data-state="open"] {
-  color: #b35340;
+  color: #c45e55;
   border-bottom: 1px solid rgba(255, 126, 95, 0.25);
 }
 
@@ -2063,7 +2097,7 @@ form {
 }
 
 .hsa-motion-card--dark {
-  background: linear-gradient(to top, #1a0e0b, #2d1a16);
+  background: #A8C9A4;
 }
 
 /* Grid overlay */
@@ -2081,8 +2115,8 @@ form {
 
 .hsa-grid--dark {
   background-image:
-    linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+    linear-gradient(rgba(0,0,0,0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,0,0,0.06) 1px, transparent 1px);
 }
 
 /* Content */
@@ -2112,7 +2146,7 @@ form {
 }
 
 .hsa-eyebrow--dark {
-  color: var(--accent-gold);
+  color: #4a7a47;
 }
 
 .hsa-title {
@@ -2124,7 +2158,7 @@ form {
 }
 
 .hsa-title--dark {
-  color: #fff9f5;
+  color: #2d3a2d;
 }
 
 .hsa-subtitle {
@@ -2187,7 +2221,7 @@ form {
   gap: 0.6rem;
   padding: 1.5rem 1rem;
   background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.10);
+  border: 1px solid rgba(255, 255, 255, 0.40);
   border-radius: 16px;
   text-align: center;
 }
@@ -2199,8 +2233,8 @@ form {
   width: 52px;
   height: 52px;
   border-radius: 14px;
-  background: rgba(255, 126, 95, 0.18);
-  color: var(--accent-gold);
+  background: rgba(255, 255, 255, 0.35);
+  color: #4a7a47;
   margin-bottom: 0.25rem;
 }
 
@@ -2208,7 +2242,7 @@ form {
   font-family: 'Montserrat', sans-serif;
   font-size: 1rem;
   font-weight: 700;
-  color: #fff9f5;
+  color: #2d3a2d;
 }
 
 .hsa-feature-card p {
@@ -2216,7 +2250,7 @@ form {
   font-size: 0.85rem;
   font-weight: 400;
   line-height: 1.55;
-  color: rgba(255, 249, 245, 0.65);
+  color: rgba(45, 58, 45, 0.72);
 }
 
 /* Responsive */

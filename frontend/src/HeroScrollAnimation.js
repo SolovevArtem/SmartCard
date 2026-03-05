@@ -44,7 +44,7 @@ export default function HeroScrollAnimation({ onCreateCard }) {
       </div>
 
       {/* ── Section 2: Dark ── */}
-      <div className="hsa-section hsa-section--dark">
+      <div className="hsa-section hsa-section--dark" id="hsa-dark">
         <motion.div
           className="hsa-motion-card hsa-motion-card--dark"
           style={{ scale: scale2, rotate: rotate2 }}

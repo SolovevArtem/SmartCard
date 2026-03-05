@@ -217,7 +217,7 @@ function HomePage() {
   };
 
   useEffect(() => {
-    const target = document.getElementById('how');
+    const target = document.getElementById('features');
     if (!target) return;
     const obs = new IntersectionObserver(
       ([entry]) => {
@@ -256,38 +256,6 @@ function HomePage() {
     <div className="landing">
 
       <HeroScrollAnimation onCreateCard={handleCreate} />
-
-      {/* ── Как это работает ── */}
-      <section className="how-section" id="how">
-        <FloatingParticles count={8} />
-        <h2 className="section-title">Как это работает</h2>
-        <div className="steps-row">
-          <div className="step-card">
-            <div className="step-badge">1</div>
-            <IconEnvelope />
-            <h3>Приложи открытку к телефону</h3>
-            <p>Создай и оформи свою уникальную открытку</p>
-          </div>
-
-          <div className="steps-arrow" aria-hidden="true">→</div>
-
-          <div className="step-card">
-            <div className="step-badge">2</div>
-            <IconClapperboard />
-            <h3>Добавь видео, фото и текст</h3>
-            <p>Загрузи воспоминания, личное видео и напиши тёплые слова</p>
-          </div>
-
-          <div className="steps-arrow" aria-hidden="true">→</div>
-
-          <div className="step-card">
-            <div className="step-badge">3</div>
-            <IconPhoneSpark />
-            <h3>Наведи телефон на открытку</h3>
-            <p>Адресат видит живую анимированную открытку</p>
-          </div>
-        </div>
-      </section>
 
       {/* ── Возможности ── */}
       <section className="features-section" id="features">
@@ -382,57 +350,36 @@ function HomePage() {
         </Accordion>
       </section>
 
-      {/* ── Social Footer ── */}
-      <footer className="social-footer" id="contacts">
-        <p className="social-label">Следите за нами</p>
-        <div className="social-links">
-          <a
-            href="https://t.me/s0lart"
-            target="_blank"
-            rel="noreferrer"
-            className="social-link"
-            aria-label="Telegram"
-          >
+      {/* ── Site Footer ── */}
+      <footer className="site-footer" id="contacts">
+        <div className="site-footer__social">
+          <a href="https://t.me/smartcardgift" target="_blank" rel="noreferrer"
+             className="social-link" aria-label="Telegram">
             <IconTelegram />
           </a>
-          <a
-            href="https://instagram.com/s0lart"
-            target="_blank"
-            rel="noreferrer"
-            className="social-link"
-            aria-label="Instagram"
-          >
+          <a href="https://instagram.com/smartcardgift" target="_blank" rel="noreferrer"
+             className="social-link" aria-label="Instagram">
             <IconInstagram />
           </a>
-          <a
-            href="#"
-            target="_blank"
-            rel="noreferrer"
-            className="social-link"
-            aria-label="Ozon"
-          >
-            <IconOzon />
-          </a>
-          <a
-            href="#"
-            target="_blank"
-            rel="noreferrer"
-            className="social-link"
-            aria-label="Avito"
-          >
-            <IconAvito />
-          </a>
-          <a
-            href="#"
-            target="_blank"
-            rel="noreferrer"
-            className="social-link"
-            aria-label="Wildberries"
-          >
-            <IconWildberries />
-          </a>
         </div>
-        <p className="social-handle">@s0lart</p>
+        <p className="site-footer__brand">УМНАЯ ОТКРЫТКА</p>
+        <div className="site-footer__divider" />
+        <nav className="site-footer__nav">
+          <button className="site-footer__nav-link"
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+            Главная страница
+          </button>
+          <button className="site-footer__nav-link" onClick={() => scrollTo('hsa-dark')}>
+            Как это работает
+          </button>
+          <button className="site-footer__nav-link" onClick={() => scrollTo('faq')}>
+            Часто задаваемые вопросы
+          </button>
+          <button className="site-footer__nav-link" onClick={() => scrollTo('features')}>
+            Купить открытку
+          </button>
+        </nav>
+        <p className="site-footer__copy">© 2025 Умная открытка</p>
       </footer>
 
     </div>

@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import { motion } from 'motion/react';
-import { Home, PlayCircle, Sparkles, HelpCircle, Mail } from 'lucide-react';
+import { Home, PlayCircle, ShoppingCart, HelpCircle, Mail } from 'lucide-react';
 
 const NAV_ITEMS = [
   { name: 'Главная',      id: null,       icon: Home },
-  { name: 'Как работает', id: 'how',      icon: PlayCircle },
-  { name: 'Возможности',  id: 'features', icon: Sparkles },
+  { name: 'Как работает', id: 'hsa-dark', icon: PlayCircle },
+  { name: 'Купить',       id: 'features', icon: ShoppingCart },
   { name: 'Вопросы',      id: 'faq',      icon: HelpCircle },
   { name: 'Контакты',     id: 'contacts', icon: Mail },
 ];
