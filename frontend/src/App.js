@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, useCallback, memo } from 'react';
 import { BrowserRouter as Router, Routes, Route, useParams, useNavigate } from 'react-router-dom';
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from './Accordion';
+import HeroScrollAnimation from './HeroScrollAnimation';
 import './App.css';
 
 const API_URL = process.env.REACT_APP_API_URL || 'https://smartcard-production.up.railway.app';
@@ -288,6 +289,8 @@ function HomePage() {
           {loading ? 'Создаём...' : 'Начать бесплатно'}
         </button>
       </section>
+
+      <HeroScrollAnimation onCreateCard={handleCreate} />
 
       {/* ── Как это работает ── */}
       <section className="how-section" id="how">
