@@ -2,6 +2,7 @@ import { useState, useEffect, useRef, useCallback, memo } from 'react';
 import { BrowserRouter as Router, Routes, Route, useParams, useNavigate } from 'react-router-dom';
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from './Accordion';
 import HeroScrollAnimation from './HeroScrollAnimation';
+import TubeLightNav from './TubeLightNav';
 import './App.css';
 
 const API_URL = process.env.REACT_APP_API_URL || 'https://smartcard-production.up.railway.app';
@@ -209,12 +210,24 @@ const ViewIntroIllustration = memo(() => (
 function HomePage() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false);
+  const [navVisible, setNavVisible] = useState(false);
 
   const scrollTo = (id) => {
-    setMenuOpen(false);
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
   };
+
+  useEffect(() => {
+    const target = document.getElementById('how');
+    if (!target) return;
+    const obs = new IntersectionObserver(
+      ([entry]) => {
+        setNavVisible(entry.isIntersecting || entry.boundingClientRect.top < 0);
+      },
+      { threshold: 0 }
+    );
+    obs.observe(target);
+    return () => obs.disconnect();
+  }, []);
 
   const handleCreate = async () => {
     setLoading(true);
@@ -238,57 +251,9 @@ function HomePage() {
   };
 
   return (
+    <>
+    <TubeLightNav visible={navVisible} onScrollTo={scrollTo} />
     <div className="landing">
-
-      {/* ── Sticky Navbar ── */}
-      <nav className="sticky-nav">
-        <div className="nav-logo">
-          <span className="logo-text">Умная открытка</span>
-        </div>
-        <button
-          className={`burger-btn${menuOpen ? ' open' : ''}`}
-          onClick={() => setMenuOpen(o => !o)}
-          aria-label={menuOpen ? 'Закрыть меню' : 'Открыть меню'}
-        >
-          <span className="burger-line" />
-          <span className="burger-line" />
-          <span className="burger-line" />
-        </button>
-      </nav>
-
-      {menuOpen && <div className="nav-backdrop" onClick={() => setMenuOpen(false)} />}
-
-      <div className={`nav-menu${menuOpen ? ' open' : ''}`} aria-hidden={!menuOpen}>
-        <div className="nav-menu-inner">
-          <button className="nav-menu-item" onClick={() => scrollTo('hero')}>
-            <span className="nav-menu-icon">✦</span> Главная
-          </button>
-          <button className="nav-menu-item" onClick={() => scrollTo('how')}>
-            <span className="nav-menu-icon">◎</span> Как это работает
-          </button>
-          <button className="nav-menu-item" onClick={() => scrollTo('features')}>
-            <span className="nav-menu-icon">◈</span> Возможности
-          </button>
-          <button className="nav-menu-item" onClick={() => scrollTo('faq')}>
-            <span className="nav-menu-icon">?</span> Вопросы
-          </button>
-          <div className="nav-menu-divider" />
-          <button className="nav-menu-item" onClick={() => scrollTo('contacts')}>
-            <span className="nav-menu-icon">✉</span> Контакты
-          </button>
-        </div>
-      </div>
-
-      {/* ── Hero ── */}
-      <section className="hero-section" id="hero">
-        <FloatingParticles count={16} />
-        <HeroIllustration />
-        <h1 className="hero-title">Подарите незабываемые впечатления</h1>
-        <p className="hero-sub">Открытка, которая оживает в руках адресата</p>
-        <button className="cta-button" onClick={handleCreate} disabled={loading}>
-          {loading ? 'Создаём...' : 'Начать бесплатно'}
-        </button>
-      </section>
 
       <HeroScrollAnimation onCreateCard={handleCreate} />
 
@@ -471,6 +436,7 @@ function HomePage() {
       </footer>
 
     </div>
+    </>
   );
 }
 

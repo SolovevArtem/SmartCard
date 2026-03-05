@@ -1,6 +1,6 @@
 import { useRef } from 'react';
 import { useScroll, useTransform, motion } from 'motion/react';
-import { Video, Image, MessageCircle } from 'lucide-react';
+import { Video, Image, MessageCircle, ChevronDown } from 'lucide-react';
 
 export default function HeroScrollAnimation({ onCreateCard }) {
   const containerRef = useRef(null);
@@ -28,7 +28,7 @@ export default function HeroScrollAnimation({ onCreateCard }) {
         >
           <div className="hsa-grid" aria-hidden="true" />
           <div className="hsa-content">
-            <p className="hsa-eyebrow">SmartCard</p>
+            <p className="hsa-eyebrow">Умная открытка</p>
             <h2 className="hsa-title">Живая открытка<br />в ваших руках</h2>
             <p className="hsa-subtitle">
               Создайте открытку, которая оживает — с видео, фото и тёплыми словами прямо внутри.
@@ -36,6 +36,9 @@ export default function HeroScrollAnimation({ onCreateCard }) {
             <button className="hsa-cta" onClick={onCreateCard}>
               Начать бесплатно →
             </button>
+          </div>
+          <div className="hsa-arrow-down" aria-hidden="true">
+            <ChevronDown size={32} />
           </div>
         </motion.div>
       </div>
