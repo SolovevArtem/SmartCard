@@ -209,6 +209,12 @@ const ViewIntroIllustration = () => (
 function HomePage() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  const scrollTo = (id) => {
+    setMenuOpen(false);
+    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+  };
 
   const handleCreate = async () => {
     setLoading(true);
@@ -239,13 +245,39 @@ function HomePage() {
         <div className="nav-logo">
           <span className="logo-text">Умная открытка</span>
         </div>
-        <button className="nav-cta" onClick={handleCreate} disabled={loading}>
-          {loading ? '...' : 'Создать →'}
+        <button
+          className={`burger-btn${menuOpen ? ' open' : ''}`}
+          onClick={() => setMenuOpen(o => !o)}
+          aria-label={menuOpen ? 'Закрыть меню' : 'Открыть меню'}
+        >
+          <span className="burger-line" />
+          <span className="burger-line" />
+          <span className="burger-line" />
         </button>
       </nav>
 
+      {menuOpen && <div className="nav-backdrop" onClick={() => setMenuOpen(false)} />}
+
+      <div className={`nav-menu${menuOpen ? ' open' : ''}`} aria-hidden={!menuOpen}>
+        <div className="nav-menu-inner">
+          <button className="nav-menu-item" onClick={() => scrollTo('hero')}>
+            <span className="nav-menu-icon">✦</span> Главная
+          </button>
+          <button className="nav-menu-item" onClick={() => scrollTo('how')}>
+            <span className="nav-menu-icon">◎</span> Как это работает
+          </button>
+          <button className="nav-menu-item" onClick={() => scrollTo('features')}>
+            <span className="nav-menu-icon">◈</span> Возможности
+          </button>
+          <div className="nav-menu-divider" />
+          <button className="nav-menu-item" onClick={() => scrollTo('contacts')}>
+            <span className="nav-menu-icon">✉</span> Контакты
+          </button>
+        </div>
+      </div>
+
       {/* ── Hero ── */}
-      <section className="hero-section">
+      <section className="hero-section" id="hero">
         <FloatingParticles count={16} />
         <HeroIllustration />
         <h1 className="hero-title">Подарите незабываемые впечатления</h1>
@@ -256,7 +288,7 @@ function HomePage() {
       </section>
 
       {/* ── Как это работает ── */}
-      <section className="how-section">
+      <section className="how-section" id="how">
         <FloatingParticles count={8} />
         <h2 className="section-title">Как это работает</h2>
         <div className="steps-row">
@@ -288,7 +320,7 @@ function HomePage() {
       </section>
 
       {/* ── Возможности ── */}
-      <section className="features-section">
+      <section className="features-section" id="features">
         <FloatingParticles count={8} />
         <h2 className="section-title">Возможности</h2>
         <div className="features-grid">
@@ -316,7 +348,7 @@ function HomePage() {
       </section>
 
       {/* ── Social Footer ── */}
-      <footer className="social-footer">
+      <footer className="social-footer" id="contacts">
         <p className="social-label">Следите за нами</p>
         <div className="social-links">
           <a
@@ -375,10 +407,16 @@ function HomePage() {
 // ── Просмотр заполненной карточки ──
 function CardView({ card }) {
   const videoRef = useRef(null);
-  const [currentPhoto, setCurrentPhoto] = useState(0);
+  const [trackIndex, setTrackIndex] = useState(1);   // 1 = первое реальное фото
+  const [carouselAnimate, setCarouselAnimate] = useState(true);
   const autoTimer = useRef(null);
   const touchStartX = useRef(null);
   const photos = card.photos_urls || [];
+  const N = photos.length;
+  // Реальный индекс фото для dots/счётчика/download
+  const realPhoto = trackIndex <= 0 ? N - 1
+                  : trackIndex >= N + 1 ? 0
+                  : trackIndex - 1;
 
   // Автоплей видео через 4с (muted — обязательно для iOS)
   useEffect(() => {
@@ -405,21 +443,39 @@ function CardView({ card }) {
 
   // Авто-карусель: через 4с бездействия переходим к следующему фото
   const resetAutoRotate = useCallback(() => {
-    if (photos.length <= 1) return;
+    if (N <= 1) return;
     clearTimeout(autoTimer.current);
     autoTimer.current = setTimeout(() => {
-      setCurrentPhoto((p) => (p + 1) % photos.length);
+      setCarouselAnimate(true);
+      setTrackIndex(i => i + 1);
     }, 4000);
-  }, [photos.length]);
+  }, [N]);
 
   useEffect(() => {
     resetAutoRotate();
     return () => clearTimeout(autoTimer.current);
-  }, [currentPhoto, resetAutoRotate]);
+  }, [trackIndex, resetAutoRotate]);
 
-  // Бесконечная прокрутка: оба конца замыкаются
-  const prevPhoto = () => setCurrentPhoto((p) => (p - 1 + photos.length) % photos.length);
-  const nextPhoto = () => setCurrentPhoto((p) => (p + 1) % photos.length);
+  // Infinite-loop навигация
+  const prevPhoto = () => { setCarouselAnimate(true); setTrackIndex(i => i - 1); };
+  const nextPhoto = () => { setCarouselAnimate(true); setTrackIndex(i => i + 1); };
+
+  // После анимации до клона — мгновенно прыгнуть на реальный слайд
+  const handleTransitionEnd = (e) => {
+    if (e.propertyName !== 'transform') return;
+    if (trackIndex === 0)          { setCarouselAnimate(false); setTrackIndex(N); }
+    else if (trackIndex === N + 1) { setCarouselAnimate(false); setTrackIndex(1); }
+  };
+
+  // Включить анимацию обратно после мгновенного прыжка (два rAF)
+  useEffect(() => {
+    if (!carouselAnimate) {
+      const raf = requestAnimationFrame(() =>
+        requestAnimationFrame(() => setCarouselAnimate(true))
+      );
+      return () => cancelAnimationFrame(raf);
+    }
+  }, [carouselAnimate]);
 
   // Свайп для мобильных
   const handleTouchStart = (e) => {
@@ -512,7 +568,7 @@ function CardView({ card }) {
         {photos.length > 0 && (
           <div className="view-section reveal-right">
             <p className="view-section-title">
-              Фотографии{photos.length > 1 ? ` · ${currentPhoto + 1} / ${photos.length}` : ''}
+              Фотографии{N > 1 ? ` · ${realPhoto + 1} / ${N}` : ''}
             </p>
             {photos.length === 1 ? (
               <>
@@ -534,17 +590,23 @@ function CardView({ card }) {
                 <div className="carousel-download">
                   <button
                     className="download-btn"
-                    onClick={() => downloadPhoto(photos[currentPhoto], currentPhoto + 1)}
+                    onClick={() => downloadPhoto(photos[realPhoto], realPhoto + 1)}
                   >↓ Сохранить</button>
                 </div>
                 <div className="carousel-track-container">
                   <div
                     className="carousel-track"
-                    style={{ transform: `translateX(-${currentPhoto * 100}%)` }}
+                    style={{
+                      transform: `translateX(-${trackIndex * 100}%)`,
+                      transition: carouselAnimate ? undefined : 'none',
+                    }}
+                    onTransitionEnd={handleTransitionEnd}
                   >
+                    <img key="clone-last" src={photos[N - 1]} alt="" className="carousel-slide" aria-hidden="true" />
                     {photos.map((url, i) => (
                       <img key={i} src={url} alt={`Фото ${i + 1}`} className="carousel-slide" />
                     ))}
+                    <img key="clone-first" src={photos[0]} alt="" className="carousel-slide" aria-hidden="true" />
                   </div>
                 </div>
                 <div className="carousel-controls">
@@ -557,8 +619,8 @@ function CardView({ card }) {
                     {photos.map((_, i) => (
                       <span
                         key={i}
-                        className={`carousel-dot ${i === currentPhoto ? 'active' : ''}`}
-                        onClick={() => setCurrentPhoto(i)}
+                        className={`carousel-dot ${i === realPhoto ? 'active' : ''}`}
+                        onClick={() => { setCarouselAnimate(true); setTrackIndex(i + 1); }}
                         aria-label={`Фото ${i + 1}`}
                       />
                     ))}
