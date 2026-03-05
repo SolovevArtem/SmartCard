@@ -2,26 +2,26 @@
 
 /* ── Design Tokens ── */
 :root {
-  --bg-deep:           #F5E6D3;
-  --bg-mid:            #E8D5C4;
-  --bg-surface:        #FDFBF9;
+  --bg-deep:           #fff9f5;
+  --bg-mid:            #fff0eb;
+  --bg-surface:        #ffffff;
 
-  --accent-pink:       #E89B88;
-  --accent-pink-deep:  #D18973;
-  --accent-gold:       #C77B6B;
-  --accent-teal:       #A8C9A4;
+  --accent-pink:       #ff7e5f;
+  --accent-pink-deep:  #ce6a57;
+  --accent-gold:       #feb47b;
+  --accent-teal:       #ffcaa7;
 
-  --text-primary:      #B56B5D;
-  --text-secondary:    rgba(181, 107, 93, 0.85);
-  --text-muted:        rgba(181, 107, 93, 0.60);
+  --text-primary:      #3d3436;
+  --text-secondary:    rgba(61, 52, 54, 0.75);
+  --text-muted:        rgba(120, 113, 108, 0.70);
 
-  --glass-bg:          rgba(253, 251, 249, 0.88);
-  --glass-border:      rgba(232, 155, 136, 0.25);
+  --glass-bg:          rgba(255, 249, 245, 0.90);
+  --glass-border:      rgba(255, 126, 95, 0.20);
   --glass-blur:        16px;
 
-  --shadow-pink:       0 5px 20px rgba(209, 137, 115, 0.20);
-  --shadow-pink-lg:    0 10px 40px rgba(209, 137, 115, 0.30);
-  --shadow-gold:       0 5px 20px rgba(199, 123, 107, 0.25);
+  --shadow-pink:       0 5px 20px rgba(255, 126, 95, 0.18);
+  --shadow-pink-lg:    0 10px 40px rgba(255, 126, 95, 0.28);
+  --shadow-gold:       0 5px 20px rgba(254, 180, 123, 0.22);
 }
 
 /* ── Resets ── */
@@ -32,7 +32,7 @@
 }
 
 body {
-  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background: var(--bg-deep);
@@ -62,12 +62,12 @@ body {
 
 @keyframes pulseGlow {
   0%, 100% {
-    box-shadow: 0 0 18px rgba(232, 155, 136, 0.40),
-                0 4px 20px rgba(209, 137, 115, 0.25);
+    box-shadow: 0 0 18px rgba(255, 126, 95, 0.40),
+                0 4px 20px rgba(255, 126, 95, 0.25);
   }
   50% {
-    box-shadow: 0 0 44px rgba(232, 155, 136, 0.70),
-                0 4px 40px rgba(209, 137, 115, 0.50);
+    box-shadow: 0 0 44px rgba(255, 126, 95, 0.70),
+                0 4px 40px rgba(255, 126, 95, 0.50);
   }
 }
 
@@ -93,9 +93,9 @@ body {
   background: linear-gradient(
     180deg,
     var(--bg-mid)     0%,
-    #EDD9CA           20%,
+    #ffe8dc           20%,
     var(--bg-deep)    45%,
-    #F9EEE5           75%,
+    #fff0eb           75%,
     var(--bg-surface) 100%
   );
 }
@@ -138,7 +138,7 @@ body {
   font-weight: 700;
   letter-spacing: -0.02em;
   color: var(--text-primary);
-  font-family: 'DM Serif Display', sans-serif;
+  font-family: 'Merriweather', sans-serif;
 }
 
 
@@ -163,7 +163,7 @@ body {
   background: radial-gradient(
     circle,
     rgba(232, 155, 136, 0.18) 0%,
-    rgba(168, 201, 164, 0.07)   45%,
+    rgba(255, 126, 95, 0.07)   45%,
     transparent               70%
   );
   top: 50%;
@@ -183,12 +183,12 @@ body {
   animation: fadeInDown 0.75s 0.1s cubic-bezier(0.22, 1, 0.36, 1) both;
   position: relative;
   z-index: 1;
-  font-family: 'DM Serif Display', sans-serif;
+  font-family: 'Merriweather', sans-serif;
 }
 
 .hero-sub {
   font-size: 1.15rem;
-  color: #C77B6B;
+  color: #feb47b;
   font-weight: 400;
   letter-spacing: 0.02em;
   margin-bottom: 2.75rem;
@@ -211,7 +211,7 @@ body {
   color: var(--text-primary);
   margin-bottom: 3rem;
   animation: fadeInUp 0.6s ease both;
-  font-family: 'DM Serif Display', sans-serif;
+  font-family: 'Merriweather', sans-serif;
 }
 
 .steps-row {
@@ -384,7 +384,7 @@ body {
   cursor: pointer;
   animation: pulseGlow 2.5s ease-in-out infinite;
   transition: transform 0.2s ease, filter 0.2s ease;
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Montserrat', sans-serif;
   position: relative;
   z-index: 1;
 }
@@ -527,7 +527,7 @@ body {
 }
 
 .error-screen h2 {
-  font-family: 'DM Serif Display', sans-serif;
+  font-family: 'Merriweather', sans-serif;
   font-size: 1.75rem;
   font-weight: 300;
   color: var(--text-secondary);
@@ -552,7 +552,7 @@ body {
   cursor: pointer;
   margin-top: 0.5rem;
   transition: transform 0.2s, filter 0.2s;
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Montserrat', sans-serif;
 }
 
 .error-screen button:hover {
@@ -579,7 +579,7 @@ body {
 }
 
 .form-header h1 {
-  font-family: 'DM Serif Display', sans-serif;
+  font-family: 'Merriweather', sans-serif;
   font-size: 2.75rem;
   font-weight: 300;
   background: linear-gradient(135deg, var(--text-primary) 30%, var(--accent-pink) 100%);
@@ -631,7 +631,7 @@ form {
   border-bottom: 1px solid rgba(181, 107, 93, 0.15);
   color: var(--text-primary);
   font-size: 0.95rem;
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Montserrat', sans-serif;
   font-weight: 300;
   transition: border-color 0.25s;
   resize: none;
@@ -667,7 +667,7 @@ form {
   cursor: pointer;
   color: var(--text-muted);
   font-size: 0.82rem;
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Montserrat', sans-serif;
 }
 
 .file-name {
@@ -699,7 +699,7 @@ form {
   border-radius: 100px;
   cursor: pointer;
   transition: transform 0.2s, filter 0.2s;
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Montserrat', sans-serif;
   margin-top: 0.5rem;
 }
 
@@ -729,7 +729,7 @@ form {
 }
 
 .card-header h1 {
-  font-family: 'DM Serif Display', sans-serif;
+  font-family: 'Merriweather', sans-serif;
   font-size: 3.25rem;
   font-weight: 300;
   background: linear-gradient(135deg, var(--text-primary) 30%, var(--accent-pink) 100%);
@@ -780,7 +780,7 @@ form {
   font-weight: 300;
   line-height: 1.9;
   font-style: italic;
-  font-family: 'DM Serif Display', sans-serif;
+  font-family: 'Merriweather', sans-serif;
 }
 
 .photos-grid {
@@ -832,7 +832,7 @@ form {
   background: radial-gradient(
     circle,
     rgba(232, 155, 136, 0.14) 0%,
-    rgba(168, 201, 164, 0.06)   45%,
+    rgba(255, 126, 95, 0.06)   45%,
     transparent               70%
   );
   top: 50%;
@@ -868,12 +868,12 @@ form {
   color: var(--text-primary);
   margin-bottom: 0.75rem;
   line-height: 1.2;
-  font-family: 'DM Serif Display', sans-serif;
+  font-family: 'Merriweather', sans-serif;
 }
 
 .wizard-subtitle {
   font-size: 0.95rem;
-  color: #C77B6B;
+  color: #feb47b;
   margin-bottom: 2.5rem;
   line-height: 1.6;
 }
@@ -922,7 +922,7 @@ form {
   border-radius: 12px;
   color: var(--text-primary);
   font-size: 1.15rem;
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Montserrat', sans-serif;
   font-weight: 400;
   padding: 0.75rem 1.25rem;
   text-align: center;
@@ -948,7 +948,7 @@ form {
   border-radius: 12px;
   color: var(--text-primary);
   font-size: 0.95rem;
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Montserrat', sans-serif;
   font-weight: 300;
   padding: 1rem;
   text-align: left;
@@ -991,7 +991,7 @@ form {
   border-radius: 100px;
   cursor: pointer;
   transition: background 0.2s, color 0.2s;
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Montserrat', sans-serif;
   white-space: nowrap;
 }
 
@@ -1011,7 +1011,7 @@ form {
   border-radius: 100px;
   cursor: pointer;
   transition: color 0.2s, border-color 0.2s;
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Montserrat', sans-serif;
   white-space: nowrap;
 }
 
@@ -1054,7 +1054,7 @@ form {
   font-size: 0.8rem;
   font-weight: 500;
   cursor: pointer;
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Montserrat', sans-serif;
   transition: color 0.2s, border-color 0.2s;
 }
 
@@ -1090,12 +1090,12 @@ form {
 .upload-zone--filled {
   border-style: solid;
   border-color: var(--accent-teal);
-  background: rgba(168, 201, 164, 0.06);
+  background: rgba(255, 126, 95, 0.06);
 }
 
 .upload-zone--filled:hover {
   border-color: var(--accent-teal);
-  box-shadow: 0 0 24px rgba(168, 201, 164, 0.18);
+  box-shadow: 0 0 24px rgba(255, 126, 95, 0.18);
 }
 
 .upload-prompt {
@@ -1320,7 +1320,7 @@ form {
   font-weight: 300;
   line-height: 1.9;
   font-style: italic;
-  font-family: 'DM Serif Display', sans-serif;
+  font-family: 'Merriweather', sans-serif;
 }
 
 /* Carousel */
@@ -1438,7 +1438,7 @@ form {
   font-size: 0.75rem;
   font-weight: 500;
   cursor: pointer;
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Montserrat', sans-serif;
   transition: background 0.2s, color 0.2s;
   text-decoration: none;
 }
@@ -1590,7 +1590,7 @@ form {
 .uploading-msg {
   font-size: 1.4rem;
   font-weight: 600;
-  font-family: 'DM Serif Display', sans-serif;
+  font-family: 'Merriweather', sans-serif;
   color: var(--text-primary);
   margin-bottom: 2.25rem;
   min-height: 2rem;
@@ -1743,7 +1743,7 @@ form {
   border: 1px solid rgba(232, 155, 136, 0.30);
   border-radius: 4px;
   overflow: hidden;
-  background: #FDFBF9;
+  background: #ffffff;
   box-shadow:
     0 8px 30px rgba(209, 137, 115, 0.12),
     0 2px 8px  rgba(209, 137, 115, 0.08);
@@ -1760,7 +1760,7 @@ form {
 }
 
 .envelope-message {
-  font-family: 'DM Serif Display', serif;
+  font-family: 'Merriweather', serif;
   font-size: 1.1rem;
   font-style: italic;
   line-height: 1.95;
@@ -1859,7 +1859,7 @@ form {
   font-size: 0.92rem;
   font-weight: 500;
   color: var(--text-primary);
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Montserrat', sans-serif;
   background: none;
   border: none;
   width: 100%;
@@ -1905,19 +1905,19 @@ form {
 
 /* Item */
 .faq-item {
-  border: 1.5px solid rgba(168, 201, 164, 0.45);
+  border: 1.5px solid rgba(255, 126, 95, 0.25);
   border-radius: 12px;
   overflow: hidden;
-  background: rgba(253, 251, 249, 0.80);
+  background: rgba(255, 249, 245, 0.80);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  box-shadow: 0 2px 12px rgba(168, 201, 164, 0.12);
+  box-shadow: 0 2px 12px rgba(255, 126, 95, 0.08);
   transition: border-color 0.25s, box-shadow 0.25s;
 }
 
 .faq-item[data-state="open"] {
-  border-color: rgba(168, 201, 164, 0.75);
-  box-shadow: 0 4px 20px rgba(168, 201, 164, 0.22);
+  border-color: rgba(255, 126, 95, 0.55);
+  box-shadow: 0 4px 20px rgba(255, 126, 95, 0.15);
 }
 
 /* Trigger header */
@@ -1936,23 +1936,23 @@ form {
   border: none;
   cursor: pointer;
   text-align: left;
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Montserrat', sans-serif;
   font-size: 0.95rem;
   font-weight: 600;
-  color: #5a8a56;       /* тёмный зелёный — производное от --accent-teal */
+  color: #ce6a57;
   line-height: 1.4;
   transition: color 0.2s, background 0.2s;
   -webkit-tap-highlight-color: transparent;
 }
 
 .faq-trigger:hover {
-  color: #4a7447;
-  background: rgba(168, 201, 164, 0.08);
+  color: #b35340;
+  background: rgba(255, 126, 95, 0.08);
 }
 
 .faq-trigger[data-state="open"] {
-  color: #4a7447;
-  border-bottom: 1px solid rgba(168, 201, 164, 0.35);
+  color: #b35340;
+  border-bottom: 1px solid rgba(255, 126, 95, 0.25);
 }
 
 /* Chevron icon */
@@ -1960,7 +1960,7 @@ form {
   flex-shrink: 0;
   width: 18px;
   height: 18px;
-  color: #A8C9A4;
+  color: #ff7e5f;
   transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -1993,7 +1993,7 @@ form {
 
 .faq-content-inner {
   padding: 1rem 1.4rem 1.25rem;
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Montserrat', sans-serif;
   font-size: 0.9rem;
   font-weight: 400;
   line-height: 1.75;
@@ -2030,7 +2030,7 @@ form {
   color: #fff;
   border: none;
   border-radius: 50px;
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Montserrat', sans-serif;
   font-size: 0.9rem;
   font-weight: 600;
   cursor: pointer;
