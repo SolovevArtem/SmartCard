@@ -375,10 +375,16 @@ function HomePage() {
 // ── Просмотр заполненной карточки ──
 function CardView({ card }) {
   const videoRef = useRef(null);
-  const [currentPhoto, setCurrentPhoto] = useState(0);
+  const [trackIndex, setTrackIndex] = useState(1);   // 1 = первое реальное фото
+  const [carouselAnimate, setCarouselAnimate] = useState(true);
   const autoTimer = useRef(null);
   const touchStartX = useRef(null);
   const photos = card.photos_urls || [];
+  const N = photos.length;
+  // Реальный индекс фото для dots/счётчика/download
+  const realPhoto = trackIndex <= 0 ? N - 1
+                  : trackIndex >= N + 1 ? 0
+                  : trackIndex - 1;
 
   // Автоплей видео через 4с (muted — обязательно для iOS)
   useEffect(() => {
@@ -405,21 +411,39 @@ function CardView({ card }) {
 
   // Авто-карусель: через 4с бездействия переходим к следующему фото
   const resetAutoRotate = useCallback(() => {
-    if (photos.length <= 1) return;
+    if (N <= 1) return;
     clearTimeout(autoTimer.current);
     autoTimer.current = setTimeout(() => {
-      setCurrentPhoto((p) => (p + 1) % photos.length);
+      setCarouselAnimate(true);
+      setTrackIndex(i => i + 1);
     }, 4000);
-  }, [photos.length]);
+  }, [N]);
 
   useEffect(() => {
     resetAutoRotate();
     return () => clearTimeout(autoTimer.current);
-  }, [currentPhoto, resetAutoRotate]);
+  }, [trackIndex, resetAutoRotate]);
 
-  // Бесконечная прокрутка: оба конца замыкаются
-  const prevPhoto = () => setCurrentPhoto((p) => (p - 1 + photos.length) % photos.length);
-  const nextPhoto = () => setCurrentPhoto((p) => (p + 1) % photos.length);
+  // Infinite-loop навигация
+  const prevPhoto = () => { setCarouselAnimate(true); setTrackIndex(i => i - 1); };
+  const nextPhoto = () => { setCarouselAnimate(true); setTrackIndex(i => i + 1); };
+
+  // После анимации до клона — мгновенно прыгнуть на реальный слайд
+  const handleTransitionEnd = (e) => {
+    if (e.propertyName !== 'transform') return;
+    if (trackIndex === 0)          { setCarouselAnimate(false); setTrackIndex(N); }
+    else if (trackIndex === N + 1) { setCarouselAnimate(false); setTrackIndex(1); }
+  };
+
+  // Включить анимацию обратно после мгновенного прыжка (два rAF)
+  useEffect(() => {
+    if (!carouselAnimate) {
+      const raf = requestAnimationFrame(() =>
+        requestAnimationFrame(() => setCarouselAnimate(true))
+      );
+      return () => cancelAnimationFrame(raf);
+    }
+  }, [carouselAnimate]);
 
   // Свайп для мобильных
   const handleTouchStart = (e) => {
@@ -512,7 +536,7 @@ function CardView({ card }) {
         {photos.length > 0 && (
           <div className="view-section reveal-right">
             <p className="view-section-title">
-              Фотографии{photos.length > 1 ? ` · ${currentPhoto + 1} / ${photos.length}` : ''}
+              Фотографии{N > 1 ? ` · ${realPhoto + 1} / ${N}` : ''}
             </p>
             {photos.length === 1 ? (
               <>
@@ -534,17 +558,23 @@ function CardView({ card }) {
                 <div className="carousel-download">
                   <button
                     className="download-btn"
-                    onClick={() => downloadPhoto(photos[currentPhoto], currentPhoto + 1)}
+                    onClick={() => downloadPhoto(photos[realPhoto], realPhoto + 1)}
                   >↓ Сохранить</button>
                 </div>
                 <div className="carousel-track-container">
                   <div
                     className="carousel-track"
-                    style={{ transform: `translateX(-${currentPhoto * 100}%)` }}
+                    style={{
+                      transform: `translateX(-${trackIndex * 100}%)`,
+                      transition: carouselAnimate ? undefined : 'none',
+                    }}
+                    onTransitionEnd={handleTransitionEnd}
                   >
+                    <img key="clone-last" src={photos[N - 1]} alt="" className="carousel-slide" aria-hidden="true" />
                     {photos.map((url, i) => (
                       <img key={i} src={url} alt={`Фото ${i + 1}`} className="carousel-slide" />
                     ))}
+                    <img key="clone-first" src={photos[0]} alt="" className="carousel-slide" aria-hidden="true" />
                   </div>
                 </div>
                 <div className="carousel-controls">
@@ -557,8 +587,8 @@ function CardView({ card }) {
                     {photos.map((_, i) => (
                       <span
                         key={i}
-                        className={`carousel-dot ${i === currentPhoto ? 'active' : ''}`}
-                        onClick={() => setCurrentPhoto(i)}
+                        className={`carousel-dot ${i === realPhoto ? 'active' : ''}`}
+                        onClick={() => { setCarouselAnimate(true); setTrackIndex(i + 1); }}
                         aria-label={`Фото ${i + 1}`}
                       />
                     ))}
