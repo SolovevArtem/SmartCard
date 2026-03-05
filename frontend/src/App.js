@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useCallback, memo } from 'react';
 import { BrowserRouter as Router, Routes, Route, useParams, useNavigate } from 'react-router-dom';
+import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from './Accordion';
 import './App.css';
 
 const API_URL = process.env.REACT_APP_API_URL || 'https://smartcard-production.up.railway.app';
@@ -267,6 +268,9 @@ function HomePage() {
           <button className="nav-menu-item" onClick={() => scrollTo('features')}>
             <span className="nav-menu-icon">◈</span> Возможности
           </button>
+          <button className="nav-menu-item" onClick={() => scrollTo('faq')}>
+            <span className="nav-menu-icon">?</span> Вопросы
+          </button>
           <div className="nav-menu-divider" />
           <button className="nav-menu-item" onClick={() => scrollTo('contacts')}>
             <span className="nav-menu-icon">✉</span> Контакты
@@ -343,6 +347,71 @@ function HomePage() {
             <p>Просто наведи телефон — всё откроется в браузере</p>
           </div>
         </div>
+      </section>
+
+      {/* ── FAQ ── */}
+      <section className="faq-section" id="faq">
+        <FloatingParticles count={6} />
+        <h2 className="section-title">Часто спрашивают</h2>
+        <Accordion className="faq-accordion" type="single" collapsible>
+
+          <AccordionItem value="q1">
+            <AccordionTrigger>Как получатель открывает открытку?</AccordionTrigger>
+            <AccordionContent>
+              Просто наводит камеру на QR-код — или переходит по ссылке. Открытка загружается прямо в браузере за несколько секунд.
+            </AccordionContent>
+          </AccordionItem>
+
+          <AccordionItem value="q2">
+            <AccordionTrigger>Нужно ли скачивать приложение?</AccordionTrigger>
+            <AccordionContent>
+              Нет. Всё работает в обычном браузере — Safari, Chrome, любом другом. Ни одной установки не требуется.
+            </AccordionContent>
+          </AccordionItem>
+
+          <AccordionItem value="q3">
+            <AccordionTrigger>Сколько фото и видео можно добавить?</AccordionTrigger>
+            <AccordionContent>
+              До 10 фотографий и одно видео весом до 50 МБ. Этого хватит, чтобы рассказать целую историю.
+            </AccordionContent>
+          </AccordionItem>
+
+          <AccordionItem value="q4">
+            <AccordionTrigger>Как долго будет доступна открытка?</AccordionTrigger>
+            <AccordionContent>
+              90 дней с момента создания. Этого достаточно для большинства поздравлений. Получатель может пересматривать сколько угодно раз в течение этого срока.
+            </AccordionContent>
+          </AccordionItem>
+
+          <AccordionItem value="q5">
+            <AccordionTrigger>Подойдёт ли любой смартфон?</AccordionTrigger>
+            <AccordionContent>
+              Да — iPhone, Android, любое устройство с браузером. Видео воспроизводится автоматически, фото листаются свайпом.
+            </AccordionContent>
+          </AccordionItem>
+
+          <AccordionItem value="q6">
+            <AccordionTrigger>Можно ли изменить содержимое после отправки?</AccordionTrigger>
+            <AccordionContent>
+              После публикации контент фиксируется. Поэтому перед отправкой есть режим предпросмотра — проверьте всё заранее.
+            </AccordionContent>
+          </AccordionItem>
+
+          <AccordionItem value="q7">
+            <AccordionTrigger>Что такое физическая открытка и где её взять?</AccordionTrigger>
+            <AccordionContent>
+              Это бумажная открытка с уникальным QR-кодом. Её можно купить у нас на Ozon, Wildberries или Avito. После покупки вы наполняете её своим видео, фото и посланием.
+            </AccordionContent>
+          </AccordionItem>
+
+          <AccordionItem value="q8">
+            <AccordionTrigger>Как передать открытку получателю?</AccordionTrigger>
+            <AccordionContent>
+              Вложите физическую открытку в подарок или отдайте лично. Получатель сам откроет цифровое содержимое в нужный момент — всё будет ждать его внутри.
+            </AccordionContent>
+          </AccordionItem>
+
+        </Accordion>
       </section>
 
       {/* ── Social Footer ── */}

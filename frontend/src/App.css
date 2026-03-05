@@ -1885,6 +1885,137 @@ form {
   margin: 0.4rem 1rem;
 }
 
+/* ══════════════════════════════════════════
+   FAQ (Accordion)  — green accent palette
+══════════════════════════════════════════ */
+.faq-section {
+  position: relative;
+  padding: 5rem 2rem;
+  background: linear-gradient(160deg, var(--bg-mid) 0%, var(--bg-surface) 100%);
+  overflow: hidden;
+}
+
+.faq-accordion {
+  max-width: 720px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+/* Item */
+.faq-item {
+  border: 1.5px solid rgba(168, 201, 164, 0.45);
+  border-radius: 12px;
+  overflow: hidden;
+  background: rgba(253, 251, 249, 0.80);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 2px 12px rgba(168, 201, 164, 0.12);
+  transition: border-color 0.25s, box-shadow 0.25s;
+}
+
+.faq-item[data-state="open"] {
+  border-color: rgba(168, 201, 164, 0.75);
+  box-shadow: 0 4px 20px rgba(168, 201, 164, 0.22);
+}
+
+/* Trigger header */
+.faq-header {
+  margin: 0;
+}
+
+.faq-trigger {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.1rem 1.4rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #5a8a56;       /* тёмный зелёный — производное от --accent-teal */
+  line-height: 1.4;
+  transition: color 0.2s, background 0.2s;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.faq-trigger:hover {
+  color: #4a7447;
+  background: rgba(168, 201, 164, 0.08);
+}
+
+.faq-trigger[data-state="open"] {
+  color: #4a7447;
+  border-bottom: 1px solid rgba(168, 201, 164, 0.35);
+}
+
+/* Chevron icon */
+.faq-chevron {
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+  color: #A8C9A4;
+  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.faq-trigger[data-state="open"] .faq-chevron {
+  transform: rotate(180deg);
+}
+
+/* Content — animated via Radix CSS vars */
+.faq-content {
+  overflow: hidden;
+}
+
+.faq-content[data-state="open"] {
+  animation: faqDown 0.22s ease-out;
+}
+
+.faq-content[data-state="closed"] {
+  animation: faqUp 0.2s ease-out;
+}
+
+@keyframes faqDown {
+  from { height: 0; }
+  to   { height: var(--radix-accordion-content-height); }
+}
+
+@keyframes faqUp {
+  from { height: var(--radix-accordion-content-height); }
+  to   { height: 0; }
+}
+
+.faq-content-inner {
+  padding: 1rem 1.4rem 1.25rem;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 400;
+  line-height: 1.75;
+  color: var(--text-secondary);
+}
+
+@media (max-width: 768px) {
+  .faq-section {
+    padding: 3.5rem 1.25rem;
+  }
+
+  .faq-trigger {
+    font-size: 0.88rem;
+    padding: 1rem 1.1rem;
+  }
+
+  .faq-content-inner {
+    padding: 0.85rem 1.1rem 1rem;
+    font-size: 0.85rem;
+  }
+}
+
 /* ── Кнопка «Сохранить фото» (плавающая) ── */
 .save-all-btn {
   position: fixed;
