@@ -1886,19 +1886,19 @@ form {
 
 /* Item */
 .faq-item {
-  border: 1.5px solid rgba(255, 126, 95, 0.25);
+  border: 1.5px solid rgba(168, 201, 164, 0.45);
   border-radius: 12px;
   overflow: hidden;
-  background: rgba(255, 249, 245, 0.80);
+  background: rgba(168, 201, 164, 0.22);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  box-shadow: 0 2px 12px rgba(255, 126, 95, 0.08);
+  box-shadow: 0 2px 12px rgba(168, 201, 164, 0.12);
   transition: border-color 0.25s, box-shadow 0.25s;
 }
 
 .faq-item[data-state="open"] {
-  border-color: rgba(255, 126, 95, 0.55);
-  box-shadow: 0 4px 20px rgba(255, 126, 95, 0.15);
+  border-color: rgba(168, 201, 164, 0.65);
+  box-shadow: 0 4px 20px rgba(168, 201, 164, 0.22);
 }
 
 /* Trigger header */
@@ -1928,7 +1928,7 @@ form {
 
 .faq-trigger:hover {
   color: #c45e55;
-  background: rgba(217, 116, 107, 0.08);
+  background: rgba(168, 201, 164, 0.15);
 }
 
 .faq-trigger[data-state="open"] {
@@ -2079,6 +2079,7 @@ form {
 .hsa-section--light {
   position: sticky;
   top: 0;
+  background: linear-gradient(to top, #ffe8dc, #fff9f5);
 }
 
 .hsa-section--dark {
