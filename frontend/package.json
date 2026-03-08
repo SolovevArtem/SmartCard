@@ -3,6 +3,8 @@
   "version": "1.0.0",
   "private": true,
   "dependencies": {
+    "@fontsource/merriweather": "^5.2.11",
+    "@fontsource/montserrat": "^5.2.8",
     "@radix-ui/react-accordion": "^1.2.12",
     "aws-sdk": "^2.1490.0",
     "cors": "^2.8.5",
