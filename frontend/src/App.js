@@ -3,7 +3,21 @@ import { BrowserRouter as Router, Routes, Route, useParams, useNavigate } from '
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from './Accordion';
 import HeroScrollAnimation from './HeroScrollAnimation';
 import TubeLightNav from './TubeLightNav';
+import ProductCard from './ProductCard';
 import './App.css';
+
+const STORES = [
+  { name: 'OZON',        href: '#' },
+  { name: 'Wildberries', href: '#' },
+  { name: 'Avito',       href: '#' },
+  { name: 'Telegram',    href: '#' },
+];
+
+const PRODUCTS = [
+  { imageUrl: '/card-1.png', title: 'Люби Твори Мечтай',  stores: STORES },
+  { imageUrl: '/card-2.png', title: 'Смело Смотри Вперед', stores: STORES },
+  { imageUrl: '/card-3.png', title: 'Сияй',                stores: STORES },
+];
 
 const API_URL = process.env.REACT_APP_API_URL || 'https://smartcard-production.up.railway.app';
 
@@ -270,31 +284,14 @@ function HomePage() {
 
       <HeroScrollAnimation onCreateCard={handleCreate} />
 
-      {/* ── Возможности ── */}
+      {/* ── Купить ── */}
       <section className="features-section" id="features">
         <FloatingParticles count={8} />
-        <h2 className="section-title">Возможности</h2>
+        <h2 className="section-title">Купить</h2>
         <div className="features-grid">
-          <div className="feature-card">
-            <IconVideo />
-            <h3>Видео в открытке</h3>
-            <p>Оживи поздравление личным видео</p>
-          </div>
-          <div className="feature-card">
-            <IconPhotos />
-            <h3>Фото-галерея</h3>
-            <p>Целая история воспоминаний в одной открытке</p>
-          </div>
-          <div className="feature-card">
-            <IconMessage />
-            <h3>Личное сообщение</h3>
-            <p>Тёплые слова прямо от тебя</p>
-          </div>
-          <div className="feature-card">
-            <IconNoApp />
-            <h3>Без приложений</h3>
-            <p>Просто наведи телефон — всё откроется в браузере</p>
-          </div>
+          {PRODUCTS.map(p => (
+            <ProductCard key={p.imageUrl} imageUrl={p.imageUrl} title={p.title} stores={p.stores} />
+          ))}
         </div>
       </section>
 
