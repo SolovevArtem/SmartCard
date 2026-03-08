@@ -503,20 +503,54 @@ body {
 
 /* ── Site Footer ── */
 .site-footer {
+  padding: 3rem 2rem 2rem;
+  background: transparent;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 1.25rem;
-  padding: 3rem 2rem 2.5rem;
-  border-top: 1px solid var(--glass-border);
+}
+
+.site-footer__card {
+  position: relative;
+  width: 100%;
+  max-width: 860px;
   background: rgba(232, 213, 196, 0.55);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
+  border-radius: 1.5rem;
+  padding: 2.5rem 2.5rem 2rem;
 }
 
-.site-footer__social {
+.site-footer__tape {
+  position: absolute;
+  top: -14px;
+  display: block;
+  line-height: 0;
+  opacity: 0.9;
+}
+.site-footer__tape--left {
+  left: 2.5rem;
+  transform: rotate(-3deg);
+}
+.site-footer__tape--right {
+  right: 2.5rem;
+  transform: rotate(3deg);
+}
+
+.site-footer__body {
   display: flex;
-  gap: 1rem;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 2rem;
+}
+
+.site-footer__brand-col {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
 .site-footer__brand {
@@ -525,20 +559,26 @@ body {
   font-weight: 900;
   letter-spacing: 0.06em;
   color: var(--accent-pink);
+  margin: 0;
 }
 
-.site-footer__divider {
-  width: 60px;
-  height: 1.5px;
-  background: var(--glass-border);
-  border-radius: 9999px;
+.site-footer__tagline {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.site-footer__social {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
 }
 
 .site-footer__nav {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 0.5rem 1.5rem;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.5rem;
 }
 
 .site-footer__nav-link {
@@ -550,7 +590,8 @@ body {
   font-weight: 500;
   color: var(--text-secondary);
   transition: color 0.2s;
-  padding: 0.25rem 0;
+  padding: 0.2rem 0;
+  text-align: right;
 }
 .site-footer__nav-link:hover {
   color: var(--accent-pink);
@@ -560,6 +601,25 @@ body {
   font-size: 0.72rem;
   color: var(--text-muted);
   letter-spacing: 0.05em;
+}
+
+@media (max-width: 640px) {
+  .site-footer__tape {
+    display: none;
+  }
+  .site-footer__card {
+    padding: 1.75rem 1.5rem 1.5rem;
+  }
+  .site-footer__body {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  .site-footer__nav {
+    align-items: flex-start;
+  }
+  .site-footer__nav-link {
+    text-align: left;
+  }
 }
 
 /* ── Sticky Bottom CTA ── */

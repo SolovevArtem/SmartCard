@@ -135,6 +135,19 @@ const IconWildberries = memo(() => (
   </svg>
 ));
 
+const TapeIcon = memo(() => (
+  <svg viewBox="0 0 60 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="60" height="24">
+    <rect x="0" y="0" width="60" height="24" rx="3" fill="#ce6a57" opacity="0.75"/>
+    <rect x="0" y="0" width="60" height="24" rx="3" fill="url(#tapeShine)" opacity="0.3"/>
+    <defs>
+      <linearGradient id="tapeShine" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stopColor="white" stopOpacity="0.5"/>
+        <stop offset="100%" stopColor="white" stopOpacity="0"/>
+      </linearGradient>
+    </defs>
+  </svg>
+));
+
 // ── Hero SVG gift illustration ──
 const HeroIllustration = memo(() => (
   <div className="hero-illustration" aria-hidden="true">
@@ -352,34 +365,45 @@ function HomePage() {
 
       {/* ── Site Footer ── */}
       <footer className="site-footer" id="contacts">
-        <div className="site-footer__social">
-          <a href="https://t.me/smartcardgift" target="_blank" rel="noreferrer"
-             className="social-link" aria-label="Telegram">
-            <IconTelegram />
-          </a>
-          <a href="https://instagram.com/smartcardgift" target="_blank" rel="noreferrer"
-             className="social-link" aria-label="Instagram">
-            <IconInstagram />
-          </a>
+        <div className="site-footer__card">
+          <span className="site-footer__tape site-footer__tape--left"><TapeIcon /></span>
+          <span className="site-footer__tape site-footer__tape--right"><TapeIcon /></span>
+
+          <div className="site-footer__body">
+            <div className="site-footer__brand-col">
+              <p className="site-footer__brand">УМНАЯ ОТКРЫТКА</p>
+              <p className="site-footer__tagline">Подарочные открытки с видео и музыкой</p>
+              <div className="site-footer__social">
+                <a href="https://t.me/smartcardgift" target="_blank" rel="noreferrer"
+                   className="social-link" aria-label="Telegram">
+                  <IconTelegram />
+                </a>
+                <a href="https://instagram.com/smartcardgift" target="_blank" rel="noreferrer"
+                   className="social-link" aria-label="Instagram">
+                  <IconInstagram />
+                </a>
+              </div>
+            </div>
+
+            <nav className="site-footer__nav">
+              <button className="site-footer__nav-link"
+                onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+                Главная страница
+              </button>
+              <button className="site-footer__nav-link" onClick={() => scrollTo('hsa-dark')}>
+                Как это работает
+              </button>
+              <button className="site-footer__nav-link" onClick={() => scrollTo('faq')}>
+                Часто задаваемые вопросы
+              </button>
+              <button className="site-footer__nav-link" onClick={() => scrollTo('features')}>
+                Купить открытку
+              </button>
+            </nav>
+          </div>
         </div>
-        <p className="site-footer__brand">УМНАЯ ОТКРЫТКА</p>
-        <div className="site-footer__divider" />
-        <nav className="site-footer__nav">
-          <button className="site-footer__nav-link"
-            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-            Главная страница
-          </button>
-          <button className="site-footer__nav-link" onClick={() => scrollTo('hsa-dark')}>
-            Как это работает
-          </button>
-          <button className="site-footer__nav-link" onClick={() => scrollTo('faq')}>
-            Часто задаваемые вопросы
-          </button>
-          <button className="site-footer__nav-link" onClick={() => scrollTo('features')}>
-            Купить открытку
-          </button>
-        </nav>
-        <p className="site-footer__copy">© 2025 Умная открытка</p>
+
+        <p className="site-footer__copy">© {new Date().getFullYear()} Умная открытка</p>
       </footer>
 
     </div>
