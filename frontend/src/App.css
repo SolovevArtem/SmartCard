@@ -129,7 +129,13 @@ body {
   translate: 0 0;
 }
 @media (min-width: 768px) {
-  .tubelight-nav { bottom: auto; top: 1.5rem; }
+  .tubelight-nav {
+    bottom: auto;
+    top: 1.5rem;
+    opacity: 1;
+    pointer-events: auto;
+    translate: 0 0;
+  }
 }
 
 .tubelight-nav__pill {
@@ -2069,6 +2075,7 @@ form {
 }
 
 .hsa-section {
+  height: 100vh;   /* fallback для старых браузеров */
   height: 100svh; /* iOS-safe */
   display: flex;
   align-items: center;
