@@ -604,9 +604,17 @@ body {
 }
 
 @media (max-width: 640px) {
-  .site-footer__tape {
-    display: none;
+  /* tape остаётся видимым, но меньше */
+  .site-footer__tape svg {
+    width: 44px;
+    height: 18px;
   }
+  .site-footer__tape {
+    top: -10px;
+  }
+  .site-footer__tape--left  { left: 1rem; }
+  .site-footer__tape--right { right: 1rem; }
+
   .site-footer__card {
     padding: 1.75rem 1.5rem 1.5rem;
   }
@@ -1932,9 +1940,7 @@ form {
   text-align: right;
 }
 
-/* ══════════════════════════════════════════
-   FAQ (Accordion)  — green accent palette
-══════════════════════════════════════════ */
+/* ── FAQ Section ── */
 .faq-section {
   position: relative;
   padding: 5rem 2rem;
@@ -1952,22 +1958,18 @@ form {
 
 /* Item */
 .faq-item {
-  border: 1.5px solid rgba(168, 201, 164, 0.45);
-  border-radius: 12px;
+  border: 2px solid #000;
+  border-radius: 5px;
   overflow: hidden;
-  background: rgba(168, 201, 164, 0.22);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  box-shadow: 0 2px 12px rgba(168, 201, 164, 0.12);
-  transition: border-color 0.25s, box-shadow 0.25s;
+  box-shadow: 4px 4px 0px 0px #000;
+  transition: box-shadow 0.15s;
 }
 
 .faq-item[data-state="open"] {
-  border-color: rgba(168, 201, 164, 0.65);
-  box-shadow: 0 4px 20px rgba(168, 201, 164, 0.22);
+  box-shadow: 4px 4px 0px 0px #000;
 }
 
-/* Trigger header */
+/* Trigger */
 .faq-header {
   margin: 0;
 }
@@ -1978,36 +1980,33 @@ form {
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
-  padding: 1.1rem 1.4rem;
-  background: transparent;
+  padding: 1rem 1.25rem;
+  background: #ce6a57;
   border: none;
+  border-bottom: 2px solid #000;
   cursor: pointer;
   text-align: left;
   font-family: 'Montserrat', sans-serif;
   font-size: 0.95rem;
-  font-weight: 600;
-  color: #D9746B;
-  line-height: 1.4;
-  transition: color 0.2s, background 0.2s;
-  -webkit-tap-highlight-color: transparent;
+  font-weight: 700;
+  color: #fff;
+  transition: background 0.15s;
+}
+
+.faq-trigger[data-state="closed"] {
+  border-bottom: none;
 }
 
 .faq-trigger:hover {
-  color: #c45e55;
-  background: rgba(168, 201, 164, 0.15);
+  background: #b85a49;
 }
 
-.faq-trigger[data-state="open"] {
-  color: #c45e55;
-  border-bottom: 1px solid rgba(255, 126, 95, 0.25);
-}
-
-/* Chevron icon */
+/* Chevron */
 .faq-chevron {
   flex-shrink: 0;
   width: 18px;
   height: 18px;
-  color: #ff7e5f;
+  color: #fff;
   transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -2015,9 +2014,10 @@ form {
   transform: rotate(180deg);
 }
 
-/* Content — animated via Radix CSS vars */
+/* Content */
 .faq-content {
   overflow: hidden;
+  background: #fff;
 }
 
 .faq-content[data-state="open"] {
@@ -2039,26 +2039,24 @@ form {
 }
 
 .faq-content-inner {
-  padding: 1rem 1.4rem 1.25rem;
+  padding: 1rem 1.25rem 1.25rem;
   font-family: 'Montserrat', sans-serif;
   font-size: 0.9rem;
-  font-weight: 400;
+  font-weight: 500;
   line-height: 1.75;
-  color: var(--text-secondary);
+  color: #1a1a1a;
 }
 
 @media (max-width: 768px) {
   .faq-section {
     padding: 3.5rem 1.25rem;
   }
-
   .faq-trigger {
     font-size: 0.88rem;
-    padding: 1rem 1.1rem;
+    padding: 0.9rem 1rem;
   }
-
   .faq-content-inner {
-    padding: 0.85rem 1.1rem 1rem;
+    padding: 0.85rem 1rem 1rem;
     font-size: 0.85rem;
   }
 }
