@@ -31,23 +31,42 @@ export default function HeroScrollAnimation({ onCreateCard }) {
             <p className="hsa-eyebrow">Умная открытка</p>
             <h2 className="hsa-title">
               Открытка{' '}
-              <motion.span
-                className="hsa-title-highlight"
-                initial={{ backgroundSize: '0% 100%' }}
-                animate={{ backgroundSize: '100% 100%' }}
-                transition={{ duration: 1.8, ease: 'linear', delay: 0.6 }}
-                style={{
-                  backgroundImage: 'linear-gradient(90deg, #ff7e5f, #feb47b)',
-                  backgroundRepeat: 'no-repeat',
-                  backgroundPosition: 'left center',
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
-                  backgroundClip: 'text',
-                  display: 'inline',
-                }}
-              >
-                которая оживает
-              </motion.span>
+              <span className="hsa-title-highlight">
+                {/* Pink highlight bar sweeping left→right, then reversing right→left */}
+                <motion.span
+                  aria-hidden="true"
+                  className="hsa-highlight-bar"
+                  animate={{
+                    clipPath: [
+                      'inset(0 100% 0 0 round 3px)',
+                      'inset(0 0% 0 0 round 3px)',
+                      'inset(0 0% 0 0 round 3px)',
+                      'inset(0 100% 0 0 round 3px)',
+                      'inset(0 100% 0 0 round 3px)',
+                    ],
+                  }}
+                  transition={{ duration: 5, times: [0, 0.16, 0.5, 0.66, 1], repeat: Infinity, ease: 'easeInOut' }}
+                />
+                {/* Base text — visible from start in normal color */}
+                <span className="hsa-highlight-text-base">которая оживает</span>
+                {/* White text overlay — clipped to match the highlight bar */}
+                <motion.span
+                  aria-hidden="true"
+                  className="hsa-highlight-text-over"
+                  animate={{
+                    clipPath: [
+                      'inset(0 100% 0 0)',
+                      'inset(0 0% 0 0)',
+                      'inset(0 0% 0 0)',
+                      'inset(0 100% 0 0)',
+                      'inset(0 100% 0 0)',
+                    ],
+                  }}
+                  transition={{ duration: 5, times: [0, 0.16, 0.5, 0.66, 1], repeat: Infinity, ease: 'easeInOut' }}
+                >
+                  которая оживает
+                </motion.span>
+              </span>
             </h2>
             <p className="hsa-subtitle">
               Создайте открытку, которая оживает — с видео, фото и тёплыми словами прямо внутри.

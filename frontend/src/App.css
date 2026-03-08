@@ -533,7 +533,6 @@ body {
   width: auto;
   max-width: 80px;
   object-fit: contain;
-  filter: brightness(0) invert(1);
 }
 
 .feature-card {
@@ -2396,6 +2395,34 @@ form {
 
 .hsa-title--dark {
   color: #2d3a2d;
+}
+
+/* ── Hero title highlight marker animation ── */
+.hsa-title-highlight {
+  position: relative;
+  display: inline-block;
+}
+.hsa-highlight-bar {
+  position: absolute;
+  inset: 2px -4px;
+  background: #ff7e5f;
+  border-radius: 3px;
+  display: block;
+  z-index: 0;
+}
+.hsa-highlight-text-base {
+  position: relative;
+  z-index: 1;
+}
+.hsa-highlight-text-over {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  display: block;
+  color: #fff;
+  white-space: nowrap;
+  z-index: 2;
+  font: inherit;
+  pointer-events: none;
 }
 
 .hsa-subtitle {
