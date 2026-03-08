@@ -799,6 +799,66 @@ function CardWizard({ cardId, onComplete }) {
   const handleSubmit = async () => {
     setUploading(true);
     try {
+      // Attempt presigned URL upload flow
+      let usedPresigned = false;
+      try {
+        const urlRes = await fetch(`${API_URL}/api/cards/${cardId}/upload-url`);
+        if (urlRes.ok) {
+          const urlData = await urlRes.json();
+          if (urlData.success) {
+            usedPresigned = true;
+
+            // Upload video directly to S3
+            let finalVideoUrl = '';
+            if (videoFile) {
+              const videoRes = await fetch(urlData.videoUploadUrl, {
+                method: 'PUT',
+                body: videoFile,
+                headers: { 'Content-Type': videoFile.type || 'video/mp4' }
+              });
+              if (!videoRes.ok) throw new Error('Video upload to S3 failed');
+              // Derive public URL from the presigned URL (strip query params)
+              finalVideoUrl = urlData.videoUploadUrl.split('?')[0];
+            }
+
+            // Upload each photo directly to S3
+            const finalPhotoUrls = [];
+            for (let i = 0; i < photoFiles.length; i++) {
+              const photo = photoFiles[i];
+              const photoRes = await fetch(urlData.photoUploadUrls[i], {
+                method: 'PUT',
+                body: photo,
+                headers: { 'Content-Type': photo.type || 'image/jpeg' }
+              });
+              if (!photoRes.ok) throw new Error(`Photo ${i} upload to S3 failed`);
+              finalPhotoUrls.push(urlData.photoUploadUrls[i].split('?')[0]);
+            }
+
+            // Confirm upload
+            const confirmRes = await fetch(`${API_URL}/api/cards/${cardId}/confirm-upload`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                senderName,
+                message,
+                videoUrl: finalVideoUrl,
+                photoUrls: finalPhotoUrls
+              })
+            });
+            const confirmData = await confirmRes.json();
+            if (confirmData.success) {
+              onComplete();
+              return;
+            }
+            throw new Error(confirmData.error || 'Confirm upload failed');
+          }
+        }
+      } catch (presignedErr) {
+        if (usedPresigned) throw presignedErr;
+        console.warn('Presigned URL flow failed, falling back to direct upload:', presignedErr);
+      }
+
+      // Fallback: direct multipart upload through backend
       const formData = new FormData();
       formData.append('senderName', senderName);
       formData.append('message', message);
