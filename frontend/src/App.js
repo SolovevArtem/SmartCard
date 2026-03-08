@@ -269,10 +269,13 @@ function HomePage() {
 
   const handleCreate = async () => {
     setLoading(true);
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 9000);
     try {
       const response = await fetch(`${API_URL}/api/cards/create`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' }
+        headers: { 'Content-Type': 'application/json' },
+        signal: controller.signal
       });
       const data = await response.json();
       if (data.success) {
@@ -281,9 +284,14 @@ function HomePage() {
         alert('Ошибка создания карточки: ' + data.error);
       }
     } catch (error) {
-      console.error('Error creating card:', error);
-      alert('Ошибка подключения к серверу');
+      if (error.name === 'AbortError') {
+        alert('Сервер не ответил. Попробуйте ещё раз.');
+      } else {
+        console.error('Error creating card:', error);
+        alert('Ошибка подключения к серверу');
+      }
     } finally {
+      clearTimeout(timer);
       setLoading(false);
     }
   };
@@ -1136,8 +1144,12 @@ function CardPage() {
   }, [cardId]);
 
   const loadCard = async () => {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 9000);
     try {
-      const response = await fetch(`${API_URL}/api/cards/${cardId}`);
+      const response = await fetch(`${API_URL}/api/cards/${cardId}`, {
+        signal: controller.signal
+      });
       const data = await response.json();
       if (data.success) {
         setCard(data.card);
@@ -1145,9 +1157,14 @@ function CardPage() {
         setError(data.error || 'Карточка не найдена');
       }
     } catch (err) {
-      console.error('Error loading card:', err);
-      setError('Ошибка подключения к серверу');
+      if (err.name === 'AbortError') {
+        setError('timeout');
+      } else {
+        console.error('Error loading card:', err);
+        setError('Ошибка подключения к серверу');
+      }
     } finally {
+      clearTimeout(timer);
       setLoading(false);
     }
   };
@@ -1162,11 +1179,21 @@ function CardPage() {
   }
 
   if (error) {
+    const isTimeout = error === 'timeout';
     return (
       <div className="error-screen">
-        <h2>❌ Ошибка</h2>
-        <p>{error}</p>
-        <button onClick={() => window.location.href = '/'}>На главную</button>
+        <h2>{isTimeout ? '⏱ Долгое ожидание' : '❌ Ошибка'}</h2>
+        <p>
+          {isTimeout
+            ? 'Сервер не ответил вовремя. Возможно, медленный интернет.'
+            : error}
+        </p>
+        <button onClick={() => { setError(null); setLoading(true); loadCard(); }}>
+          🔄 Попробовать ещё раз
+        </button>
+        <button onClick={() => window.location.href = '/'} style={{ marginTop: '0.5rem' }}>
+          На главную
+        </button>
       </div>
     );
   }
