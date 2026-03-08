@@ -7,15 +7,16 @@ function ProductCard({ imageUrl, title, stores }) {
       <div className="product-card__bg" style={{ backgroundImage: `url(${imageUrl})` }} />
       <div className="product-card__gradient" />
       <div className={`product-card__overlay ${open ? 'product-card__overlay--open' : ''}`}>
-        <p className="product-card__overlay-title">Купить на:</p>
-        {stores.map((s, i) => (
-          <a key={s.name} href={s.href || '#'}
-             className="product-card__store-link"
-             style={{ animationDelay: `${i * 0.08}s` }}
-             onClick={e => e.stopPropagation()}>
-            → {s.name}
-          </a>
-        ))}
+        <div className="product-card__store-grid">
+          {stores.map((s, i) => (
+            <a key={s.name} href={s.href || '#'}
+               className="product-card__store-logo-link"
+               style={{ animationDelay: `${i * 0.08}s` }}
+               onClick={e => e.stopPropagation()}>
+              <img src={s.logo} alt={s.name} className="product-card__store-logo" />
+            </a>
+          ))}
+        </div>
       </div>
       <div className="product-card__content">
         <h3 className="product-card__title">{title}</h3>

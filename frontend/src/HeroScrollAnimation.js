@@ -29,7 +29,26 @@ export default function HeroScrollAnimation({ onCreateCard }) {
           <div className="hsa-grid" aria-hidden="true" />
           <div className="hsa-content">
             <p className="hsa-eyebrow">Умная открытка</p>
-            <h2 className="hsa-title">Живая открытка<br />в ваших руках</h2>
+            <h2 className="hsa-title">
+              Открытка{' '}
+              <motion.span
+                className="hsa-title-highlight"
+                initial={{ backgroundSize: '0% 100%' }}
+                animate={{ backgroundSize: '100% 100%' }}
+                transition={{ duration: 1.8, ease: 'linear', delay: 0.6 }}
+                style={{
+                  backgroundImage: 'linear-gradient(90deg, #ff7e5f, #feb47b)',
+                  backgroundRepeat: 'no-repeat',
+                  backgroundPosition: 'left center',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  backgroundClip: 'text',
+                  display: 'inline',
+                }}
+              >
+                которая оживает
+              </motion.span>
+            </h2>
             <p className="hsa-subtitle">
               Создайте открытку, которая оживает — с видео, фото и тёплыми словами прямо внутри.
             </p>

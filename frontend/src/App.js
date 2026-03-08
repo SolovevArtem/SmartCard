@@ -7,10 +7,10 @@ import ProductCard from './ProductCard';
 import './App.css';
 
 const STORES = [
-  { name: 'OZON',        href: '#' },
-  { name: 'Wildberries', href: '#' },
-  { name: 'Avito',       href: '#' },
-  { name: 'Telegram',    href: '#' },
+  { name: 'OZON',        href: '#', logo: '/logos/ozon.svg'     },
+  { name: 'Wildberries', href: '#', logo: '/logos/wb.svg'       },
+  { name: 'Avito',       href: '#', logo: '/logos/avito.svg'    },
+  { name: 'Telegram',    href: '#', logo: '/logos/telegram.svg' },
 ];
 
 const PRODUCTS = [
@@ -365,6 +365,8 @@ function HomePage() {
         <div className="site-footer__card">
           <span className="site-footer__tape site-footer__tape--left"><TapeIcon /></span>
           <span className="site-footer__tape site-footer__tape--right"><TapeIcon /></span>
+          <span className="site-footer__tape site-footer__tape--bottom-left"><TapeIcon /></span>
+          <span className="site-footer__tape site-footer__tape--bottom-right"><TapeIcon /></span>
 
           <div className="site-footer__body">
             <div className="site-footer__brand-col">
