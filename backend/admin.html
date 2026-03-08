@@ -125,6 +125,71 @@
     .stat-card:nth-child(2) { animation-delay: 0.15s; }
     .stat-card:nth-child(3) { animation-delay: 0.25s; }
     .stat-card:nth-child(4) { animation-delay: 0.35s; }
+    .stat-card:nth-child(5) { animation-delay: 0.45s; }
+    .stat-card:nth-child(6) { animation-delay: 0.55s; }
+    .stat-card:nth-child(7) { animation-delay: 0.65s; }
+
+    .channel-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 0.75rem;
+      font-size: 0.9rem;
+    }
+
+    .channel-table th,
+    .channel-table td {
+      text-align: left;
+      padding: 0.5rem 0.75rem;
+      border-bottom: 1px solid rgba(181, 107, 93, 0.15);
+      color: #B56B5D;
+    }
+
+    .channel-table th {
+      font-weight: 600;
+      color: rgba(181, 107, 93, 0.75);
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    details summary {
+      cursor: pointer;
+      font-weight: 600;
+      color: rgba(181, 107, 93, 0.85);
+      font-size: 0.9rem;
+      padding: 0.5rem 0;
+      user-select: none;
+    }
+
+    details summary:hover {
+      color: #B56B5D;
+    }
+
+    .auth-row {
+      display: flex;
+      gap: 0.75rem;
+      align-items: flex-end;
+    }
+
+    .auth-row .form-group {
+      flex: 1;
+      margin-bottom: 0;
+    }
+
+    .btn-save-key {
+      padding: 0.75rem 1.5rem;
+      white-space: nowrap;
+      width: auto;
+    }
+
+    .key-status {
+      font-size: 0.82rem;
+      margin-top: 0.5rem;
+      min-height: 1.2em;
+    }
+
+    .key-status.ok  { color: #4caf88; }
+    .key-status.err { color: #ff8a8a; }
 
     .stat-card:hover {
       transform: translateY(-3px);
@@ -303,6 +368,23 @@
       <p style="font-size: 0.85rem; margin-top: 0.5rem; opacity: 0.55;">Создайте партию уникальных ссылок для создания карточек</p>
     </div>
 
+    <!-- Авторизация -->
+    <div class="card">
+      <h2>🔑 Ключ администратора</h2>
+      <div class="auth-row">
+        <div class="form-group">
+          <label for="adminKeyInput">Admin Key</label>
+          <input
+            type="password"
+            id="adminKeyInput"
+            placeholder="Введите ключ"
+          >
+        </div>
+        <button class="btn btn-save-key" onclick="saveAdminKey()">Сохранить</button>
+      </div>
+      <div class="key-status" id="keyStatus"></div>
+    </div>
+
     <!-- Статистика -->
     <div class="card">
       <h2>📊 Статистика карточек</h2>
@@ -324,8 +406,34 @@
           <div class="stat-number" id="filledCards">0</div>
           <div class="stat-label">Заполненные</div>
         </div>
+        <div class="stat-card">
+          <div class="stat-number" id="todayCards">0</div>
+          <div class="stat-label">Сегодня</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number" id="weekCards">0</div>
+          <div class="stat-label">За неделю</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number" id="viewsCards">0</div>
+          <div class="stat-label">Просмотров</div>
+        </div>
       </div>
-      <button class="btn btn-secondary" onclick="loadStats()">🔄 Обновить статистику</button>
+
+      <details id="channelDetails" style="margin-top:1rem; display:none;">
+        <summary>📡 По каналам</summary>
+        <table class="channel-table">
+          <thead>
+            <tr><th>Канал</th><th>Карточек</th></tr>
+          </thead>
+          <tbody id="channelTableBody"></tbody>
+        </table>
+      </details>
+
+      <div style="display:flex; gap:0.75rem; margin-top:1rem; flex-wrap:wrap;">
+        <button class="btn btn-secondary" style="flex:1; margin-top:0;" onclick="loadStats()">🔄 Обновить статистику</button>
+        <button class="btn btn-secondary" style="flex:1; margin-top:0;" onclick="exportCSV()">📥 Экспорт CSV</button>
+      </div>
     </div>
 
     <!-- Генерация карточек -->
@@ -341,11 +449,11 @@
             id="count"
             name="count"
             min="1"
-            max="1000"
+            max="500"
             value="10"
             required
           >
-          <small>Максимум 1000 карточек за раз</small>
+          <small>Максимум 500 карточек за раз</small>
         </div>
 
         <div class="form-group">
@@ -368,24 +476,80 @@
   </div>
 
   <script>
+    function adminHeaders(extra) {
+      return Object.assign(
+        { 'Content-Type': 'application/json', 'X-Admin-Key': sessionStorage.getItem('adminKey') || '' },
+        extra
+      );
+    }
+
     window.addEventListener('DOMContentLoaded', () => {
+      if (sessionStorage.getItem('adminKey')) {
+        document.getElementById('adminKeyInput').value = '••••••••';
+        document.getElementById('keyStatus').textContent = 'Ключ сохранён в сессии';
+        document.getElementById('keyStatus').className = 'key-status ok';
+      }
       loadStats();
     });
+
+    async function saveAdminKey() {
+      const input = document.getElementById('adminKeyInput');
+      const statusEl = document.getElementById('keyStatus');
+      const key = input.value.trim();
+      if (!key || key === '••••••••') {
+        statusEl.textContent = 'Введите ключ';
+        statusEl.className = 'key-status err';
+        return;
+      }
+      sessionStorage.setItem('adminKey', key);
+      input.value = '••••••••';
+      statusEl.textContent = '⏳ Проверяем...';
+      statusEl.className = 'key-status';
+      try {
+        const res = await fetch('/api/stats', { headers: adminHeaders() });
+        if (res.ok) {
+          statusEl.textContent = '✅ Ключ принят';
+          statusEl.className = 'key-status ok';
+          loadStats();
+        } else {
+          statusEl.textContent = `❌ Ошибка ${res.status} — неверный ключ?`;
+          statusEl.className = 'key-status err';
+        }
+      } catch (e) {
+        statusEl.textContent = '❌ Нет связи с сервером';
+        statusEl.className = 'key-status err';
+      }
+    }
 
     async function loadStats() {
       const alertDiv = document.getElementById('statsAlert');
       try {
-        const response = await fetch('/api/stats');
+        const response = await fetch('/api/stats', { headers: adminHeaders() });
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
         const data = await response.json();
         if (data.success) {
-          document.getElementById('totalCards').textContent = data.stats.total;
-          document.getElementById('newCards').textContent = data.stats.new;
-          document.getElementById('activeCards').textContent = data.stats.active;
-          document.getElementById('filledCards').textContent = data.stats.filled;
+          const s = data.stats;
+          document.getElementById('totalCards').textContent  = s.total        ?? 0;
+          document.getElementById('newCards').textContent    = s.new          ?? 0;
+          document.getElementById('activeCards').textContent = s.active       ?? 0;
+          document.getElementById('filledCards').textContent = s.filled       ?? 0;
+          document.getElementById('todayCards').textContent  = s.today        ?? 0;
+          document.getElementById('weekCards').textContent   = s.this_week    ?? 0;
+          document.getElementById('viewsCards').textContent  = s.total_views  ?? 0;
           alertDiv.innerHTML = '';
+
+          // Channel breakdown
+          const byChannel = s.by_channel;
+          if (byChannel && Object.keys(byChannel).length > 0) {
+            const tbody = document.getElementById('channelTableBody');
+            tbody.innerHTML = Object.entries(byChannel)
+              .sort((a, b) => b[1] - a[1])
+              .map(([ch, cnt]) => `<tr><td>${ch}</td><td>${cnt}</td></tr>`)
+              .join('');
+            document.getElementById('channelDetails').style.display = '';
+          }
         } else {
           throw new Error(data.error || 'Неизвестная ошибка');
         }
@@ -396,6 +560,27 @@
             ❌ Ошибка загрузки статистики: ${error.message}
           </div>
         `;
+      }
+    }
+
+    async function exportCSV() {
+      try {
+        const response = await fetch('/api/admin/export-cards', { headers: adminHeaders() });
+        if (!response.ok) {
+          const err = await response.json().catch(() => ({ error: `HTTP ${response.status}` }));
+          throw new Error(err.error || `HTTP ${response.status}`);
+        }
+        const blob = await response.blob();
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `cards-export-${new Date().toISOString().slice(0, 10)}.csv`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(url);
+      } catch (error) {
+        alert(`❌ Экспорт не удался: ${error.message}`);
       }
     }
 
@@ -413,7 +598,7 @@
       try {
         const response = await fetch('/api/admin/generate-cards', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: adminHeaders(),
           body: JSON.stringify({
             count: count,
             batchName: batchName || undefined

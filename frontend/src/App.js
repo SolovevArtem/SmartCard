@@ -33,7 +33,7 @@ const PRODUCTS = [
 const API_URL = process.env.REACT_APP_API_URL || 'https://smartcard-production.up.railway.app';
 
 // ── Floating Particles decoration ──
-const FloatingParticles = memo(function FloatingParticles({ count = 14 }) {
+const FloatingParticles = memo(function FloatingParticles({ count = 6 }) {
   return (
     <div className="particles" aria-hidden="true">
       {Array.from({ length: count }).map((_, i) => (
