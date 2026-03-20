@@ -1,0 +1,68 @@
+name: Deploy to VPS
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy-backend:
+    name: Deploy Backend
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Sync backend to server
+        uses: burnett01/rsync-deployments@7.0.1
+        with:
+          switches: -az --exclude='node_modules' --exclude='.env'
+          path: backend/
+          remote_path: /var/www/videomig/backend/
+          remote_host: ${{ secrets.SERVER_HOST }}
+          remote_user: ${{ secrets.SERVER_USER }}
+          remote_key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Install deps & restart PM2
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            export NVM_DIR="$HOME/.nvm"
+            source "$NVM_DIR/nvm.sh"
+            cd /var/www/videomig/backend
+            npm install --production --silent
+            cd /var/www/videomig
+            pm2 restart videomig-backend
+            pm2 save
+
+  deploy-frontend:
+    name: Build & Deploy Frontend
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Build React app
+        working-directory: frontend
+        env:
+          REACT_APP_API_URL: https://api.smartcardgift.ru
+          REACT_APP_DOMAIN: https://smartcardgift.ru
+        run: |
+          npm ci --silent
+          npm run build
+
+      - name: Deploy build to server
+        uses: burnett01/rsync-deployments@7.0.1
+        with:
+          switches: -az --delete
+          path: frontend/build/
+          remote_path: /var/www/videomig/frontend/build/
+          remote_host: ${{ secrets.SERVER_HOST }}
+          remote_user: ${{ secrets.SERVER_USER }}
+          remote_key: ${{ secrets.SSH_PRIVATE_KEY }}
