@@ -225,24 +225,6 @@ const WizardIllustration = memo(() => (
 ));
 
 // ── View intro SVG (gift with sparkles) ──
-const ViewIntroIllustration = memo(() => (
-  <svg className="view-intro-illustration" viewBox="0 0 120 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-    <rect x="20" y="48" width="80" height="48" rx="5" stroke="#ff7e5f" strokeWidth="2" strokeOpacity="0.6"/>
-    <rect x="14" y="32" width="92" height="18" rx="4" stroke="#ff7e5f" strokeWidth="2" strokeOpacity="0.6"/>
-    <line x1="60" y1="32" x2="60" y2="96" stroke="#feb47b" strokeWidth="2.5" strokeOpacity="0.7"/>
-    <line x1="14" y1="41" x2="106" y2="41" stroke="#feb47b" strokeWidth="2.5" strokeOpacity="0.7"/>
-    <path d="M44 32 Q52 14 60 32" stroke="#ff7e5f" strokeWidth="2" strokeOpacity="0.8" fill="none"/>
-    <path d="M76 32 Q68 14 60 32" stroke="#ff7e5f" strokeWidth="2" strokeOpacity="0.8" fill="none"/>
-    <circle cx="60" cy="32" r="4" fill="#feb47b" opacity="0.9"/>
-    <circle cx="10"  cy="18" r="4" fill="#ffcaa7" opacity="0.5"/>
-    <circle cx="110" cy="22" r="3" fill="#feb47b" opacity="0.6"/>
-    <circle cx="8"   cy="65" r="2" fill="#ff7e5f" opacity="0.45"/>
-    <circle cx="112" cy="75" r="3" fill="#ffcaa7" opacity="0.4"/>
-    <text x="96" y="14" fontSize="13" fill="#feb47b" opacity="0.8" fontFamily="serif">✦</text>
-    <text x="4"  y="38" fontSize="10" fill="#ff7e5f" opacity="0.65" fontFamily="serif">✦</text>
-    <text x="98" y="95" fontSize="8"  fill="#ffcaa7" opacity="0.5" fontFamily="serif">✦</text>
-  </svg>
-));
 
 // ── Главная страница (Лендинг) ──
 function HomePage() {
@@ -323,7 +305,7 @@ function HomePage() {
           <AccordionItem value="q1">
             <AccordionTrigger>Как получатель открывает открытку?</AccordionTrigger>
             <AccordionContent>
-              Просто наводит камеру на QR-код — или переходит по ссылке. Открытка загружается прямо в браузере за несколько секунд.
+              Просто наводит камеру на умный стикер на задней части открытки — или переходит по ссылке. Открытка загружается прямо в браузере за несколько секунд.
             </AccordionContent>
           </AccordionItem>
 
@@ -365,7 +347,7 @@ function HomePage() {
           <AccordionItem value="q7">
             <AccordionTrigger>Что такое физическая открытка и где её взять?</AccordionTrigger>
             <AccordionContent>
-              Это бумажная открытка с уникальным QR-кодом. Её можно купить у нас на Ozon, Wildberries или Avito. После покупки вы наполняете её своим видео, фото и посланием.
+              Это бумажная открытка с умным стикером на обороте. Её можно купить у нас на Ozon, Wildberries или Avito. После покупки вы наполняете её своим видео, фото и посланием.
             </AccordionContent>
           </AccordionItem>
 
@@ -432,19 +414,36 @@ function HomePage() {
 // ── Просмотр заполненной карточки ──
 function CardView({ card }) {
   const videoRef = useRef(null);
-  const [trackIndex, setTrackIndex] = useState(1);   // 1 = первое реальное фото
+  const sectionRef = useRef(null);
+  const [scrollProg, setScrollProg] = useState(0);
+  const [trackIndex, setTrackIndex] = useState(1);
   const [carouselAnimate, setCarouselAnimate] = useState(true);
   const [saving, setSaving] = useState(false);
   const autoTimer = useRef(null);
   const touchStartX = useRef(null);
   const photos = card.photos_urls || [];
   const N = photos.length;
-  // Реальный индекс фото для dots/счётчика/download
   const realPhoto = trackIndex <= 0 ? N - 1
                   : trackIndex >= N + 1 ? 0
                   : trackIndex - 1;
 
-  // Автоплей видео через 4с (muted — обязательно для iOS)
+  // Scroll-parallax progress
+  useEffect(() => {
+    const onScroll = () => {
+      const el = sectionRef.current;
+      if (!el) return;
+      const top = el.getBoundingClientRect().top + window.scrollY;
+      const scrollable = el.offsetHeight - window.innerHeight;
+      if (scrollable <= 0) return;
+      const prog = Math.max(0, Math.min(1, (window.scrollY - top) / scrollable));
+      setScrollProg(prog);
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  // Автоплей видео через 4с
   useEffect(() => {
     if (!card.video_url) return;
     const t = setTimeout(() => {
@@ -456,18 +455,7 @@ function CardView({ card }) {
     return () => clearTimeout(t);
   }, [card.video_url]);
 
-  // Scroll reveal через IntersectionObserver
-  useEffect(() => {
-    const els = document.querySelectorAll('.reveal, .reveal-right, .reveal-left');
-    const obs = new IntersectionObserver(
-      (entries) => entries.forEach((e) => { if (e.isIntersecting) e.target.classList.add('visible'); }),
-      { threshold: 0.06 }
-    );
-    els.forEach((el) => obs.observe(el));
-    return () => obs.disconnect();
-  }, []);
-
-  // Авто-карусель: через 4с бездействия переходим к следующему фото
+  // Авто-карусель
   const resetAutoRotate = useCallback(() => {
     if (N <= 1) return;
     clearTimeout(autoTimer.current);
@@ -482,18 +470,15 @@ function CardView({ card }) {
     return () => clearTimeout(autoTimer.current);
   }, [trackIndex, resetAutoRotate]);
 
-  // Infinite-loop навигация
   const prevPhoto = () => { setCarouselAnimate(true); setTrackIndex(i => i - 1); };
   const nextPhoto = () => { setCarouselAnimate(true); setTrackIndex(i => i + 1); };
 
-  // После анимации до клона — мгновенно прыгнуть на реальный слайд
   const handleTransitionEnd = (e) => {
     if (e.propertyName !== 'transform') return;
     if (trackIndex === 0)          { setCarouselAnimate(false); setTrackIndex(N); }
     else if (trackIndex === N + 1) { setCarouselAnimate(false); setTrackIndex(1); }
   };
 
-  // Включить анимацию обратно после мгновенного прыжка (два rAF)
   useEffect(() => {
     if (!carouselAnimate) {
       const raf = requestAnimationFrame(() =>
@@ -503,7 +488,6 @@ function CardView({ card }) {
     }
   }, [carouselAnimate]);
 
-  // Свайп для мобильных
   const handleTouchStart = (e) => {
     touchStartX.current = e.touches[0].clientX;
     resetAutoRotate();
@@ -515,12 +499,10 @@ function CardView({ card }) {
     touchStartX.current = null;
   };
 
-  // Сохранение файла: Web Share API (iOS фотопленка) → fallback download
   const saveToLibrary = async (url, filename) => {
     try {
       const res = await fetch(url);
       const blob = await res.blob();
-
       if (navigator.share && navigator.canShare) {
         const ext = blob.type.includes('video') ? 'mp4' : 'jpg';
         const file = new File([blob], filename || `media.${ext}`, { type: blob.type });
@@ -529,8 +511,6 @@ function CardView({ card }) {
           return;
         }
       }
-
-      // Fallback: download link
       const objectUrl = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = objectUrl;
@@ -540,13 +520,10 @@ function CardView({ card }) {
       document.body.removeChild(a);
       URL.revokeObjectURL(objectUrl);
     } catch (err) {
-      if (err?.name !== 'AbortError') {
-        window.open(url, '_blank');
-      }
+      if (err?.name !== 'AbortError') window.open(url, '_blank');
     }
   };
 
-  // Сохранить все фото в фотопленку
   const saveAllPhotos = async () => {
     if (photos.length === 0) return;
     setSaving(true);
@@ -564,148 +541,147 @@ function CardView({ card }) {
           return;
         }
       }
-      // Fallback: скачать по одному
       for (let i = 0; i < photos.length; i++) {
         await saveToLibrary(photos[i], `photo-${i + 1}.jpg`);
       }
     } catch (err) {
-      if (err?.name !== 'AbortError') {
-        console.error('Save error:', err);
-      }
+      if (err?.name !== 'AbortError') console.error('Save error:', err);
     } finally {
       setSaving(false);
     }
   };
 
+  // Scroll-driven card positions (translateY: 0 → negative = card moves UP)
+  const card1Prog = Math.max(0, Math.min(1, scrollProg / 0.45));
+  const card1Y = -(card1Prog * 220); // 0 → -220px (fully emerged above envelope)
+
+  const card2Prog = Math.max(0, Math.min(1, Math.max(0, scrollProg - 0.15) / 0.55));
+  const card2Y = -(card2Prog * 150); // 0 → -150px (partially emerged behind card1)
+
+  const scrollHintOpacity = Math.max(0, 1 - scrollProg * 6);
+
   return (
-    <div>
-      {/* ── Intro экран ── */}
-      <section className="view-intro">
-        <FloatingParticles count={18} />
-        <ViewIntroIllustration />
-        <p className="intro-surprise">✦ Для вас особый сюрприз</p>
-        <h1 className="intro-name">{card.sender_name}</h1>
-        <p className="intro-tagline">подготовил(а) для вас что-то особенное</p>
-        <span className="intro-scroll-hint" aria-hidden="true">↓</span>
-      </section>
+    <div className="env-page">
+      {/* ── Scroll section (280vh) — sticky envelope ── */}
+      <div className="env-scroll-section" ref={sectionRef}>
+        <div className="env-sticky">
 
-      {/* ── Основной контент ── */}
-      <div className="view-content">
-
-        {/* Видео — без рамки, edge-to-edge */}
-        {card.video_url && (
-          <div className="view-section reveal-right">
-            <p className="view-section-title">Видео-поздравление</p>
-            <div className="video-container">
-              <video ref={videoRef} controls playsInline muted>
-                <source src={card.video_url} type="video/mp4" />
-                Ваш браузер не поддерживает видео
-              </video>
-            </div>
+          {/* Intro text above envelope */}
+          <div className="env-intro-text">
+            <span className="env-intro-surprise">✦ Для вас особый сюрприз</span>
+            <h1 className="env-intro-name">{card.sender_name}</h1>
+            <p className="env-intro-tagline">подготовил(а) для вас что-то особенное</p>
           </div>
-        )}
 
-        {/* Сообщение */}
-        {card.message && (
-          <div className="view-section reveal-left">
-            <div className="message-envelope">
-              <svg
-                className="envelope-flap"
-                viewBox="0 0 320 72"
-                preserveAspectRatio="none"
-                fill="none"
-                aria-hidden="true"
-              >
-                <rect x="0" y="0" width="320" height="72" fill="#ffffff"/>
-                <path d="M0 72 L0 36 L160 0 L320 36 L320 72"
-                  stroke="rgba(232,155,136,0.30)" strokeWidth="1.5" fill="none"/>
-                <line x1="0" y1="36" x2="320" y2="36"
-                  stroke="rgba(232,155,136,0.18)" strokeWidth="1"/>
-                <path d="M155 18 Q155 13 160 15.5 Q165 13 165 18 Q165 22.5 160 26 Q155 22.5 155 18z"
-                  fill="#ff7e5f" opacity="0.65"/>
-                <text x="22"  y="62" fontSize="10" fill="#feb47b" opacity="0.35" fontFamily="serif">✦</text>
-                <text x="282" y="60" fontSize="8"  fill="#ff7e5f" opacity="0.35" fontFamily="serif">✦</text>
-              </svg>
-              <div className="envelope-body">
-                <div className="envelope-message">{card.message}</div>
-                <p className="envelope-from">— {card.sender_name}</p>
-              </div>
-            </div>
-          </div>
-        )}
+          {/* Envelope + cards */}
+          <div className="env-scene">
 
-        {/* Фото */}
-        {photos.length > 0 && (
-          <div className="view-section reveal-right">
-            <p className="view-section-title">
-              Фотографии{N > 1 ? ` · ${realPhoto + 1} / ${N}` : ''}
-            </p>
-            {photos.length === 1 ? (
-              <>
-                <img src={photos[0]} alt="Фото" className="single-photo" />
-                <div className="single-photo-download">
-                  <button
-                    className="download-btn"
-                    onClick={() => saveToLibrary(photos[0], 'photo-1.jpg')}
-                  >↓ Сохранить</button>
-                </div>
-              </>
-            ) : (
+            {/* SVG envelope illustration (giftsea.ru reference) */}
+            <svg className="env-svg" viewBox="0 0 488 362" fill="none" preserveAspectRatio="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+              <path d="M0 361.319H487.923L273.123 174.97C273.123 174.97 267.524 171.361 260.321 168.206C254.502 165.658 247.636 163.405 241.828 163.589C236.718 163.752 230.781 165.853 225.656 168.206C218.787 171.361 213.377 174.97 213.377 174.97L0 361.319Z" fill="#88CCFF"/>
+              <path d="M0 0V361.319L213.377 174.97C213.377 174.97 218.787 171.361 225.656 168.206L0 0Z" fill="#9FD6FF"/>
+              <path d="M487.923 361.319V0L260.321 168.206C267.524 171.361 273.123 174.97 273.123 174.97L487.923 361.319Z" fill="#9FD6FF"/>
+            </svg>
+
+            {/* Open flap (giftsea.ru reference: 2.svg) */}
+            <svg className="env-flap" viewBox="0 0 488 377" fill="none" preserveAspectRatio="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+              <path d="M487.923 202.01H0L225.656 377C225.656 377 230.781 374.862 236.718 372.761C241.828 372.599C247.636 372.415 254.502 374.667 260.321 377L487.923 202.01Z" fill="#BBE2FF"/>
+              <path d="M0 202.01H487.923L273.123 14.2375C273.123 14.2375 255.244 -0.484578 241.828 0.0123003C229.414 0.472058 213.377 14.2375 213.377 14.2375L0 202.01Z" fill="#BBE2FF"/>
+            </svg>
+
+            {/* Card 2: media (larger, emerges behind card 1) */}
+            {(card.video_url || photos.length > 0) && (
               <div
-                className="carousel-wrapper"
-                onMouseMove={resetAutoRotate}
-                onTouchStart={handleTouchStart}
-                onTouchEnd={handleTouchEnd}
+                className="env-card env-card-2"
+                style={{ transform: `translateY(${card2Y}px)`, willChange: 'transform' }}
               >
-                <div className="carousel-download">
-                  <button
-                    className="download-btn"
-                    onClick={() => saveToLibrary(photos[realPhoto], `photo-${realPhoto + 1}.jpg`)}
-                  >↓ Сохранить</button>
-                </div>
-                <div className="carousel-track-container">
+                {card.video_url && (
+                  <div className="env-video-wrap">
+                    <video ref={videoRef} controls playsInline muted className="env-video">
+                      <source src={card.video_url} type="video/mp4" />
+                    </video>
+                  </div>
+                )}
+                {photos.length > 0 && (
                   <div
-                    className="carousel-track"
-                    style={{
-                      transform: `translateX(-${trackIndex * 100}%)`,
-                      transition: carouselAnimate ? undefined : 'none',
-                    }}
-                    onTransitionEnd={handleTransitionEnd}
+                    className="carousel-wrapper env-carousel"
+                    onMouseMove={resetAutoRotate}
+                    onTouchStart={handleTouchStart}
+                    onTouchEnd={handleTouchEnd}
                   >
-                    <img key="clone-last" src={photos[N - 1]} alt="" className="carousel-slide" aria-hidden="true" loading="lazy" />
-                    {photos.map((url, i) => (
-                      <img key={i} src={url} alt={`Фото ${i + 1}`} className="carousel-slide" loading={i === 0 ? 'eager' : 'lazy'} />
-                    ))}
-                    <img key="clone-first" src={photos[0]} alt="" className="carousel-slide" aria-hidden="true" loading="lazy" />
+                    {photos.length === 1 ? (
+                      <>
+                        <img src={photos[0]} alt="Фото" className="carousel-slide env-single-photo" loading="eager" />
+                      </>
+                    ) : (
+                      <>
+                        <div className="carousel-download">
+                          <button className="download-btn" onClick={() => saveToLibrary(photos[realPhoto], `photo-${realPhoto + 1}.jpg`)}>
+                            ↓ Сохранить
+                          </button>
+                        </div>
+                        <div className="carousel-track-container">
+                          <div
+                            className="carousel-track"
+                            style={{
+                              transform: `translateX(-${trackIndex * 100}%)`,
+                              transition: carouselAnimate ? undefined : 'none',
+                            }}
+                            onTransitionEnd={handleTransitionEnd}
+                          >
+                            <img key="clone-last" src={photos[N - 1]} alt="" className="carousel-slide" aria-hidden="true" loading="lazy" />
+                            {photos.map((url, i) => (
+                              <img key={i} src={url} alt={`Фото ${i + 1}`} className="carousel-slide" loading={i === 0 ? 'eager' : 'lazy'} />
+                            ))}
+                            <img key="clone-first" src={photos[0]} alt="" className="carousel-slide" aria-hidden="true" loading="lazy" />
+                          </div>
+                        </div>
+                        <div className="carousel-controls">
+                          <button className="carousel-btn" onClick={prevPhoto} aria-label="Предыдущее фото">‹</button>
+                          <div className="carousel-dots">
+                            {photos.map((_, i) => (
+                              <span
+                                key={i}
+                                className={`carousel-dot ${i === realPhoto ? 'active' : ''}`}
+                                onClick={() => { setCarouselAnimate(true); setTrackIndex(i + 1); }}
+                                aria-label={`Фото ${i + 1}`}
+                              />
+                            ))}
+                          </div>
+                          <button className="carousel-btn" onClick={nextPhoto} aria-label="Следующее фото">›</button>
+                        </div>
+                      </>
+                    )}
                   </div>
-                </div>
-                <div className="carousel-controls">
-                  <button
-                    className="carousel-btn"
-                    onClick={prevPhoto}
-                    aria-label="Предыдущее фото"
-                  >‹</button>
-                  <div className="carousel-dots">
-                    {photos.map((_, i) => (
-                      <span
-                        key={i}
-                        className={`carousel-dot ${i === realPhoto ? 'active' : ''}`}
-                        onClick={() => { setCarouselAnimate(true); setTrackIndex(i + 1); }}
-                        aria-label={`Фото ${i + 1}`}
-                      />
-                    ))}
-                  </div>
-                  <button
-                    className="carousel-btn"
-                    onClick={nextPhoto}
-                    aria-label="Следующее фото"
-                  >›</button>
-                </div>
+                )}
               </div>
             )}
-          </div>
-        )}
 
+            {/* Card 1: message (smaller, emerges in front) */}
+            {card.message && (
+              <div
+                className="env-card env-card-1"
+                style={{ transform: `translateY(${card1Y}px)`, willChange: 'transform' }}
+              >
+                <div className="env-card-1-bar" />
+                <p className="env-card-1-text">{card.message}</p>
+                <p className="env-card-1-from">— {card.sender_name}</p>
+              </div>
+            )}
+
+            {/* Front mask: covers card bottoms → illusion of being inside envelope */}
+            <div className="env-front-mask" />
+
+          </div>
+
+          {/* Scroll hint */}
+          <div
+            className="env-scroll-hint"
+            style={{ opacity: scrollHintOpacity }}
+            aria-hidden="true"
+          >↓</div>
+
+        </div>
       </div>
 
       {/* ── Плавающая кнопка «Сохранить всё» ── */}

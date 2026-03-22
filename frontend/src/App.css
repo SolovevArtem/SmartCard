@@ -1524,132 +1524,222 @@ form {
 }
 
 /* Intro section */
-.view-intro {
+/* ═══════════════════════════════════════
+   ENVELOPE CARD VIEW (scroll-parallax)
+═══════════════════════════════════════ */
+
+.env-page {
+  background: linear-gradient(160deg, var(--bg-deep) 0%, var(--bg-mid) 60%, var(--bg-surface) 100%);
   min-height: 100vh;
+}
+
+.env-scroll-section {
+  height: 280vh;
+  position: relative;
+}
+
+.env-sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: 3rem 2rem;
-  position: relative;
+  justify-content: flex-start;
+  padding: 9vh 1rem 2rem;
   overflow: hidden;
-  background: linear-gradient(160deg, var(--bg-deep) 0%, var(--bg-mid) 60%, var(--bg-surface) 100%);
 }
 
-.view-intro::before {
-  content: '';
-  position: absolute;
-  width: 800px;
-  height: 800px;
-  background: radial-gradient(
-    circle,
-    rgba(232, 155, 136, 0.20) 0%,
-    rgba(244, 199, 184, 0.08) 45%,
-    transparent 68%
-  );
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  pointer-events: none;
+/* Intro text above envelope */
+.env-intro-text {
+  text-align: center;
+  margin-bottom: 2.2rem;
+  z-index: 10;
 }
 
-.intro-gift {
-  font-size: 5rem;
+.env-intro-surprise {
   display: block;
-  margin-bottom: 1.5rem;
-  animation: floatY 3.5s ease-in-out infinite;
-  position: relative;
-  z-index: 1;
-}
-
-.intro-surprise {
-  font-size: 0.85rem;
-  letter-spacing: 0.2em;
+  font-size: 0.75rem;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--accent-gold);
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem;
   font-weight: 500;
-  animation: fadeInUp 0.7s 0.1s cubic-bezier(0.22, 1, 0.36, 1) both;
-  position: relative;
-  z-index: 1;
+  animation: fadeInUp 0.6s 0.1s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
-.intro-name {
-  font-size: 3rem;
+.env-intro-name {
+  font-size: 2.4rem;
   font-weight: 700;
   letter-spacing: -0.03em;
-  background: linear-gradient(
-    90deg,
-    var(--text-primary) 0%,
-    var(--accent-pink)  50%,
-    var(--text-primary) 100%
-  );
+  background: linear-gradient(90deg, var(--text-primary) 0%, var(--accent-pink) 50%, var(--text-primary) 100%);
   background-size: 200% auto;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  animation:
-    fadeInDown 0.8s 0.25s cubic-bezier(0.22, 1, 0.36, 1) both,
-    shimmer 5s 1s linear infinite;
-  position: relative;
-  z-index: 1;
-  margin-bottom: 0.75rem;
+  animation: fadeInDown 0.7s 0.2s cubic-bezier(0.22, 1, 0.36, 1) both, shimmer 5s 1s linear infinite;
+  margin: 0 0 0.4rem;
 }
 
-.intro-tagline {
-  font-size: 1rem;
+.env-intro-tagline {
+  font-size: 0.9rem;
   color: var(--text-secondary);
   font-weight: 300;
-  animation: fadeInUp 0.7s 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
-  position: relative;
-  z-index: 1;
-  margin-bottom: 3rem;
+  margin: 0;
+  animation: fadeInUp 0.6s 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
+/* Envelope scene container */
+.env-scene {
+  position: relative;
+  width: min(90vw, 660px);
+  aspect-ratio: 488 / 362;
+  flex-shrink: 0;
+  overflow: visible;
+}
+
+/* SVG shell */
+.env-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+/* Open flap — diamond shape positioned above env-scene */
+.env-flap {
+  position: absolute;
+  width: 100%;
+  aspect-ratio: 488 / 377;
+  top: -55.8%;
+  left: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* Cards — absolutely positioned, translateY driven by scroll */
+.env-card {
+  position: absolute;
+  border-radius: 14px;
+  background: #ffffff;
+}
+
+.env-card-1 {
+  width: 50%;
+  left: 25%;
+  top: 38%;
+  z-index: 4;
+  padding: 0 1.25rem 1.25rem;
+  box-shadow: 0 8px 32px rgba(255, 126, 95, 0.22), 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.env-card-2 {
+  width: 68%;
+  left: 16%;
+  top: 42%;
+  z-index: 3;
+  max-height: 55%;
+  box-shadow: 0 12px 48px rgba(25, 118, 210, 0.18), 0 3px 12px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  border-radius: 14px;
+}
+
+/* Front mask: same color as envelope body, hides card bottoms */
+.env-front-mask {
+  position: absolute;
+  bottom: -1px;
+  left: -1px;
+  right: -1px;
+  height: 47%;
+  background: #9FD6FF;
+  z-index: 5;
+  pointer-events: none;
+}
+
+/* Card 1 content */
+.env-card-1-bar {
+  height: 3px;
+  background: linear-gradient(90deg, #1759B0, #9FD6FF);
+  border-radius: 2px 2px 0 0;
+  margin: 0 -1.25rem 1rem;
+}
+
+.env-card-1-text {
+  font-family: 'Merriweather', serif;
+  font-size: 0.88rem;
+  font-style: italic;
+  line-height: 1.8;
+  color: var(--text-primary);
+  margin: 0 0 0.75rem;
+}
+
+.env-card-1-from {
+  font-size: 0.62rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #1759B0;
+  font-weight: 500;
+  margin: 0;
+  text-align: right;
+}
+
+/* Card 2: video */
+.env-video-wrap {
+  width: 100%;
+  background: #000;
+  overflow: hidden;
+}
+
+.env-video {
+  width: 100%;
+  max-height: 198px;
+  display: block;
+  object-fit: contain;
+  background: #000;
+}
+
+/* Card 2: carousel inside envelope */
+.env-carousel {
+  border-radius: 0;
+  overflow: hidden;
+}
+
+.env-single-photo {
+  width: 100%;
+  max-height: 150px;
+  object-fit: contain;
+  display: block;
+  background: #000;
+}
+
+/* Scroll hint arrow */
 @keyframes scrollPulse {
   0%, 100% { opacity: 0.3; transform: translateY(0); }
-  50%        { opacity: 0.8; transform: translateY(6px); }
+  50%       { opacity: 0.8; transform: translateY(6px); }
 }
 
-.intro-scroll-hint {
-  font-size: 2rem;
+.env-scroll-hint {
+  margin-top: auto;
+  padding-bottom: 1.25rem;
+  font-size: 1.6rem;
+  color: var(--accent-pink);
+  text-shadow: 0 0 18px rgba(232, 155, 136, 0.55);
   animation: scrollPulse 1.8s ease-in-out infinite;
-  position: relative;
-  z-index: 1;
-  color: var(--accent-pink);
-  text-shadow: 0 0 22px rgba(232, 155, 136, 0.6);
+  transition: opacity 0.4s;
+  line-height: 1;
+  z-index: 10;
 }
 
-/* View content sections */
-.view-content {
-  background: linear-gradient(160deg, var(--bg-deep) 0%, var(--bg-mid) 50%, var(--bg-surface) 100%);
-  padding: 4rem 2rem;
-}
-
-.view-section {
-  max-width: 760px;
-  margin: 0 auto 4rem;
-}
-
-.view-section-title {
-  font-size: 0.7rem;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--accent-pink);
-  margin-bottom: 1.25rem;
-  font-weight: 500;
-}
-
-.view-message {
-  border-left: 2px solid var(--accent-pink);
-  padding: 1rem 1.75rem;
-  color: var(--text-secondary);
-  font-size: 1.1rem;
-  font-weight: 300;
-  line-height: 1.9;
-  font-style: italic;
-  font-family: 'Merriweather', sans-serif;
+/* ── Envelope card view — responsive ── */
+@media (max-width: 480px) {
+  .env-scroll-section { height: 250vh; }
+  .env-sticky { padding: 7vh 0.75rem 1.5rem; }
+  .env-intro-name { font-size: 1.85rem; }
+  .env-intro-tagline { font-size: 0.82rem; }
+  .env-card-1-text { font-size: 0.8rem; }
+  .env-video { max-height: 158px; }
+  .env-single-photo { max-height: 158px; }
 }
 
 /* Carousel */
@@ -1880,15 +1970,6 @@ form {
   display: block;
 }
 
-/* View intro SVG */
-.view-intro-illustration {
-  width: 120px;
-  height: 100px;
-  margin-bottom: 1.5rem;
-  animation: floatY 5s ease-in-out infinite;
-  position: relative;
-  z-index: 1;
-}
 
 /* ═══════════════════════════════════════
    UPLOADING SCREEN
@@ -2021,10 +2102,6 @@ form {
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   }
 
-  .intro-name {
-    font-size: 2.25rem;
-  }
-
   .wizard-title {
     font-size: 1.6rem;
   }
@@ -2065,45 +2142,6 @@ form {
   }
 }
 
-/* ── Envelope card for message ── */
-.message-envelope {
-  border: 1px solid rgba(232, 155, 136, 0.30);
-  border-radius: 4px;
-  overflow: hidden;
-  background: #ffffff;
-  box-shadow:
-    0 8px 30px rgba(209, 137, 115, 0.12),
-    0 2px 8px  rgba(209, 137, 115, 0.08);
-}
-
-.envelope-flap {
-  display: block;
-  width: 100%;
-  height: 72px;
-}
-
-.envelope-body {
-  padding: 1.5rem 2rem 2.5rem;
-}
-
-.envelope-message {
-  font-family: 'Merriweather', serif;
-  font-size: 1.1rem;
-  font-style: italic;
-  line-height: 1.95;
-  color: var(--text-primary);
-  margin-bottom: 1.25rem;
-}
-
-.envelope-from {
-  font-size: 0.7rem;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--accent-gold);
-  font-weight: 500;
-  margin: 0;
-  text-align: right;
-}
 
 /* ── FAQ Section ── */
 .faq-section {
