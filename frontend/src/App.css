@@ -1533,8 +1533,26 @@ form {
   min-height: 100vh;
 }
 
+/* ── Intro section (sticky text block before envelope) ── */
+.env-intro-section {
+  height: 150vh;
+  position: relative;
+}
+
+.env-intro-sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1rem;
+  overflow: hidden;
+}
+
 .env-scroll-section {
-  height: 280vh;
+  height: 200vh;
   position: relative;
 }
 
@@ -1545,15 +1563,14 @@ form {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
-  padding: 9vh 1rem 2rem;
+  justify-content: center;
+  padding: 3vh 1rem 2rem;
   overflow: hidden;
 }
 
-/* Intro text above envelope */
+/* Intro text */
 .env-intro-text {
   text-align: center;
-  margin-bottom: 2.2rem;
   z-index: 10;
 }
 
@@ -1613,7 +1630,8 @@ form {
   width: 100%;
   aspect-ratio: 488 / 377;
   top: -55.8%;
-  left: 0;
+  left: 50%;
+  transform: translateX(-50%);
   z-index: 2;
   pointer-events: none;
 }
@@ -1625,24 +1643,14 @@ form {
   background: #ffffff;
 }
 
-.env-card-1 {
-  width: 50%;
-  left: 25%;
-  top: 38%;
+/* Single flying card — full envelope width, covers envelope when fully emerged */
+.env-card-main {
+  width: 100%;
+  left: 0;
+  top: 40%;
+  min-height: 120%;
   z-index: 4;
-  padding: 0 1.25rem 1.25rem;
   box-shadow: 0 8px 32px rgba(255, 126, 95, 0.22), 0 2px 8px rgba(0, 0, 0, 0.06);
-}
-
-.env-card-2 {
-  width: 68%;
-  left: 16%;
-  top: 42%;
-  z-index: 3;
-  max-height: 55%;
-  box-shadow: 0 12px 48px rgba(25, 118, 210, 0.18), 0 3px 12px rgba(0, 0, 0, 0.08);
-  overflow: hidden;
-  border-radius: 14px;
 }
 
 /* Front mask: same color as envelope body, hides card bottoms */
@@ -1731,15 +1739,66 @@ form {
   z-index: 10;
 }
 
+/* ── Content card (below envelope, seamlessly continues the flying card) ── */
+.env-content {
+  display: flex;
+  justify-content: center;
+  padding: 0 1rem 4rem;
+}
+
+.env-content-card {
+  width: min(90vw, 660px);
+  background: #ffffff;
+  border-radius: 0 0 14px 14px;
+  box-shadow: 0 8px 32px rgba(255, 126, 95, 0.22), 0 2px 8px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+}
+
+.env-content-message {
+  padding: 1.5rem 1.5rem 1rem;
+}
+
+.env-content-message .env-card-1-bar {
+  margin: 0 -1.5rem 1rem;
+}
+
+.env-content-photos {
+  padding: 0.5rem 1.5rem 1rem;
+}
+
+.env-content-single-photo {
+  width: 100%;
+  max-height: 70vh;
+  object-fit: contain;
+  display: block;
+  border-radius: 8px;
+}
+
+.env-content-video {
+  padding: 0.5rem 1.5rem 1.5rem;
+}
+
+.env-content-video-player {
+  width: 100%;
+  display: block;
+  border-radius: 8px;
+  background: #000;
+}
+
 /* ── Envelope card view — responsive ── */
 @media (max-width: 480px) {
-  .env-scroll-section { height: 250vh; }
-  .env-sticky { padding: 7vh 0.75rem 1.5rem; }
+  .env-intro-section { height: 120vh; }
+  .env-scroll-section { height: 180vh; }
+  .env-sticky { padding: 2vh 0.75rem 1.5rem; }
+  .env-intro-sticky { padding: 1.5rem 0.75rem; }
   .env-intro-name { font-size: 1.85rem; }
   .env-intro-tagline { font-size: 0.82rem; }
   .env-card-1-text { font-size: 0.8rem; }
-  .env-video { max-height: 158px; }
-  .env-single-photo { max-height: 158px; }
+  .env-content { padding: 0 0.75rem 3rem; }
+  .env-content-message { padding: 1.25rem 1.25rem 0.75rem; }
+  .env-content-message .env-card-1-bar { margin: 0 -1.25rem 0.75rem; }
+  .env-content-photos { padding: 0.5rem 1.25rem 0.75rem; }
+  .env-content-video { padding: 0.5rem 1.25rem 1.25rem; }
 }
 
 /* Carousel */
@@ -2372,6 +2431,8 @@ form {
 
 .hsa-motion-card--dark {
   background: #A8C9A4;
+  border-radius: 28px;
+  width: 95%;
 }
 
 /* Grid overlay */

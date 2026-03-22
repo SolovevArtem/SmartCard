@@ -231,6 +231,7 @@ function HomePage() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [navVisible, setNavVisible] = useState(false);
+  const [activeCard, setActiveCard] = useState(null);
 
   const scrollTo = (id) => {
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
@@ -290,8 +291,15 @@ function HomePage() {
         <FloatingParticles count={8} />
         <h2 className="section-title">Купить</h2>
         <div className="features-grid">
-          {PRODUCTS.map(p => (
-            <ProductCard key={p.imageUrl} imageUrl={p.imageUrl} title={p.title} stores={p.stores} />
+          {PRODUCTS.map((p, i) => (
+            <ProductCard
+              key={p.imageUrl}
+              imageUrl={p.imageUrl}
+              title={p.title}
+              stores={p.stores}
+              isOpen={activeCard === i}
+              onToggle={() => setActiveCard(activeCard === i ? null : i)}
+            />
           ))}
         </div>
       </section>
@@ -551,125 +559,57 @@ function CardView({ card }) {
     }
   };
 
-  // Scroll-driven card positions (translateY: 0 → negative = card moves UP)
-  const card1Prog = Math.max(0, Math.min(1, scrollProg / 0.45));
-  const card1Y = -(card1Prog * 220); // 0 → -220px (fully emerged above envelope)
-
-  const card2Prog = Math.max(0, Math.min(1, Math.max(0, scrollProg - 0.15) / 0.55));
-  const card2Y = -(card2Prog * 150); // 0 → -150px (partially emerged behind card1)
-
-  const scrollHintOpacity = Math.max(0, 1 - scrollProg * 6);
+  // Scroll-driven card position (translateY: 0 → -220px = card emerges from envelope)
+  const cardY = -(scrollProg * 220);
+  // Front mask fades out as card fully covers the envelope
+  const maskOpacity = Math.max(0, 1 - Math.max(0, scrollProg - 0.6) / 0.4);
+  const scrollHintOpacity = Math.max(0, 1 - scrollProg * 8);
 
   return (
     <div className="env-page">
-      {/* ── Scroll section (280vh) — sticky envelope ── */}
-      <div className="env-scroll-section" ref={sectionRef}>
-        <div className="env-sticky">
 
-          {/* Intro text above envelope */}
+      {/* ── Section 1: Intro text (sticky, 150vh) ── */}
+      <div className="env-intro-section">
+        <div className="env-intro-sticky">
           <div className="env-intro-text">
             <span className="env-intro-surprise">✦ Для вас особый сюрприз</span>
             <h1 className="env-intro-name">{card.sender_name}</h1>
             <p className="env-intro-tagline">подготовил(а) для вас что-то особенное</p>
           </div>
+          <div className="env-scroll-hint" aria-hidden="true">↓</div>
+        </div>
+      </div>
 
-          {/* Envelope + cards */}
+      {/* ── Section 2: Envelope + single flying card (200vh) ── */}
+      <div className="env-scroll-section" ref={sectionRef}>
+        <div className="env-sticky">
+
           <div className="env-scene">
 
-            {/* SVG envelope illustration (giftsea.ru reference) */}
+            {/* SVG envelope body */}
             <svg className="env-svg" viewBox="0 0 488 362" fill="none" preserveAspectRatio="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
               <path d="M0 361.319H487.923L273.123 174.97C273.123 174.97 267.524 171.361 260.321 168.206C254.502 165.658 247.636 163.405 241.828 163.589C236.718 163.752 230.781 165.853 225.656 168.206C218.787 171.361 213.377 174.97 213.377 174.97L0 361.319Z" fill="#88CCFF"/>
               <path d="M0 0V361.319L213.377 174.97C213.377 174.97 218.787 171.361 225.656 168.206L0 0Z" fill="#9FD6FF"/>
               <path d="M487.923 361.319V0L260.321 168.206C267.524 171.361 273.123 174.97 273.123 174.97L487.923 361.319Z" fill="#9FD6FF"/>
             </svg>
 
-            {/* Open flap (giftsea.ru reference: 2.svg) */}
+            {/* Open flap */}
             <svg className="env-flap" viewBox="0 0 488 377" fill="none" preserveAspectRatio="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
               <path d="M487.923 202.01H0L225.656 377C225.656 377 230.781 374.862 236.718 372.761C241.828 372.599C247.636 372.415 254.502 374.667 260.321 377L487.923 202.01Z" fill="#BBE2FF"/>
               <path d="M0 202.01H487.923L273.123 14.2375C273.123 14.2375 255.244 -0.484578 241.828 0.0123003C229.414 0.472058 213.377 14.2375 213.377 14.2375L0 202.01Z" fill="#BBE2FF"/>
             </svg>
 
-            {/* Card 2: media (larger, emerges behind card 1) */}
-            {(card.video_url || photos.length > 0) && (
-              <div
-                className="env-card env-card-2"
-                style={{ transform: `translateY(${card2Y}px)`, willChange: 'transform' }}
-              >
-                {card.video_url && (
-                  <div className="env-video-wrap">
-                    <video ref={videoRef} controls playsInline muted className="env-video">
-                      <source src={card.video_url} type="video/mp4" />
-                    </video>
-                  </div>
-                )}
-                {photos.length > 0 && (
-                  <div
-                    className="carousel-wrapper env-carousel"
-                    onMouseMove={resetAutoRotate}
-                    onTouchStart={handleTouchStart}
-                    onTouchEnd={handleTouchEnd}
-                  >
-                    {photos.length === 1 ? (
-                      <>
-                        <img src={photos[0]} alt="Фото" className="carousel-slide env-single-photo" loading="eager" />
-                      </>
-                    ) : (
-                      <>
-                        <div className="carousel-track-container">
-                          <div
-                            className="carousel-track"
-                            style={{
-                              transform: `translateX(-${trackIndex * 100}%)`,
-                              transition: carouselAnimate ? undefined : 'none',
-                            }}
-                            onTransitionEnd={handleTransitionEnd}
-                          >
-                            <img key="clone-last" src={photos[N - 1]} alt="" className="carousel-slide" aria-hidden="true" loading="lazy" />
-                            {photos.map((url, i) => (
-                              <img key={i} src={url} alt={`Фото ${i + 1}`} className="carousel-slide" loading={i === 0 ? 'eager' : 'lazy'} />
-                            ))}
-                            <img key="clone-first" src={photos[0]} alt="" className="carousel-slide" aria-hidden="true" loading="lazy" />
-                          </div>
-                        </div>
-                        <div className="carousel-controls">
-                          <button className="carousel-btn" onClick={prevPhoto} aria-label="Предыдущее фото">‹</button>
-                          <div className="carousel-dots">
-                            {photos.map((_, i) => (
-                              <span
-                                key={i}
-                                className={`carousel-dot ${i === realPhoto ? 'active' : ''}`}
-                                onClick={() => { setCarouselAnimate(true); setTrackIndex(i + 1); }}
-                                aria-label={`Фото ${i + 1}`}
-                              />
-                            ))}
-                          </div>
-                          <button className="carousel-btn" onClick={nextPhoto} aria-label="Следующее фото">›</button>
-                        </div>
-                      </>
-                    )}
-                  </div>
-                )}
-              </div>
-            )}
+            {/* Single flying card — full envelope width, emerges and covers */}
+            <div
+              className="env-card env-card-main"
+              style={{ transform: `translateY(${cardY}px)`, willChange: 'transform' }}
+            />
 
-            {/* Card 1: message (smaller, emerges in front) */}
-            {card.message && (
-              <div
-                className="env-card env-card-1"
-                style={{ transform: `translateY(${card1Y}px)`, willChange: 'transform' }}
-              >
-                <div className="env-card-1-bar" />
-                <p className="env-card-1-text">{card.message}</p>
-                <p className="env-card-1-from">— {card.sender_name}</p>
-              </div>
-            )}
-
-            {/* Front mask: covers card bottoms → illusion of being inside envelope */}
-            <div className="env-front-mask" />
+            {/* Front mask — fades as card fully covers the envelope */}
+            <div className="env-front-mask" style={{ opacity: maskOpacity }} />
 
           </div>
 
-          {/* Scroll hint */}
           <div
             className="env-scroll-hint"
             style={{ opacity: scrollHintOpacity }}
@@ -679,7 +619,78 @@ function CardView({ card }) {
         </div>
       </div>
 
-      {/* ── Плавающая кнопка «Сохранить всё» ── */}
+      {/* ── Section 3: Card content (text → photos → video) ── */}
+      <div className="env-content">
+        <div className="env-content-card">
+
+          {card.message && (
+            <div className="env-content-message">
+              <div className="env-card-1-bar" />
+              <p className="env-card-1-text">{card.message}</p>
+              <p className="env-card-1-from">— {card.sender_name}</p>
+            </div>
+          )}
+
+          {photos.length > 0 && (
+            <div className="env-content-photos">
+              <div
+                className="carousel-wrapper"
+                onMouseMove={resetAutoRotate}
+                onTouchStart={handleTouchStart}
+                onTouchEnd={handleTouchEnd}
+              >
+                {photos.length === 1 ? (
+                  <img src={photos[0]} alt="Фото" className="carousel-slide env-content-single-photo" loading="eager" />
+                ) : (
+                  <>
+                    <div className="carousel-track-container">
+                      <div
+                        className="carousel-track"
+                        style={{
+                          transform: `translateX(-${trackIndex * 100}%)`,
+                          transition: carouselAnimate ? undefined : 'none',
+                        }}
+                        onTransitionEnd={handleTransitionEnd}
+                      >
+                        <img key="clone-last" src={photos[N - 1]} alt="" className="carousel-slide" aria-hidden="true" loading="lazy" />
+                        {photos.map((url, i) => (
+                          <img key={i} src={url} alt={`Фото ${i + 1}`} className="carousel-slide" loading={i === 0 ? 'eager' : 'lazy'} />
+                        ))}
+                        <img key="clone-first" src={photos[0]} alt="" className="carousel-slide" aria-hidden="true" loading="lazy" />
+                      </div>
+                    </div>
+                    <div className="carousel-controls">
+                      <button className="carousel-btn" onClick={prevPhoto} aria-label="Предыдущее фото">‹</button>
+                      <div className="carousel-dots">
+                        {photos.map((_, i) => (
+                          <span
+                            key={i}
+                            className={`carousel-dot ${i === realPhoto ? 'active' : ''}`}
+                            onClick={() => { setCarouselAnimate(true); setTrackIndex(i + 1); }}
+                            aria-label={`Фото ${i + 1}`}
+                          />
+                        ))}
+                      </div>
+                      <button className="carousel-btn" onClick={nextPhoto} aria-label="Следующее фото">›</button>
+                    </div>
+                  </>
+                )}
+              </div>
+            </div>
+          )}
+
+          {card.video_url && (
+            <div className="env-content-video">
+              <video ref={videoRef} controls playsInline muted className="env-content-video-player">
+                <source src={card.video_url} type="video/mp4" />
+              </video>
+            </div>
+          )}
+
+        </div>
+      </div>
+
+      {/* Floating save button */}
       {photos.length > 0 && (
         <button
           className={`save-all-btn${saving ? ' save-all-btn--loading' : ''}`}
