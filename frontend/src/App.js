@@ -559,8 +559,8 @@ function CardView({ card }) {
     }
   };
 
-  // Scroll-driven card position (translateY: 0 → -220px = card emerges from envelope)
-  const cardY = -(scrollProg * 220);
+  // Scroll-driven card position (translateY: 0 → -300px = card emerges from envelope)
+  const cardY = -(scrollProg * 300);
   // Front mask fades out as card fully covers the envelope
   const maskOpacity = Math.max(0, 1 - Math.max(0, scrollProg - 0.6) / 0.4);
   const scrollHintOpacity = Math.max(0, 1 - scrollProg * 8);
