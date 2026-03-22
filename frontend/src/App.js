@@ -615,11 +615,6 @@ function CardView({ card }) {
                       </>
                     ) : (
                       <>
-                        <div className="carousel-download">
-                          <button className="download-btn" onClick={() => saveToLibrary(photos[realPhoto], `photo-${realPhoto + 1}.jpg`)}>
-                            ↓ Сохранить
-                          </button>
-                        </div>
                         <div className="carousel-track-container">
                           <div
                             className="carousel-track"
