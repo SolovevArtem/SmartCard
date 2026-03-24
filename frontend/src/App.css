@@ -2502,8 +2502,13 @@ form {
 }
 
 @media (max-width: 768px) {
-  .card-carousel { height: 300px; }
-  .card-carousel__item { width: 150px; height: 250px; }
+  .card-carousel { height: 360px; }
+  .card-carousel__item { width: 180px; height: 300px; }
+
+  .hsa-motion-card--with-carousel {
+    justify-content: flex-start;
+    padding-top: 5vh;
+  }
 }
 
 /* ── Hero Scroll Animation ── */
