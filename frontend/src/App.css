@@ -2502,12 +2502,22 @@ form {
 }
 
 @media (max-width: 768px) {
-  .card-carousel { height: 360px; }
-  .card-carousel__item { width: 180px; height: 300px; }
+  .card-carousel {
+    height: clamp(300px, calc(100svh - 185px), 500px);
+  }
+  .card-carousel__item {
+    width: min(52vw, 200px);
+    height: calc(min(52vw, 200px) * 1.68);
+  }
 
   .hsa-motion-card--with-carousel {
     justify-content: flex-start;
-    padding-top: 5vh;
+    padding-top: max(env(safe-area-inset-top), 0.5rem);
+  }
+
+  .hsa-motion-card--with-carousel .hsa-content {
+    padding: 0.4rem 1.25rem 0.25rem;
+    gap: 0.5rem;
   }
 }
 
