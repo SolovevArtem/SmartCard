@@ -284,7 +284,13 @@ function HomePage() {
     <TubeLightNav visible={navVisible} onScrollTo={scrollTo} />
     <div className="landing">
 
-      <HeroScrollAnimation onCreateCard={handleCreate} />
+      <HeroScrollAnimation
+        onCreateCard={handleCreate}
+        onCardClick={(i) => {
+          setActiveCard(i);
+          setTimeout(() => document.getElementById(`product-card-${i}`)?.scrollIntoView({ behavior: 'smooth', block: 'center' }), 50);
+        }}
+      />
 
       {/* ── Купить ── */}
       <section className="features-section" id="features">
@@ -292,14 +298,15 @@ function HomePage() {
         <h2 className="section-title">Купить</h2>
         <div className="features-grid">
           {PRODUCTS.map((p, i) => (
-            <ProductCard
-              key={p.imageUrl}
-              imageUrl={p.imageUrl}
-              title={p.title}
-              stores={p.stores}
-              isOpen={activeCard === i}
-              onToggle={() => setActiveCard(activeCard === i ? null : i)}
-            />
+            <div key={p.imageUrl} id={`product-card-${i}`}>
+              <ProductCard
+                imageUrl={p.imageUrl}
+                title={p.title}
+                stores={p.stores}
+                isOpen={activeCard === i}
+                onToggle={() => setActiveCard(activeCard === i ? null : i)}
+              />
+            </div>
           ))}
         </div>
       </section>
@@ -559,11 +566,18 @@ function CardView({ card }) {
     }
   };
 
-  // Scroll-driven card position (translateY: 0 → -300px = card emerges from envelope)
-  const cardY = -(scrollProg * 300);
-  // Front mask fades out as card fully covers the envelope
-  const maskOpacity = Math.max(0, 1 - Math.max(0, scrollProg - 0.6) / 0.4);
-  const scrollHintOpacity = Math.max(0, 1 - scrollProg * 8);
+  // lid.one (front): scroll 0→0.4 = rotateX 0°→-90° (front flap disappears edge-on)
+  const lid1Prog = Math.min(1, scrollProg / 0.4);
+  const lid1RotateX = -(lid1Prog * 90);
+  // lid.two (back): scroll 0.25→0.6 = rotateX -90°→-180° (back flap swings fully open)
+  const lid2Prog = Math.max(0, Math.min(1, (scrollProg - 0.25) / 0.35));
+  const lid2RotateX = -90 - (lid2Prog * 90);
+  // Card rises: scroll 0.35→1.0 = translateY 0→-500px
+  const cardProg = Math.max(0, Math.min(1, (scrollProg - 0.35) / 0.65));
+  const cardY = -(cardProg * 500);
+  // Front mask fades: scroll 0.5→0.8
+  const maskOpacity = Math.max(0, 1 - Math.max(0, scrollProg - 0.5) / 0.3);
+  const scrollHintOpacity = Math.max(0, 1 - scrollProg * 6);
 
   return (
     <div className="env-page">
@@ -586,24 +600,44 @@ function CardView({ card }) {
 
           <div className="env-scene">
 
-            {/* SVG envelope body */}
-            <svg className="env-svg" viewBox="0 0 488 362" fill="none" preserveAspectRatio="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
-              <path d="M0 361.319H487.923L273.123 174.97C273.123 174.97 267.524 171.361 260.321 168.206C254.502 165.658 247.636 163.405 241.828 163.589C236.718 163.752 230.781 165.853 225.656 168.206C218.787 171.361 213.377 174.97 213.377 174.97L0 361.319Z" fill="#88CCFF"/>
-              <path d="M0 0V361.319L213.377 174.97C213.377 174.97 218.787 171.361 225.656 168.206L0 0Z" fill="#9FD6FF"/>
-              <path d="M487.923 361.319V0L260.321 168.206C267.524 171.361 273.123 174.97 273.123 174.97L487.923 361.319Z" fill="#9FD6FF"/>
-            </svg>
+            {/* CSS envelope body */}
+            <div className="env-wrapper" aria-hidden="true">
+              {/* Front flap (lid.one): rotateX 0° → -90° */}
+              <div
+                className="env-lid-front"
+                style={{ transform: `rotateX(${lid1RotateX}deg)` }}
+              />
+              {/* Back flap (lid.two): rotateX -90° → -180° */}
+              <div
+                className="env-lid-back"
+                style={{ transform: `rotateX(${lid2RotateX}deg)` }}
+              />
+              {/* Side fold triangles */}
+              <div className="env-body-folds" />
+              {/* Bottom V-fold */}
+              <div className="env-body-bottom" />
+            </div>
 
-            {/* Open flap */}
-            <svg className="env-flap" viewBox="0 0 488 377" fill="none" preserveAspectRatio="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
-              <path d="M487.923 202.01H0L225.656 377C225.656 377 230.781 374.862 236.718 372.761C241.828 372.599C247.636 372.415 254.502 374.667 260.321 377L487.923 202.01Z" fill="#BBE2FF"/>
-              <path d="M0 202.01H487.923L273.123 14.2375C273.123 14.2375 255.244 -0.484578 241.828 0.0123003C229.414 0.472058 213.377 14.2375 213.377 14.2375L0 202.01Z" fill="#BBE2FF"/>
-            </svg>
-
-            {/* Single flying card — full envelope width, emerges and covers */}
+            {/* Flying card with preview content */}
             <div
               className="env-card env-card-main"
               style={{ transform: `translateY(${cardY}px)`, willChange: 'transform' }}
-            />
+            >
+              <div className="env-card-preview">
+                <div className="env-card-1-bar" />
+                {card.sender_name && (
+                  <p className="env-card-preview-from">✦ от {card.sender_name}</p>
+                )}
+                {photos.length > 0 && (
+                  <img
+                    className="env-card-preview-photo"
+                    src={photos[0]}
+                    alt=""
+                    loading="eager"
+                  />
+                )}
+              </div>
+            </div>
 
             {/* Front mask — fades as card fully covers the envelope */}
             <div className="env-front-mask" style={{ opacity: maskOpacity }} />

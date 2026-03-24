@@ -1,8 +1,15 @@
 import { useRef } from 'react';
 import { useScroll, useTransform, motion } from 'motion/react';
 import { Video, Image, MessageCircle, ChevronDown } from 'lucide-react';
+import CardCarousel from './CardCarousel';
 
-export default function HeroScrollAnimation({ onCreateCard }) {
+const CARD_IMAGES = [
+  { src: '/card-1.png', alt: 'Люби Твори Мечтай' },
+  { src: '/card-2.png', alt: 'Смело Смотри Вперед' },
+  { src: '/card-3.png', alt: 'Сияй' },
+];
+
+export default function HeroScrollAnimation({ onCreateCard, onCardClick }) {
   const containerRef = useRef(null);
 
   const { scrollYProgress } = useScroll({
@@ -23,7 +30,7 @@ export default function HeroScrollAnimation({ onCreateCard }) {
       {/* ── Section 1: Light ── */}
       <div className="hsa-section hsa-section--light">
         <motion.div
-          className="hsa-motion-card"
+          className="hsa-motion-card hsa-motion-card--with-carousel"
           style={{ scale: scale1, rotate: rotate1 }}
         >
           <div className="hsa-grid" aria-hidden="true" />
@@ -71,10 +78,8 @@ export default function HeroScrollAnimation({ onCreateCard }) {
             <p className="hsa-subtitle">
               Создайте открытку, которая оживает — с видео, фото и тёплыми словами прямо внутри.
             </p>
-            <button className="hsa-cta" onClick={onCreateCard}>
-              Начать бесплатно →
-            </button>
           </div>
+          <CardCarousel images={CARD_IMAGES} onCardClick={onCardClick} />
           <div className="hsa-arrow-down" aria-hidden="true">
             <ChevronDown size={32} />
           </div>
