@@ -51,6 +51,7 @@ async function runMigrations() {
     console.log('[migrations] Done.');
   } catch (err) {
     console.error('[migrations] Error:', err.message);
+    process.exit(1);
   }
 }
 

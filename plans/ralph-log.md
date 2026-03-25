@@ -887,3 +887,35 @@ Task encountered issues
 - Найти все res.status(500).json с error.message
 - Заменить на 'Internal server error'
 - console.error вызовы не трогаем
+
+### Result
+**Status:** ⏸️ Blocked | **Completed:** 10:55
+Task encountered issues
+
+---
+## [260325-code-review-sprints] CHECKPOINT: Test Sprint 1
+**Status:** In Progress | **Time:** 2026-03-25 10:55 | **Model:** sonnet | **Mode:** production
+
+### Result
+**Status:** ⏸️ Blocked | **Completed:** 10:55
+CHECKPOINT: Paused for manual verification
+
+---
+## [260325-code-review-sprints] CHECKPOINT: Test Sprint 1
+**Status:** In Progress | **Time:** 2026-03-25 10:56 | **Model:** sonnet | **Mode:** production
+
+### Result
+**Status:** ⏸️ Blocked | **Completed:** 10:56
+CHECKPOINT: Paused for manual verification
+
+---
+## [260325-code-review-sprints] [S2-1] Make migration failures block server startup
+**Status:** In Progress | **Time:** 2026-03-25 10:57 | **Model:** sonnet | **Mode:** production
+
+---
+## [260325-code-review-sprints] Task 7: [S2-1] Make migration failures block server startup
+**Status:** In Progress | **Time:** 2026-03-25 10:57 | **Model:** sonnet | **Mode:** production
+### Plan
+- Найти catch блок в runMigrations() (~line 52)
+- Пробросить ошибку (re-throw) чтобы она достигла start().catch() который вызывает process.exit(1)
+- Проверить синтаксис бэкенда

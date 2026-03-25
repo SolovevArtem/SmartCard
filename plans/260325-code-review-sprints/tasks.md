@@ -27,7 +27,7 @@
   - **File:** backend/server.js lines 257, 296, 335, 393 and all other catch blocks
   - **AC:** Client gets generic `"Internal server error"` message; actual error logged via `console.error`
 
-- [ ] CHECKPOINT: Test Sprint 1
+- [x] CHECKPOINT: Test Sprint 1
   - **AC:** Run `cd /Users/artemsolovev/Downloads/videocards-mvp/backend && node -e "const s=require('./server'); setTimeout(()=>process.exit(0),1000)" 2>&1 | head -20` — server starts without errors
   - Verify CSV export code has quotes around all fields
   - Verify /admin has auth middleware
@@ -35,7 +35,7 @@
 
 ### Sprint 2 — Надёжность
 
-- [ ] [S2-1] Make migration failures block server startup
+- [x] [S2-1] Make migration failures block server startup
   - **File:** backend/server.js ~lines 42–55
   - **AC:** If migration SQL fails, call `process.exit(1)` instead of just logging error
 

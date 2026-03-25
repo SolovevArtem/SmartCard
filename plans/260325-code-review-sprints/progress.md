@@ -996,3 +996,48 @@ Task encountered issues
 ### Result
 **Status:** ✅ Completed | **Completed:** 12:05
 Заменены все 8 вхождений `error.message` в HTTP-ответах на `'Internal server error'` (строки 282, 330, 369, 427, 474, 539, 588, 619). Логирование в console.error сохранено. Синтаксис проверен — чисто.
+
+### Result
+**Status:** ⏸️ Blocked | **Completed:** 10:55
+Task encountered issues
+
+---
+## [260325-code-review-sprints] CHECKPOINT: Test Sprint 1
+**Status:** In Progress | **Time:** 2026-03-25 10:55 | **Model:** sonnet | **Mode:** production
+[10:55] Iteration 6/50: CHECKPOINT: Test Sprint 1
+
+### Result
+**Status:** ⏸️ Blocked | **Completed:** 10:55
+CHECKPOINT: Paused for manual verification
+
+---
+## [260325-code-review-sprints] CHECKPOINT: Test Sprint 1
+**Status:** In Progress | **Time:** 2026-03-25 10:56 | **Model:** sonnet | **Mode:** production
+[10:56] Iteration 1/44: CHECKPOINT: Test Sprint 1
+
+---
+## CHECKPOINT: Manual Verification
+**Time:** 2026-03-25 10:56
+**Status:** Paused for manual testing
+Please verify Phase 1 works correctly before running Phase 2.
+
+### Result
+**Status:** ⏸️ Blocked | **Completed:** 10:56
+CHECKPOINT: Paused for manual verification
+
+---
+## [260325-code-review-sprints] [S2-1] Make migration failures block server startup
+**Status:** In Progress | **Time:** 2026-03-25 10:57 | **Model:** sonnet | **Mode:** production
+[10:57] Iteration 1/43: [S2-1] Make migration failures block server startu
+
+---
+## [260325-code-review-sprints] Task 7: [S2-1] Make migration failures block server startup
+**Status:** In Progress | **Time:** 2026-03-25 10:57 | **Model:** sonnet | **Mode:** production
+### Plan
+- Найти catch блок в runMigrations() (~line 52)
+- Пробросить ошибку (re-throw) чтобы она достигла start().catch() который вызывает process.exit(1)
+- Проверить синтаксис бэкенда
+
+### Result
+**Status:** Completed | **Completed:** 10:58
+Добавлен `process.exit(1)` в catch блок runMigrations(). При сбое миграции сервер теперь завершает работу вместо продолжения с невалидной схемой БД.
