@@ -80,7 +80,14 @@ export default function HeroScrollAnimation({ onCreateCard, onCardClick }) {
             </p>
           </div>
           <CardCarousel images={CARD_IMAGES} onCardClick={onCardClick} />
-          <div className="hsa-arrow-down" aria-hidden="true">
+          <div
+            className="hsa-arrow-down"
+            role="button"
+            tabIndex={0}
+            onClick={() => document.getElementById('hsa-dark')?.scrollIntoView({ behavior: 'smooth' })}
+            onKeyDown={e => e.key === 'Enter' && document.getElementById('hsa-dark')?.scrollIntoView({ behavior: 'smooth' })}
+          >
+            <span className="hsa-arrow-down__label">Как это работает</span>
             <ChevronDown size={32} />
           </div>
         </motion.div>

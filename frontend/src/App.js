@@ -287,7 +287,6 @@ function HomePage() {
       <HeroScrollAnimation
         onCreateCard={handleCreate}
         onCardClick={(i) => {
-          setActiveCard(i);
           setTimeout(() => document.getElementById(`product-card-${i}`)?.scrollIntoView({ behavior: 'smooth', block: 'center' }), 50);
         }}
       />
@@ -566,59 +565,43 @@ function CardView({ card }) {
     }
   };
 
-  // lid.one (front): scroll 0→0.4 = rotateX 0°→-90° (front flap disappears edge-on)
-  const lid1Prog = Math.min(1, scrollProg / 0.4);
-  const lid1RotateX = -(lid1Prog * 90);
-  // lid.two (back): scroll 0.25→0.6 = rotateX -90°→-180° (back flap swings fully open)
-  const lid2Prog = Math.max(0, Math.min(1, (scrollProg - 0.25) / 0.35));
-  const lid2RotateX = -90 - (lid2Prog * 90);
-  // Card rises: scroll 0.35→1.0 = translateY 0→-500px
+  // Single lid: rotateX 0° (closed) → -180° (open, stays visible), scroll 0 → 0.65
+  const lidProg = Math.min(1, scrollProg / 0.65);
+  const lidRotateX = -(lidProg * 180);
+  // Card rises: scroll 0.35→1.0
   const cardProg = Math.max(0, Math.min(1, (scrollProg - 0.35) / 0.65));
-  const cardY = -(cardProg * 500);
-  // Front mask fades: scroll 0.5→0.8
-  const maskOpacity = Math.max(0, 1 - Math.max(0, scrollProg - 0.5) / 0.3);
-  const scrollHintOpacity = Math.max(0, 1 - scrollProg * 6);
+  const cardY = -(cardProg * Math.min(window.innerWidth * 0.38, 380));
+  // Intro text fades as animation starts
+  const introOpacity = Math.max(0, 1 - scrollProg * 5);
+  const scrollHintOpacity = Math.max(0, 1 - scrollProg * 8);
 
   return (
     <div className="env-page">
 
-      {/* ── Section 1: Intro text (sticky, 150vh) ── */}
-      <div className="env-intro-section">
-        <div className="env-intro-sticky">
-          <div className="env-intro-text">
+      {/* ── Envelope + intro + card (scroll-driven, 380vh) ── */}
+      <div className="env-scroll-section" ref={sectionRef}>
+        <div className="env-sticky">
+
+          {/* Intro text — fades as animation begins */}
+          <div className="env-sticky-intro" style={{ opacity: introOpacity }} aria-hidden={introOpacity === 0}>
             <span className="env-intro-surprise">✦ Для вас особый сюрприз</span>
             <h1 className="env-intro-name">{card.sender_name}</h1>
             <p className="env-intro-tagline">подготовил(а) для вас что-то особенное</p>
           </div>
-          <div className="env-scroll-hint" aria-hidden="true">↓</div>
-        </div>
-      </div>
-
-      {/* ── Section 2: Envelope + single flying card (200vh) ── */}
-      <div className="env-scroll-section" ref={sectionRef}>
-        <div className="env-sticky">
 
           <div className="env-scene">
 
             {/* CSS envelope body */}
             <div className="env-wrapper" aria-hidden="true">
-              {/* Front flap (lid.one): rotateX 0° → -90° */}
-              <div
-                className="env-lid-front"
-                style={{ transform: `rotateX(${lid1RotateX}deg)` }}
-              />
-              {/* Back flap (lid.two): rotateX -90° → -180° */}
-              <div
-                className="env-lid-back"
-                style={{ transform: `rotateX(${lid2RotateX}deg)` }}
-              />
+              {/* Single lid: rotateX 0° (closed) → -180° (open, stays visible) */}
+              <div className="env-lid" style={{ transform: `rotateX(${lidRotateX}deg)` }} />
               {/* Side fold triangles */}
               <div className="env-body-folds" />
               {/* Bottom V-fold */}
               <div className="env-body-bottom" />
             </div>
 
-            {/* Flying card with preview content */}
+            {/* Flying card — hidden behind mask until animation starts */}
             <div
               className="env-card env-card-main"
               style={{ transform: `translateY(${cardY}px)`, willChange: 'transform' }}
@@ -639,8 +622,8 @@ function CardView({ card }) {
               </div>
             </div>
 
-            {/* Front mask — fades as card fully covers the envelope */}
-            <div className="env-front-mask" style={{ opacity: maskOpacity }} />
+            {/* Permanent mask — always opaque, hides card until it rises above */}
+            <div className="env-front-mask" />
 
           </div>
 
