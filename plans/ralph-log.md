@@ -871,3 +871,19 @@ Iteration 3 completed
 ### Result
 **Status:** ✅ Completed | **Completed:** 14:31
 app.param middleware validates :cardId on all routes (GET /api/cards/:cardId, GET /api/cards/:cardId/upload-url, POST /api/cards/:cardId/confirm-upload, POST /api/cards/:cardId/upload). Returns 400 if format doesn't match /^[A-F0-9]{8}$/i.
+
+### Result
+**Status:** ⏸️ Blocked | **Completed:** 10:53
+Task encountered issues
+
+---
+## [260325-code-review-sprints] [S1-5] Remove error.message from HTTP responses
+**Status:** In Progress | **Time:** 2026-03-25 10:53 | **Model:** sonnet | **Mode:** production
+
+---
+## [260325-code-review-sprints] Task 5: [S1-5] Remove error.message from HTTP responses
+**Status:** In Progress | **Time:** 2026-03-25 12:00 | **Model:** sonnet | **Mode:** production
+### Plan
+- Найти все res.status(500).json с error.message
+- Заменить на 'Internal server error'
+- console.error вызовы не трогаем

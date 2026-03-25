@@ -279,7 +279,7 @@ app.post('/api/admin/generate-cards', adminLimiter, requireAdminKey, async (req,
     });
   } catch (error) {
     console.error('Error generating cards:', error);
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: 'Internal server error' });
   }
 });
 
@@ -327,7 +327,7 @@ app.get('/api/admin/export-cards', adminLimiter, requireAdminKey, async (req, re
     res.send(csv);
   } catch (error) {
     console.error('Error exporting cards:', error);
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: 'Internal server error' });
   }
 });
 
@@ -366,7 +366,7 @@ app.get('/api/cards/:cardId', viewLimiter, async (req, res) => {
     });
   } catch (error) {
     console.error('Error fetching card:', error);
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: 'Internal server error' });
   }
 });
 
@@ -424,7 +424,7 @@ app.get('/api/cards/:cardId/upload-url', uploadLimiter, async (req, res) => {
     });
   } catch (error) {
     console.error('Error generating presigned URLs:', error);
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: 'Internal server error' });
   }
 });
 
@@ -471,7 +471,7 @@ app.post('/api/cards/:cardId/confirm-upload', uploadLimiter, async (req, res) =>
     res.json({ success: true, card: updatedData });
   } catch (error) {
     console.error('Error confirming upload:', error);
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: 'Internal server error' });
   }
 });
 
@@ -536,7 +536,7 @@ app.post('/api/cards/:cardId/upload',
       });
     } catch (error) {
       console.error('Error uploading content:', error);
-      res.status(500).json({ success: false, error: error.message });
+      res.status(500).json({ success: false, error: 'Internal server error' });
     }
   }
 );
@@ -585,7 +585,7 @@ app.get('/api/stats', statsLimiter, async (req, res) => {
     });
   } catch (error) {
     console.error('Error fetching stats:', error);
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: 'Internal server error' });
   }
 });
 
@@ -616,7 +616,7 @@ app.post('/api/cards/create', createLimiter, async (req, res) => {
     });
   } catch (error) {
     console.error('Error creating card:', error);
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: 'Internal server error' });
   }
 });
 

@@ -23,7 +23,7 @@
   - **File:** backend/server.js ~line 305 and all other routes with :cardId param
   - **AC:** Validate `/^[A-F0-9]{8}$/i` before using in SQL queries; return 400 if invalid
 
-- [ ] [S1-5] Remove error.message from HTTP responses
+- [x] [S1-5] Remove error.message from HTTP responses
   - **File:** backend/server.js lines 257, 296, 335, 393 and all other catch blocks
   - **AC:** Client gets generic `"Internal server error"` message; actual error logged via `console.error`
 

@@ -974,3 +974,25 @@ Iteration 3 completed
 ### Result
 **Status:** ✅ Completed | **Completed:** 14:31
 Added CARD_ID_REGEX + app.param('cardId') to centrally validate all card endpoints. Syntax check passes.
+
+### Result
+**Status:** ⏸️ Blocked | **Completed:** 10:53
+Task encountered issues
+
+---
+## [260325-code-review-sprints] [S1-5] Remove error.message from HTTP responses
+**Status:** In Progress | **Time:** 2026-03-25 10:53 | **Model:** sonnet | **Mode:** production
+[10:53] Iteration 5/50: [S1-5] Remove error.message from HTTP responses
+
+---
+## [260325-code-review-sprints] Task 5: [S1-5] Remove error.message from HTTP responses
+**Status:** In Progress | **Time:** 2026-03-25 12:00 | **Model:** sonnet | **Mode:** production
+### Plan
+- Найти все `error.message` / `err.message` в HTTP-ответах (res.status(500).json)
+- Заменить на `'Internal server error'`
+- Оставить err.message в console.error (логирование — правильно)
+- Проверить синтаксис: node -e require('./server')
+
+### Result
+**Status:** ✅ Completed | **Completed:** 12:05
+Заменены все 8 вхождений `error.message` в HTTP-ответах на `'Internal server error'` (строки 282, 330, 369, 427, 474, 539, 588, 619). Логирование в console.error сохранено. Синтаксис проверен — чисто.
