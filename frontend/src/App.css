@@ -2793,13 +2793,13 @@ form {
 
   /* Bold display typography for mobile hero */
   .hsa-motion-card--with-carousel .hsa-eyebrow {
-    font-size: 1.1rem;
-    letter-spacing: 0.08em;
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
   }
 
   .hsa-motion-card--with-carousel .hsa-title {
-    font-size: 1.6rem;
-    line-height: 1.2;
+    font-size: 2.4rem;
+    line-height: 1.1;
   }
 
   .hsa-motion-card--with-carousel .hsa-subtitle {
