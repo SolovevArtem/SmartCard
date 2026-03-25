@@ -71,7 +71,7 @@
   - **File:** frontend/src/App.js → create frontend/src/components/HomePage.jsx
   - **AC:** HomePage component (landing page) extracted. App.js imports HomePage from ./components/HomePage. App.js shrinks to ~100 lines with just routing + CardPage
 
-- [ ] [S3-4] Add useCallback to prevPhoto/nextPhoto in CardView
+- [x] [S3-4] Add useCallback to prevPhoto/nextPhoto in CardView
   - **File:** frontend/src/components/CardView.jsx (after S3-1)
   - **AC:** prevPhoto and nextPhoto wrapped in useCallback with correct dependency arrays
 

@@ -1,6 +1,21 @@
 # Progress Log
 
 ---
+## [260325-code-review-sprints] Task 15: [S3-4] Add useCallback to prevPhoto/nextPhoto in CardView
+**Status:** In Progress | **Time:** 2026-03-25 14:30 | **Model:** sonnet | **Mode:** production
+### Plan
+- Прочитать frontend/src/components/CardView.jsx
+- Проверить наличие useCallback у prevPhoto/nextPhoto
+- Убедиться в корректных dependency arrays
+
+[14:30] Started: Add useCallback to prevPhoto/nextPhoto in CardView
+[14:31] Completed: prevPhoto и nextPhoto уже обёрнуты в useCallback с корректными зависимостями [] (добавлено при S3-1 извлечении)
+
+### Result
+**Status:** ✅ Completed | **Completed:** 14:31
+`prevPhoto` и `nextPhoto` в `CardView.jsx:61-62` уже обёрнуты в `useCallback` с пустым массивом зависимостей `[]`. Это корректно, т.к. оба хендлера используют функциональные обновления state (`i => i ± 1`) и не зависят от внешних переменных. Реализовано при S3-1.
+
+---
 ## [260325-code-review-sprints] Task 12: [S3-2] Extract CardWizard component to separate file
 **Status:** In Progress | **Time:** 2026-03-25 13:00 | **Model:** sonnet | **Mode:** production
 ### Plan
@@ -1196,3 +1211,12 @@ Iteration 1 completed
 ### Result
 **Status:** ✅ Completed | **Completed:** 14:10
 HomePage (лендинг: hero, купить, FAQ, footer) извлечён в `frontend/src/components/HomePage.jsx`. Вместе с ним перенесены: STORES, PRODUCTS, API_URL, FloatingParticles, все SVG-иконки (Icon*, TapeIcon, HeroIllustration). App.js сократился до 108 строк (только роутинг + CardPage). Frontend build: OK, бандл уменьшился на 78 байт.
+
+### Result
+**Status:** ✅ Completed | **Completed:** 11:17
+Iteration 3 completed
+
+---
+## [260325-code-review-sprints] [S3-4] Add useCallback to prevPhoto/nextPhoto in CardView
+**Status:** In Progress | **Time:** 2026-03-25 11:17 | **Model:** sonnet | **Mode:** production
+[11:17] Iteration 4/38: [S3-4] Add useCallback to prevPhoto/nextPhoto in C

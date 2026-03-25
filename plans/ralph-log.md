@@ -1,6 +1,14 @@
 # Ralph Activity Log
 
 ---
+## [260325-code-review-sprints] Task 15: [S3-4] Add useCallback to prevPhoto/nextPhoto in CardView
+**Time:** 2026-03-25 14:30 | **Model:** sonnet | **Mode:** production
+
+[14:30] READ: frontend/src/components/CardView.jsx
+[14:31] VERIFIED: prevPhoto (line 61) и nextPhoto (line 62) уже имеют useCallback с dep []
+[14:31] NO EDIT NEEDED: задача уже реализована при S3-1
+
+---
 ## [260325-code-review-sprints] Task 12: [S3-2] Extract CardWizard component to separate file
 **Time:** 2026-03-25 13:00 | **Model:** sonnet | **Mode:** production
 
@@ -1003,3 +1011,11 @@ Iteration 1 completed
 14:05 WRITE: frontend/src/components/HomePage.jsx - создан новый файл с HomePage и всеми зависимостями
 14:07 WRITE: frontend/src/App.js - удалены HomePage и её зависимости, добавлен import
 14:10 BASH: cd frontend && npx react-scripts build - сборка прошла успешно
+
+### Result
+**Status:** ✅ Completed | **Completed:** 11:17
+Iteration 3 completed
+
+---
+## [260325-code-review-sprints] [S3-4] Add useCallback to prevPhoto/nextPhoto in CardView
+**Status:** In Progress | **Time:** 2026-03-25 11:17 | **Model:** sonnet | **Mode:** production
