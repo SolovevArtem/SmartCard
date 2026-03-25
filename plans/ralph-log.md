@@ -1,6 +1,13 @@
 # Ralph Activity Log
 
 ---
+## [260325-code-review-sprints] Task 9: [S2-3] Extract API timeout as named constant in backend
+**Time:** 2026-03-25 11:10 | **Model:** sonnet | **Mode:** production
+
+[11:10] READ: backend/server.js — поиск вхождений 9000/timeout
+[11:10] EDIT: backend/server.js — добавить const API_TIMEOUT_MS = 9000
+
+---
 ## [260325-code-review-sprints] [S1-1] Fix CSV Injection in export endpoint
 **Status:** In Progress | **Time:** 2026-03-25 00:46 | **Model:** sonnet | **Mode:** production
 
@@ -919,3 +926,19 @@ CHECKPOINT: Paused for manual verification
 - Найти catch блок в runMigrations() (~line 52)
 - Пробросить ошибку (re-throw) чтобы она достигла start().catch() который вызывает process.exit(1)
 - Проверить синтаксис бэкенда
+
+### Result
+**Status:** ✅ Completed | **Completed:** 10:58
+Iteration 1 completed
+
+---
+## [260325-code-review-sprints] [S2-2] Replace N+1 DELETE loop with batch DELETE in cleanup
+**Status:** In Progress | **Time:** 2026-03-25 10:58 | **Model:** sonnet | **Mode:** production
+
+### Result
+**Status:** ✅ Completed | **Completed:** 10:59
+Iteration 2 completed
+
+---
+## [260325-code-review-sprints] [S2-3] Extract API timeout as named constant in backend
+**Status:** In Progress | **Time:** 2026-03-25 10:59 | **Model:** sonnet | **Mode:** production

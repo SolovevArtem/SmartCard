@@ -19,6 +19,7 @@ Sentry.init({
 const app = express();
 app.set('trust proxy', 1); // behind Nginx
 const PORT = process.env.PORT || 3001;
+const API_TIMEOUT_MS = 9000;
 
 // ===== DATABASE SETUP =====
 const pool = new Pool({

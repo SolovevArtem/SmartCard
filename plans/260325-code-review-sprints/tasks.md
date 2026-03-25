@@ -43,7 +43,7 @@
   - **File:** backend/server.js ~lines 648–655
   - **AC:** Collect all card IDs, then single `DELETE FROM cards WHERE id = ANY($1::text[])` query
 
-- [ ] [S2-3] Extract API timeout as named constant in backend
+- [x] [S2-3] Extract API timeout as named constant in backend
   - **File:** backend/server.js
   - **AC:** Add `const API_TIMEOUT_MS = 9000;` near top of file; use wherever timeout appears
 

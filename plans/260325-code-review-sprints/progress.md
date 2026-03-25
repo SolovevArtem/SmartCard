@@ -1,6 +1,21 @@
 # Progress Log
 
 ---
+## [260325-code-review-sprints] Task 9: [S2-3] Extract API timeout as named constant in backend
+**Status:** In Progress | **Time:** 2026-03-25 11:10 | **Model:** sonnet | **Mode:** production
+### Plan
+- Найти вхождения 9000 в backend/server.js (результат: нет)
+- Добавить `const API_TIMEOUT_MS = 9000;` после секции PORT в backend/server.js
+- Проверить синтаксис бэкенда
+
+[11:10] Started: Extract API timeout as named constant in backend
+[11:12] Completed: добавлена const API_TIMEOUT_MS = 9000 в backend/server.js; в файле не было существующих вхождений 9000
+
+### Result
+**Status:** ✅ Completed | **Completed:** 11:12
+Добавлена `const API_TIMEOUT_MS = 9000;` после PORT в backend/server.js. В бэкенде не было текущих вхождений значения 9000 (все таймауты AbortController — во frontend). Синтаксис валиден.
+
+---
 ## [260325-code-review-sprints] Task 8: [S2-2] Replace N+1 DELETE loop with batch DELETE in cleanup
 **Status:** In Progress | **Time:** 2026-03-25 11:00 | **Model:** sonnet | **Mode:** production
 ### Plan
@@ -1066,3 +1081,12 @@ Iteration 1 completed
 ## [260325-code-review-sprints] [S2-2] Replace N+1 DELETE loop with batch DELETE in cleanup
 **Status:** In Progress | **Time:** 2026-03-25 10:58 | **Model:** sonnet | **Mode:** production
 [10:58] Iteration 2/43: [S2-2] Replace N+1 DELETE loop with batch DELETE i
+
+### Result
+**Status:** ✅ Completed | **Completed:** 10:59
+Iteration 2 completed
+
+---
+## [260325-code-review-sprints] [S2-3] Extract API timeout as named constant in backend
+**Status:** In Progress | **Time:** 2026-03-25 10:59 | **Model:** sonnet | **Mode:** production
+[10:59] Iteration 3/43: [S2-3] Extract API timeout as named constant in ba
