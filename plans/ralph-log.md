@@ -1,6 +1,14 @@
 # Ralph Activity Log
 
 ---
+## [260325-code-review-sprints] Task 23: [S4-2] Add composite index idx_cards_batch_status
+**Time:** 2026-03-25 17:15 | **Model:** sonnet | **Mode:** production
+
+[17:15] READ: backend/server.js (migration block, lines 49-64)
+[17:16] EDIT: backend/server.js — добавлен idx_cards_batch_status ON cards(batch_id, status)
+[17:16] BASH: node -e require('./server') — синтаксис OK (S3 env ошибка ожидаема)
+
+---
 ## [260325-code-review-sprints] Task 22: [S4-1] Add time-window filter to stats query
 **Time:** 2026-03-25 17:00 | **Model:** sonnet | **Mode:** production
 [17:00] READ: backend/server.js lines 530-575 — изучен /api/stats endpoint
@@ -1323,3 +1331,11 @@ Iteration limit (38) reached. 17 done, 9 remaining
 ---
 ## [260325-code-review-sprints] [S4-1] Add time-window filter to stats query
 **Status:** In Progress | **Time:** 2026-03-25 17:40 | **Model:** sonnet | **Mode:** production
+
+### Result
+**Status:** ✅ Completed | **Completed:** 17:41
+Iteration 1 completed
+
+---
+## [260325-code-review-sprints] [S4-2] Add composite index idx_cards_batch_status in migrati
+**Status:** In Progress | **Time:** 2026-03-25 17:41 | **Model:** sonnet | **Mode:** production

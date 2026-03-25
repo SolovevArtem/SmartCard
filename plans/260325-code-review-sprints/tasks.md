@@ -106,7 +106,7 @@
   - **File:** backend/server.js ~lines 513–523
   - **AC:** Stats endpoint accepts optional `?days=N` param (default 30). Query filters `WHERE created_at > NOW() - INTERVAL '$1 days'` using parameterized query
 
-- [ ] [S4-2] Add composite index idx_cards_batch_status in migrations
+- [x] [S4-2] Add composite index idx_cards_batch_status in migrations
   - **File:** backend/server.js ~lines 42–55 (migration block)
   - **AC:** Add `CREATE INDEX IF NOT EXISTS idx_cards_batch_status ON cards(batch_id, status);` to migration SQL
 

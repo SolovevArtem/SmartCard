@@ -1,6 +1,19 @@
 # Progress Log
 
 ---
+## [260325-code-review-sprints] Task 23: [S4-2] Add composite index idx_cards_batch_status
+**Status:** In Progress | **Time:** 2026-03-25 17:15 | **Model:** sonnet | **Mode:** production
+### Plan
+- Добавить `CREATE INDEX IF NOT EXISTS idx_cards_batch_status ON cards(batch_id, status)` в migration block
+
+[17:15] Started: Add composite index idx_cards_batch_status
+[17:16] Completed: индекс добавлен в runMigrations(), синтаксис OK
+
+### Result
+**Status:** ✅ Completed | **Completed:** 17:16
+В migration block добавлена строка `CREATE INDEX IF NOT EXISTS idx_cards_batch_status ON cards(batch_id, status)`. Синтаксис backend подтверждён (ошибка S3 — окружение, не код).
+
+---
 ## [260325-code-review-sprints] Task 22: [S4-1] Add time-window filter to stats query
 **Status:** In Progress | **Time:** 2026-03-25 17:00 | **Model:** sonnet | **Mode:** production
 ### Plan
@@ -1587,3 +1600,12 @@ Iteration limit (38) reached. 17 done, 9 remaining
 ## [260325-code-review-sprints] [S4-1] Add time-window filter to stats query
 **Status:** In Progress | **Time:** 2026-03-25 17:40 | **Model:** sonnet | **Mode:** production
 [17:40] Iteration 1/10: [S4-1] Add time-window filter to stats query
+
+### Result
+**Status:** ✅ Completed | **Completed:** 17:41
+Iteration 1 completed
+
+---
+## [260325-code-review-sprints] [S4-2] Add composite index idx_cards_batch_status in migrati
+**Status:** In Progress | **Time:** 2026-03-25 17:41 | **Model:** sonnet | **Mode:** production
+[17:41] Iteration 2/10: [S4-2] Add composite index idx_cards_batch_status 

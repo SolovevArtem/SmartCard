@@ -53,6 +53,7 @@ async function runMigrations() {
     await pool.query(`CREATE INDEX IF NOT EXISTS idx_cards_status ON cards(status)`);
     await pool.query(`CREATE INDEX IF NOT EXISTS idx_cards_created ON cards(created_at)`);
     await pool.query(`CREATE INDEX IF NOT EXISTS idx_cards_batch ON cards(batch_id)`);
+    await pool.query(`CREATE INDEX IF NOT EXISTS idx_cards_batch_status ON cards(batch_id, status)`);
     await pool.query(`ALTER TABLE cards ADD COLUMN IF NOT EXISTS view_count INTEGER DEFAULT 0`);
     await pool.query(`ALTER TABLE cards ADD COLUMN IF NOT EXISTS last_viewed_at TIMESTAMP`);
     await pool.query(`ALTER TABLE cards ADD COLUMN IF NOT EXISTS channel VARCHAR(50)`);
