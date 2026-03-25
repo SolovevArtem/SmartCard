@@ -1,6 +1,22 @@
 # Progress Log
 
 ---
+## [260325-code-review-sprints] Task 12: [S3-2] Extract CardWizard component to separate file
+**Status:** In Progress | **Time:** 2026-03-25 13:00 | **Model:** sonnet | **Mode:** production
+### Plan
+- Прочитать CardWizard (lines 430–822) и все зависимости из App.js
+- Создать frontend/src/components/CardWizard.jsx с нужными импортами
+- Удалить CardWizard из App.js и добавить import из ./components/CardWizard
+- Проверить синтаксис бэкенда и сборку фронтенда
+
+[13:00] Started: Extract CardWizard component to separate file
+[13:10] Completed: CardWizard извлечён в frontend/src/components/CardWizard.jsx; App.js импортирует из ./components/CardWizard; useRef убран из импортов App.js; сборка прошла успешно
+
+### Result
+**Status:** ✅ Completed | **Completed:** 13:10
+CardWizard (multi-step form: имя → видео → фото + поздравление + превью) извлечён в `frontend/src/components/CardWizard.jsx`. Вместе с ним перенесены: UPLOAD_MSGS, WizardIllustration, FloatingParticles (для CardWizard). App.js импортирует `CardWizard` из `./components/CardWizard`. `useRef` убран из импортов App.js. Frontend build: OK.
+
+---
 ## [260325-code-review-sprints] Task 11: [S3-1] Extract CardView component to separate file
 **Status:** In Progress | **Time:** 2026-03-25 12:00 | **Model:** sonnet | **Mode:** production
 ### Plan
@@ -1155,3 +1171,12 @@ CHECKPOINT: Paused for manual verification
 ## [260325-code-review-sprints] [S3-1] Extract CardView component to separate file
 **Status:** In Progress | **Time:** 2026-03-25 11:03 | **Model:** sonnet | **Mode:** production
 [11:03] Iteration 1/38: [S3-1] Extract CardView component to separate file
+
+### Result
+**Status:** ✅ Completed | **Completed:** 11:07
+Iteration 1 completed
+
+---
+## [260325-code-review-sprints] [S3-2] Extract CardWizard component to separate file
+**Status:** In Progress | **Time:** 2026-03-25 11:07 | **Model:** sonnet | **Mode:** production
+[11:07] Iteration 2/38: [S3-2] Extract CardWizard component to separate fi
