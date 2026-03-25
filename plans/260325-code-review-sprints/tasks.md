@@ -67,7 +67,7 @@
   - **File:** frontend/src/App.js → create frontend/src/components/CardWizard.jsx
   - **AC:** CardWizard component (multi-step form) extracted to its own file. App.js imports CardWizard from ./components/CardWizard
 
-- [ ] [S3-3] Extract HomePage component to separate file
+- [x] [S3-3] Extract HomePage component to separate file
   - **File:** frontend/src/App.js → create frontend/src/components/HomePage.jsx
   - **AC:** HomePage component (landing page) extracted. App.js imports HomePage from ./components/HomePage. App.js shrinks to ~100 lines with just routing + CardPage
 

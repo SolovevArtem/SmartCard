@@ -994,3 +994,12 @@ Iteration 1 completed
 ---
 ## [260325-code-review-sprints] [S3-2] Extract CardWizard component to separate file
 **Status:** In Progress | **Time:** 2026-03-25 11:07 | **Model:** sonnet | **Mode:** production
+
+---
+## [260325-code-review-sprints] Task 13: [S3-3] Extract HomePage component to separate file
+**Time:** 2026-03-25 14:00 | **Model:** sonnet | **Mode:** production
+
+14:00 READ: frontend/src/App.js - изучение структуры HomePage и зависимостей
+14:05 WRITE: frontend/src/components/HomePage.jsx - создан новый файл с HomePage и всеми зависимостями
+14:07 WRITE: frontend/src/App.js - удалены HomePage и её зависимости, добавлен import
+14:10 BASH: cd frontend && npx react-scripts build - сборка прошла успешно

@@ -1180,3 +1180,19 @@ Iteration 1 completed
 ## [260325-code-review-sprints] [S3-2] Extract CardWizard component to separate file
 **Status:** In Progress | **Time:** 2026-03-25 11:07 | **Model:** sonnet | **Mode:** production
 [11:07] Iteration 2/38: [S3-2] Extract CardWizard component to separate fi
+
+---
+## [260325-code-review-sprints] Task 13: [S3-3] Extract HomePage component to separate file
+**Status:** In Progress | **Time:** 2026-03-25 14:00 | **Model:** sonnet | **Mode:** production
+### Plan
+- Прочитать HomePage (lines 215–411) и все её зависимости из App.js
+- Создать frontend/src/components/HomePage.jsx со всеми нужными импортами и SVG-иконками
+- Удалить HomePage и её зависимости из App.js, добавить import из ./components/HomePage
+- Проверить синтаксис: App.js ~100 строк после рефакторинга
+
+[14:00] Started: Extract HomePage component to separate file
+[14:10] Completed: HomePage извлечён в frontend/src/components/HomePage.jsx; App.js сократился до 108 строк; сборка прошла успешно
+
+### Result
+**Status:** ✅ Completed | **Completed:** 14:10
+HomePage (лендинг: hero, купить, FAQ, footer) извлечён в `frontend/src/components/HomePage.jsx`. Вместе с ним перенесены: STORES, PRODUCTS, API_URL, FloatingParticles, все SVG-иконки (Icon*, TapeIcon, HeroIllustration). App.js сократился до 108 строк (только роутинг + CardPage). Frontend build: OK, бандл уменьшился на 78 байт.
