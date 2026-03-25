@@ -2755,7 +2755,7 @@ form {
   }
 }
 
-/* ── Mobile hero: push content to top ── */
+/* ── Mobile hero: push content to top + bold typography ── */
 @media (max-width: 768px) {
   /* stretch instead of center so motion.div reliably fills 100svh on iOS Safari */
   .hsa-section--light {
@@ -2770,5 +2770,21 @@ form {
   .hsa-motion-card--with-carousel .hsa-content {
     padding: 0.4rem 1.25rem 0.25rem;
     gap: 0.5rem;
+  }
+
+  /* Bold display typography for mobile hero */
+  .hsa-motion-card--with-carousel .hsa-eyebrow {
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+  }
+
+  .hsa-motion-card--with-carousel .hsa-title {
+    font-size: 2.4rem;
+    line-height: 1.1;
+  }
+
+  .hsa-motion-card--with-carousel .hsa-subtitle {
+    font-size: 0.95rem;
+    line-height: 1.55;
   }
 }
