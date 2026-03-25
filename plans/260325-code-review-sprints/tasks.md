@@ -63,7 +63,7 @@
   - **File:** frontend/src/App.js → create frontend/src/components/CardView.jsx
   - **AC:** CardView component (scroll parallax envelope) extracted to its own file with all its dependencies (imports, SVG constants). App.js imports CardView from ./components/CardView
 
-- [x] [S3-2] Extract CardWizard component to separate file
+- [ ] [S3-2] Extract CardWizard component to separate file
   - **File:** frontend/src/App.js → create frontend/src/components/CardWizard.jsx
   - **AC:** CardWizard component (multi-step form) extracted to its own file. App.js imports CardWizard from ./components/CardWizard
 
