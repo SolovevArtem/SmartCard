@@ -1,6 +1,22 @@
 # Progress Log
 
 ---
+## [260325-code-review-sprints] Task 8: [S2-2] Replace N+1 DELETE loop with batch DELETE in cleanup
+**Status:** In Progress | **Time:** 2026-03-25 11:00 | **Model:** sonnet | **Mode:** production
+### Plan
+- Найти for-loop в runCleanup (~line 683) с individual DELETE per card
+- Собрать все card IDs в массив
+- Заменить N отдельных DELETE на один `DELETE FROM cards WHERE id = ANY($1::text[])`
+- Проверить синтаксис бэкенда
+
+[11:00] Started: Replace N+1 DELETE loop with batch DELETE
+[11:02] Completed: S3 deletes still loop per-card (required), DB delete now single batch query via ANY($1::text[])
+
+### Result
+**Status:** ✅ Completed | **Completed:** 11:02
+Заменил N отдельных `DELETE FROM cards WHERE id = $1` на один `DELETE FROM cards WHERE id = ANY($1::text[])`. S3 file deletions сохранены в цикле (необходимо для каждой карточки). Синтаксис бэкенда валиден.
+
+---
 ## [260325-code-review-sprints] Task 1: [S1-1] Fix CSV Injection in export endpoint
 **Status:** In Progress | **Time:** 2026-03-25 10:00 | **Model:** sonnet | **Mode:** production
 ### Plan
@@ -1041,3 +1057,12 @@ CHECKPOINT: Paused for manual verification
 ### Result
 **Status:** Completed | **Completed:** 10:58
 Добавлен `process.exit(1)` в catch блок runMigrations(). При сбое миграции сервер теперь завершает работу вместо продолжения с невалидной схемой БД.
+
+### Result
+**Status:** ✅ Completed | **Completed:** 10:58
+Iteration 1 completed
+
+---
+## [260325-code-review-sprints] [S2-2] Replace N+1 DELETE loop with batch DELETE in cleanup
+**Status:** In Progress | **Time:** 2026-03-25 10:58 | **Model:** sonnet | **Mode:** production
+[10:58] Iteration 2/43: [S2-2] Replace N+1 DELETE loop with batch DELETE i

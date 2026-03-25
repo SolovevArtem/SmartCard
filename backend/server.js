@@ -685,8 +685,12 @@ async function runCleanup() {
       for (const photoUrl of (card.photos_urls || [])) {
         await deleteS3File(photoUrl);
       }
-      await pool.query('DELETE FROM cards WHERE id = $1', [card.id]);
-      console.log(`[cleanup] Deleted card ${card.id}`);
+    }
+
+    if (rows.length > 0) {
+      const ids = rows.map(c => c.id);
+      await pool.query('DELETE FROM cards WHERE id = ANY($1::text[])', [ids]);
+      console.log(`[cleanup] Deleted ${ids.length} card(s): ${ids.join(', ')}`);
     }
 
     console.log('[cleanup] Done.');

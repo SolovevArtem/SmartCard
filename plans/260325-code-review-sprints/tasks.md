@@ -39,7 +39,7 @@
   - **File:** backend/server.js ~lines 42–55
   - **AC:** If migration SQL fails, call `process.exit(1)` instead of just logging error
 
-- [ ] [S2-2] Replace N+1 DELETE loop with batch DELETE in cleanup
+- [x] [S2-2] Replace N+1 DELETE loop with batch DELETE in cleanup
   - **File:** backend/server.js ~lines 648–655
   - **AC:** Collect all card IDs, then single `DELETE FROM cards WHERE id = ANY($1::text[])` query
 
