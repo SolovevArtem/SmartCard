@@ -1552,7 +1552,7 @@ form {
 }
 
 .env-scroll-section {
-  height: 280vh;
+  height: 380vh;
   position: relative;
 }
 
@@ -1564,11 +1564,20 @@ form {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 3vh 1rem 2rem;
+  gap: 1.5rem;
+  padding: 2vh 1rem 1.5rem;
   overflow: hidden;
 }
 
-/* Intro text */
+/* Intro text inside sticky (replaces separate intro section) */
+.env-sticky-intro {
+  text-align: center;
+  pointer-events: none;
+  transition: opacity 0.2s;
+  z-index: 10;
+}
+
+/* Intro text (keep for reuse) */
 .env-intro-text {
   text-align: center;
   z-index: 10;
@@ -1629,8 +1638,8 @@ form {
   background: #9FD6FF;
 }
 
-/* Передний клапан (lid.one): rotateX 0° → -90° */
-.env-lid-front {
+/* Клапан конверта: rotateX 0° (закрыт) → -180° (открыт, остаётся виден) */
+.env-lid {
   position: absolute;
   top: 0; left: 0;
   width: 100%; height: 50%;
@@ -1638,21 +1647,8 @@ form {
   background: #BBE2FF;
   transform-origin: top center;
   transform-style: preserve-3d;
-  backface-visibility: hidden;
-  z-index: 3;
-}
-
-/* Задний клапан (lid.two): rotateX -90° → -180° */
-.env-lid-back {
-  position: absolute;
-  top: 0; left: 0;
-  width: 100%; height: 50%;
-  clip-path: polygon(0 0, 100% 0, 50% 100%);
-  background: #9FD6FF;
-  transform-origin: top center;
-  transform-style: preserve-3d;
-  backface-visibility: hidden;
-  z-index: 1;
+  backface-visibility: visible;
+  z-index: 4;
 }
 
 /* Fold-треугольники по бокам через псевдо-элементы */
@@ -1689,25 +1685,25 @@ form {
   background: #ffffff;
 }
 
-/* Flying card — starts below fold line, rises on scroll */
+/* Flying card — fully hidden behind mask in closed state, rises on scroll */
 .env-card-main {
   left: 5%;
   width: 90%;
-  top: 30%;
-  min-height: 120%;
+  top: 55%;
+  min-height: 80%;
   z-index: 2;
   box-shadow: 0 8px 32px rgba(135, 180, 230, 0.35), 0 2px 8px rgba(0, 0, 0, 0.06);
 }
 
-/* Front mask: hides card bottom as it rises */
+/* Permanent mask — always opaque, covers card until it rises above top edge */
 .env-front-mask {
   position: absolute;
-  bottom: -2px;
+  top: 53%;
   left: -2px;
   right: -2px;
-  height: 52%;
+  bottom: -2px;
   background: #9FD6FF;
-  z-index: 5;
+  z-index: 6;
   pointer-events: none;
 }
 
@@ -1810,10 +1806,10 @@ form {
 }
 
 .env-content-card {
-  width: min(90vw, 660px);
+  width: min(90vw, 648px);
   background: #ffffff;
   border-radius: 0 0 14px 14px;
-  box-shadow: 0 8px 32px rgba(255, 126, 95, 0.22), 0 2px 8px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 8px 32px rgba(135, 180, 230, 0.3), 0 2px 8px rgba(0, 0, 0, 0.06);
   overflow: hidden;
 }
 
@@ -1850,10 +1846,8 @@ form {
 
 /* ── Envelope card view — responsive ── */
 @media (max-width: 480px) {
-  .env-intro-section { height: 120vh; }
-  .env-scroll-section { height: 220vh; }
-  .env-sticky { padding: 2vh 0.75rem 1.5rem; }
-  .env-intro-sticky { padding: 1.5rem 0.75rem; }
+  .env-scroll-section { height: 320vh; }
+  .env-sticky { padding: 1.5vh 0.75rem 1rem; gap: 1rem; }
   .env-intro-name { font-size: 1.85rem; }
   .env-intro-tagline { font-size: 0.82rem; }
   .env-card-1-text { font-size: 0.8rem; }
@@ -2758,5 +2752,23 @@ form {
 
   .hsa-subtitle {
     font-size: 0.82rem;
+  }
+}
+
+/* ── Mobile hero: push content to top ── */
+@media (max-width: 768px) {
+  /* stretch instead of center so motion.div reliably fills 100svh on iOS Safari */
+  .hsa-section--light {
+    align-items: stretch;
+  }
+
+  .hsa-motion-card--with-carousel {
+    justify-content: flex-start !important;
+    padding-top: 0.75rem !important;
+  }
+
+  .hsa-motion-card--with-carousel .hsa-content {
+    padding: 0.4rem 1.25rem 0.25rem;
+    gap: 0.5rem;
   }
 }
