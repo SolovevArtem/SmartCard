@@ -110,7 +110,7 @@
   - **File:** backend/server.js ~lines 42–55 (migration block)
   - **AC:** Add `CREATE INDEX IF NOT EXISTS idx_cards_batch_status ON cards(batch_id, status);` to migration SQL
 
-- [ ] [S4-3] Add lazy loading for CardPage route
+- [x] [S4-3] Add lazy loading for CardPage route
   - **File:** frontend/src/App.js
   - **AC:** CardPage wrapped in React.lazy() + Suspense with fallback spinner. Import changed from static to dynamic.
 

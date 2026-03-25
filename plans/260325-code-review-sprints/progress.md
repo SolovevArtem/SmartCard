@@ -1,6 +1,21 @@
 # Progress Log
 
 ---
+## [260325-code-review-sprints] Task 24: [S4-3] Add lazy loading for CardPage route
+**Status:** In Progress | **Time:** 2026-03-25 17:30 | **Model:** sonnet | **Mode:** production
+### Plan
+- Извлечь CardPage в frontend/src/components/CardPage.jsx
+- Обновить App.js: убрать статический CardPage, добавить React.lazy() + Suspense с fallback spinner
+- Валидация: npm run build
+
+[17:30] Started: Add lazy loading for CardPage route
+[17:35] Completed: CardPage извлечён в CardPage.jsx, App.js использует React.lazy() + Suspense, build OK (новый chunk 6.02 kB, main -3.51 kB)
+
+### Result
+**Status:** ✅ Completed | **Completed:** 17:35
+CardPage извлечён в `frontend/src/components/CardPage.jsx`. В App.js: `React.lazy(() => import('./components/CardPage'))` + `<Suspense fallback={spinner}>`. Route `/c/:cardId` оборачен в Suspense. Frontend build: OK, появился отдельный chunk 6.02 kB, основной бандл уменьшился на 3.51 kB.
+
+---
 ## [260325-code-review-sprints] Task 23: [S4-2] Add composite index idx_cards_batch_status
 **Status:** In Progress | **Time:** 2026-03-25 17:15 | **Model:** sonnet | **Mode:** production
 ### Plan
@@ -1609,3 +1624,12 @@ Iteration 1 completed
 ## [260325-code-review-sprints] [S4-2] Add composite index idx_cards_batch_status in migrati
 **Status:** In Progress | **Time:** 2026-03-25 17:41 | **Model:** sonnet | **Mode:** production
 [17:41] Iteration 2/10: [S4-2] Add composite index idx_cards_batch_status 
+
+### Result
+**Status:** ✅ Completed | **Completed:** 17:42
+Iteration 2 completed
+
+---
+## [260325-code-review-sprints] [S4-3] Add lazy loading for CardPage route
+**Status:** In Progress | **Time:** 2026-03-25 17:42 | **Model:** sonnet | **Mode:** production
+[17:42] Iteration 3/10: [S4-3] Add lazy loading for CardPage route

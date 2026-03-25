@@ -9,16 +9,16 @@ import '@fontsource/montserrat/400.css';
 import '@fontsource/montserrat/500.css';
 import '@fontsource/montserrat/600.css';
 import '@fontsource/montserrat/700.css';
-import { useState, useEffect, memo } from 'react';
-import { BrowserRouter as Router, Routes, Route, useParams, useNavigate } from 'react-router-dom';
+import { useState, useEffect, memo, lazy, Suspense } from 'react';
+import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from './Accordion';
 import HeroScrollAnimation from './HeroScrollAnimation';
 import TubeLightNav from './TubeLightNav';
 import ProductCard from './ProductCard';
-import CardView from './components/CardView';
-import CardWizard from './components/CardWizard';
-import { createCard, getCard } from './api';
+import { createCard } from './api';
 import './App.css';
+
+const CardPage = lazy(() => import('./components/CardPage'));
 
 const STORES = [
   { name: 'OZON',        href: '#', logo: '/logos/ozon.svg'     },
@@ -401,73 +401,6 @@ function HomePage() {
   );
 }
 
-// ── Страница карточки ──
-function CardPage() {
-  const { cardId } = useParams();
-  const [card, setCard] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    loadCard();
-  }, [cardId]);
-
-  const loadCard = async () => {
-    try {
-      const data = await getCard(cardId);
-      if (data.success) {
-        setCard(data.card);
-      } else {
-        setError(data.error || 'Карточка не найдена');
-      }
-    } catch (err) {
-      if (err.name === 'AbortError') {
-        setError('timeout');
-      } else {
-        console.error('Error loading card:', err);
-        setError('Ошибка подключения к серверу');
-      }
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  if (loading) {
-    return (
-      <div className="loading-screen">
-        <div className="spinner"></div>
-        <p>Загрузка карточки...</p>
-      </div>
-    );
-  }
-
-  if (error) {
-    const isTimeout = error === 'timeout';
-    return (
-      <div className="error-screen">
-        <h2>{isTimeout ? '⏱ Долгое ожидание' : '❌ Ошибка'}</h2>
-        <p>
-          {isTimeout
-            ? 'Сервер не ответил вовремя. Возможно, медленный интернет.'
-            : error}
-        </p>
-        <button onClick={() => { setError(null); setLoading(true); loadCard(); }}>
-          🔄 Попробовать ещё раз
-        </button>
-        <button onClick={() => window.location.href = '/'} style={{ marginTop: '0.5rem' }}>
-          На главную
-        </button>
-      </div>
-    );
-  }
-
-  if (card.status === 'filled') {
-    return <CardView card={card} />;
-  }
-
-  return <CardWizard cardId={cardId} onComplete={loadCard} />;
-}
-
 // ── Главный компонент ──
 function App() {
   return (
@@ -475,7 +408,14 @@ function App() {
       <div className="App">
         <Routes>
           <Route path="/" element={<HomePage />} />
-          <Route path="/c/:cardId" element={<CardPage />} />
+          <Route
+            path="/c/:cardId"
+            element={
+              <Suspense fallback={<div className="loading-screen"><div className="spinner"></div><p>Загрузка...</p></div>}>
+                <CardPage />
+              </Suspense>
+            }
+          />
         </Routes>
       </div>
     </Router>
