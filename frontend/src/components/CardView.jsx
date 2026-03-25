@@ -1,48 +1,22 @@
 import { useEffect, useRef, useCallback, useState } from 'react';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+gsap.registerPlugin(ScrollTrigger);
 
 function CardView({ card }) {
-  const videoRef = useRef(null);
-  const sectionRef = useRef(null);
-  const [scrollProg, setScrollProg] = useState(0);
+  const containerRef = useRef(null);
   const [trackIndex, setTrackIndex] = useState(1);
   const [carouselAnimate, setCarouselAnimate] = useState(true);
   const autoTimer = useRef(null);
   const touchStartX = useRef(null);
+  const videoRef = useRef(null);
+
   const photos = card.photos_urls || [];
   const N = photos.length;
-  const realPhoto = trackIndex <= 0 ? N - 1
-                  : trackIndex >= N + 1 ? 0
-                  : trackIndex - 1;
+  const realPhoto = trackIndex <= 0 ? N - 1 : trackIndex >= N + 1 ? 0 : trackIndex - 1;
 
-  // Scroll-parallax progress
-  useEffect(() => {
-    const onScroll = () => {
-      const el = sectionRef.current;
-      if (!el) return;
-      const top = el.getBoundingClientRect().top + window.scrollY;
-      const scrollable = el.offsetHeight - window.innerHeight;
-      if (scrollable <= 0) return;
-      const prog = Math.max(0, Math.min(1, (window.scrollY - top) / scrollable));
-      setScrollProg(prog);
-    };
-    window.addEventListener('scroll', onScroll, { passive: true });
-    onScroll();
-    return () => window.removeEventListener('scroll', onScroll);
-  }, []);
-
-  // Автоплей видео через 4с
-  useEffect(() => {
-    if (!card.video_url) return;
-    const t = setTimeout(() => {
-      if (videoRef.current) {
-        videoRef.current.muted = true;
-        videoRef.current.play().catch(() => {});
-      }
-    }, 4000);
-    return () => clearTimeout(t);
-  }, [card.video_url]);
-
-  // Авто-карусель
+  // Carousel
   const resetAutoRotate = useCallback(() => {
     if (N <= 1) return;
     clearTimeout(autoTimer.current);
@@ -57,15 +31,6 @@ function CardView({ card }) {
     return () => clearTimeout(autoTimer.current);
   }, [trackIndex, resetAutoRotate]);
 
-  const prevPhoto = useCallback(() => { setCarouselAnimate(true); setTrackIndex(i => i - 1); }, []);
-  const nextPhoto = useCallback(() => { setCarouselAnimate(true); setTrackIndex(i => i + 1); }, []);
-
-  const handleTransitionEnd = (e) => {
-    if (e.propertyName !== 'transform') return;
-    if (trackIndex === 0)          { setCarouselAnimate(false); setTrackIndex(N); }
-    else if (trackIndex === N + 1) { setCarouselAnimate(false); setTrackIndex(1); }
-  };
-
   useEffect(() => {
     if (!carouselAnimate) {
       const raf = requestAnimationFrame(() =>
@@ -75,10 +40,16 @@ function CardView({ card }) {
     }
   }, [carouselAnimate]);
 
-  const handleTouchStart = (e) => {
-    touchStartX.current = e.touches[0].clientX;
-    resetAutoRotate();
+  const prevPhoto = useCallback(() => { setCarouselAnimate(true); setTrackIndex(i => i - 1); }, []);
+  const nextPhoto = useCallback(() => { setCarouselAnimate(true); setTrackIndex(i => i + 1); }, []);
+
+  const handleTransitionEnd = (e) => {
+    if (e.propertyName !== 'transform') return;
+    if (trackIndex === 0)         { setCarouselAnimate(false); setTrackIndex(N); }
+    else if (trackIndex === N + 1) { setCarouselAnimate(false); setTrackIndex(1); }
   };
+
+  const handleTouchStart = (e) => { touchStartX.current = e.touches[0].clientX; resetAutoRotate(); };
   const handleTouchEnd = (e) => {
     if (touchStartX.current === null) return;
     const diff = touchStartX.current - e.changedTouches[0].clientX;
@@ -86,138 +57,202 @@ function CardView({ card }) {
     touchStartX.current = null;
   };
 
-  // Single lid: rotateX 0° (closed) → -180° (open), scroll 0 → 0.65
-  const lidProg = Math.min(1, scrollProg / 0.65);
-  const lidRotateX = -(lidProg * 180);
-  // Card rises: scroll 0.35 → 1.0
-  const cardProg = Math.max(0, Math.min(1, (scrollProg - 0.35) / 0.65));
-  const cardY = -(cardProg * Math.min(window.innerWidth * 0.42, 420));
-  // Intro text fades as animation starts
-  const introOpacity = Math.max(0, 1 - scrollProg * 5);
-  const scrollHintOpacity = Math.max(0, 1 - scrollProg * 8);
+  // GSAP scroll-driven cinematic timeline
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      // Initial states
+      gsap.set('.cv-hero-inner',  { autoAlpha: 0, y: 50 });
+      gsap.set('.cv-card',        { y: window.innerHeight + 150, borderRadius: '32px' });
+      gsap.set('.cv-card-bar',    { scaleX: 0, transformOrigin: 'left center' });
+      gsap.set('.cv-msg',         { autoAlpha: 0, y: 40 });
+      gsap.set('.cv-photos',      { autoAlpha: 0, x: -50 });
+      gsap.set('.cv-video',       { autoAlpha: 0, scale: 0.93 });
+      gsap.set('.cv-cta',         { autoAlpha: 0 });
+      gsap.set('.cv-cta-title',   { autoAlpha: 0, y: 30 });
+      gsap.set('.cv-cta-sub',     { autoAlpha: 0, y: 20 });
+      gsap.set('.cv-cta-btns',    { autoAlpha: 0, y: 20 });
+
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: 'top top',
+          end: '+=5500',
+          pin: true,
+          scrub: 1.2,
+          anticipatePin: 1,
+        },
+      });
+
+      // ── Фаза 1: Hero появляется ──────────────────────────────
+      tl.to('.cv-hero-inner', { autoAlpha: 1, y: 0, duration: 2, ease: 'power3.out' })
+        .to({}, { duration: 3 }) // пауза
+
+      // ── Фаза 2: Hero уходит, карточка влетает снизу ──────────
+        .to('.cv-hero-inner', { autoAlpha: 0, y: -40, duration: 1.5, ease: 'power2.in' })
+        .to('.cv-card', {
+          y: 0,
+          duration: 2.5,
+          ease: 'power3.inOut',
+        }, '<+0.3')
+        .to('.cv-card', {
+          width: '100%',
+          height: '100vh',
+          borderRadius: '0px',
+          duration: 1.8,
+          ease: 'power3.inOut',
+        })
+        .to('.cv-card-bar', { scaleX: 1, duration: 1, ease: 'power2.inOut' })
+
+      // Контент последовательно
+        .to('.cv-msg',    { autoAlpha: 1, y: 0,    duration: 1.5, ease: 'power3.out' })
+        .to('.cv-photos', { autoAlpha: 1, x: 0,    duration: 1.5, ease: 'power3.out' }, '+=0.8')
+        .to('.cv-video',  { autoAlpha: 1, scale: 1, duration: 1.5, ease: 'power3.out' }, '+=0.8')
+        .to({}, { duration: 3 }) // пауза — пользователь смотрит
+
+      // ── Фаза 3: карточка уходит, CTA ─────────────────────────
+        .to('.cv-card', {
+          y: -(window.innerHeight + 200),
+          duration: 2,
+          ease: 'power3.in',
+        })
+        .to('.cv-cta',       { autoAlpha: 1, duration: 0.1 }, '<+0.5')
+        .to('.cv-cta-title', { autoAlpha: 1, y: 0, duration: 1.5, ease: 'expo.out' }, '<')
+        .to('.cv-cta-sub',   { autoAlpha: 1, y: 0, duration: 1.5, ease: 'expo.out' }, '<+0.3')
+        .to('.cv-cta-btns',  { autoAlpha: 1, y: 0, duration: 1.5, ease: 'back.out(1.5)' }, '<+0.3');
+
+    }, containerRef);
+
+    return () => ctx.revert();
+  }, []);
+
+  // Autoplay video once it's visible
+  useEffect(() => {
+    if (!card.video_url || !videoRef.current) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          videoRef.current.muted = true;
+          videoRef.current.play().catch(() => {});
+        }
+      },
+      { threshold: 0.5 }
+    );
+    observer.observe(videoRef.current);
+    return () => observer.disconnect();
+  }, [card.video_url]);
 
   return (
-    <div className="env-page">
+    <div className="cv-page">
+      <div className="cv-container" ref={containerRef}>
+        <div className="cv-sticky">
 
-      {/* ── Envelope + intro + card (scroll-driven, 380vh) ── */}
-      <div className="env-scroll-section" ref={sectionRef}>
-        <div className="env-sticky">
+          {/* Фон */}
+          <div className="cv-bg" />
 
-          {/* Intro text — fades as animation begins */}
-          <div className="env-sticky-intro" style={{ opacity: introOpacity }} aria-hidden={introOpacity === 0}>
-            <span className="env-intro-surprise">✦ Для вас особый сюрприз</span>
-            <h1 className="env-intro-name">{card.sender_name}</h1>
-            <p className="env-intro-tagline">подготовил(а) для вас что-то особенное</p>
+          {/* ── Фаза 1: Hero ─────────────────────────────── */}
+          <div className="cv-hero">
+            <div className="cv-hero-inner">
+              <span className="cv-hero-eyebrow">✦ Для вас особый сюрприз</span>
+              <h1 className="cv-hero-name">{card.sender_name}</h1>
+              <p className="cv-hero-tagline">подготовил(а) для вас что‑то особенное</p>
+              <div className="cv-hero-hint">↓ прокрутите</div>
+            </div>
           </div>
 
-          <div className="env-scene">
+          {/* ── Фаза 2: Карточка с контентом ─────────────── */}
+          <div className="cv-card">
+            <div className="cv-card-bar" />
+            <div className="cv-card-inner">
 
-            {/* CSS envelope body */}
-            <div className="env-wrapper" aria-hidden="true">
-              {/* Single lid: rotateX 0° (closed) → -180° (open, stays visible) */}
-              <div className="env-lid" style={{ transform: `rotateX(${lidRotateX}deg)` }} />
-              {/* Side fold triangles */}
-              <div className="env-body-folds" />
-              {/* Bottom V-fold */}
-              <div className="env-body-bottom" />
+              {card.message && (
+                <div className="cv-msg">
+                  <p className="cv-msg-text">«&thinsp;{card.message}&thinsp;»</p>
+                  <p className="cv-msg-from">— {card.sender_name}</p>
+                </div>
+              )}
+
+              {photos.length > 0 && (
+                <div className="cv-photos">
+                  {photos.length === 1 ? (
+                    <img src={photos[0]} alt="Фото" className="cv-single-photo" loading="eager" />
+                  ) : (
+                    <div
+                      className="cv-carousel"
+                      onMouseMove={resetAutoRotate}
+                      onTouchStart={handleTouchStart}
+                      onTouchEnd={handleTouchEnd}
+                    >
+                      <div className="cv-carousel-track-wrap">
+                        <div
+                          className="cv-carousel-track"
+                          style={{
+                            transform: `translateX(-${trackIndex * 100}%)`,
+                            transition: carouselAnimate ? undefined : 'none',
+                          }}
+                          onTransitionEnd={handleTransitionEnd}
+                        >
+                          <img key="clone-last" src={photos[N - 1]} alt="" className="cv-carousel-slide" aria-hidden="true" loading="lazy" />
+                          {photos.map((url, i) => (
+                            <img key={i} src={url} alt={`Фото ${i + 1}`} className="cv-carousel-slide" loading={i === 0 ? 'eager' : 'lazy'} />
+                          ))}
+                          <img key="clone-first" src={photos[0]} alt="" className="cv-carousel-slide" aria-hidden="true" loading="lazy" />
+                        </div>
+                      </div>
+                      <div className="cv-carousel-controls">
+                        <button className="cv-carousel-btn" onClick={prevPhoto} aria-label="Предыдущее">‹</button>
+                        <div className="cv-carousel-dots">
+                          {photos.map((_, i) => (
+                            <span
+                              key={i}
+                              className={`cv-carousel-dot${i === realPhoto ? ' active' : ''}`}
+                              onClick={() => { setCarouselAnimate(true); setTrackIndex(i + 1); }}
+                            />
+                          ))}
+                        </div>
+                        <button className="cv-carousel-btn" onClick={nextPhoto} aria-label="Следующее">›</button>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {card.video_url && (
+                <div className="cv-video">
+                  <video ref={videoRef} controls playsInline muted className="cv-video-player">
+                    <source src={card.video_url} type="video/mp4" />
+                  </video>
+                </div>
+              )}
+
             </div>
-
-            {/* Flying card — rises from envelope on scroll */}
-            <div
-              className="env-card env-card-main"
-              style={{
-                transform: `translateY(${cardY}px)`,
-                willChange: 'transform',
-                opacity: Math.min(1, cardProg * 4),
-              }}
-            >
-              <div className="env-card-fly-bar" />
-            </div>
-
-            {/* Permanent mask — always opaque, hides card while inside envelope */}
-            <div className="env-front-mask" />
-
           </div>
 
-          <div
-            className="env-scroll-hint"
-            style={{ opacity: scrollHintOpacity }}
-            aria-hidden="true"
-          >↓</div>
-
-        </div>
-      </div>
-
-      {/* ── Section 3: Card content (text → photos → video) ── */}
-      <div className="env-content">
-        <div className="env-content-card">
-
-          {card.message && (
-            <div className="env-content-message">
-              <p className="env-card-1-text">{card.message}</p>
-              <p className="env-card-1-from">— {card.sender_name}</p>
-            </div>
-          )}
-
-          {photos.length > 0 && (
-            <div className="env-content-photos">
-              <div
-                className="carousel-wrapper"
-                onMouseMove={resetAutoRotate}
-                onTouchStart={handleTouchStart}
-                onTouchEnd={handleTouchEnd}
+          {/* ── Фаза 3: CTA ──────────────────────────────── */}
+          <div className="cv-cta">
+            <h2 className="cv-cta-title">Момент создан.<br />Останется навсегда.</h2>
+            <p className="cv-cta-sub">
+              Умная открытка — это живое воспоминание,<br />
+              которое можно пересмотреть в любой момент.<br />
+              Подарите близким что‑то большее.
+            </p>
+            <div className="cv-cta-btns">
+              <button
+                className="cv-cta-btn cv-cta-btn--secondary"
+                onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
               >
-                {photos.length === 1 ? (
-                  <img src={photos[0]} alt="Фото" className="carousel-slide env-content-single-photo" loading="eager" />
-                ) : (
-                  <>
-                    <div className="carousel-track-container">
-                      <div
-                        className="carousel-track"
-                        style={{
-                          transform: `translateX(-${trackIndex * 100}%)`,
-                          transition: carouselAnimate ? undefined : 'none',
-                        }}
-                        onTransitionEnd={handleTransitionEnd}
-                      >
-                        <img key="clone-last" src={photos[N - 1]} alt="" className="carousel-slide" aria-hidden="true" loading="lazy" />
-                        {photos.map((url, i) => (
-                          <img key={i} src={url} alt={`Фото ${i + 1}`} className="carousel-slide" loading={i === 0 ? 'eager' : 'lazy'} />
-                        ))}
-                        <img key="clone-first" src={photos[0]} alt="" className="carousel-slide" aria-hidden="true" loading="lazy" />
-                      </div>
-                    </div>
-                    <div className="carousel-controls">
-                      <button className="carousel-btn" onClick={prevPhoto} aria-label="Предыдущее фото">‹</button>
-                      <div className="carousel-dots">
-                        {photos.map((_, i) => (
-                          <span
-                            key={i}
-                            className={`carousel-dot ${i === realPhoto ? 'active' : ''}`}
-                            onClick={() => { setCarouselAnimate(true); setTrackIndex(i + 1); }}
-                            aria-label={`Фото ${i + 1}`}
-                          />
-                        ))}
-                      </div>
-                      <button className="carousel-btn" onClick={nextPhoto} aria-label="Следующее фото">›</button>
-                    </div>
-                  </>
-                )}
-              </div>
+                ↺ Посмотреть ещё раз
+              </button>
+              <button
+                className="cv-cta-btn cv-cta-btn--primary"
+                onClick={() => { window.location.href = '/'; }}
+              >
+                Купить открытку
+              </button>
             </div>
-          )}
-
-          {card.video_url && (
-            <div className="env-content-video">
-              <video ref={videoRef} controls playsInline muted className="env-content-video-player">
-                <source src={card.video_url} type="video/mp4" />
-              </video>
-            </div>
-          )}
+          </div>
 
         </div>
       </div>
-
     </div>
   );
 }

@@ -1350,80 +1350,73 @@ form {
    VIEW MODE (filled card)
 ═══════════════════════════════════════ */
 
-/* Intro section */
 /* ═══════════════════════════════════════
-   ENVELOPE CARD VIEW (scroll-parallax)
+   CINEMATIC CARD VIEW (GSAP scroll)
 ═══════════════════════════════════════ */
 
-.env-page {
+/* ── Page wrapper ── */
+.cv-page {
   background: linear-gradient(160deg, var(--bg-deep) 0%, var(--bg-mid) 60%, var(--bg-surface) 100%);
   min-height: 100vh;
 }
 
-/* ── Intro section (sticky text block before envelope) ── */
-.env-intro-section {
-  height: 150vh;
+/* ── Scroll container (pinned by GSAP) ── */
+.cv-container {
   position: relative;
+  height: 600vh;
 }
 
-.env-intro-sticky {
+.cv-sticky {
   position: sticky;
   top: 0;
   height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 2rem 1rem;
   overflow: hidden;
 }
 
-.env-scroll-section {
-  height: 380vh;
-  position: relative;
-}
-
-.env-sticky {
-  position: sticky;
-  top: 0;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 1.5rem;
-  padding: 2vh 1rem 1.5rem;
-  overflow: hidden;
-}
-
-/* Intro text inside sticky (replaces separate intro section) */
-.env-sticky-intro {
-  text-align: center;
+/* ── Background decorative grid ── */
+.cv-bg {
+  position: absolute;
+  inset: 0;
   pointer-events: none;
-  transition: opacity 0.2s;
-  z-index: 10;
+  z-index: 0;
+  background-size: 60px 60px;
+  background-image:
+    linear-gradient(to right, rgba(61,52,54,0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(61,52,54,0.04) 1px, transparent 1px);
+  mask-image: radial-gradient(ellipse at center, black 0%, transparent 70%);
+  -webkit-mask-image: radial-gradient(ellipse at center, black 0%, transparent 70%);
 }
 
-/* Intro text (keep for reuse) */
-.env-intro-text {
+/* ── Фаза 1: Hero ── */
+.cv-hero {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 5;
+  pointer-events: none;
+}
+
+.cv-hero-inner {
   text-align: center;
-  z-index: 10;
+  padding: 0 1.5rem;
 }
 
-.env-intro-surprise {
+.cv-hero-eyebrow {
   display: block;
-  font-size: 0.75rem;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 700;
   letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--accent-gold);
-  margin-bottom: 0.5rem;
-  font-weight: 500;
-  opacity: 0;
-  animation: fadeInUp 0.6s 0.1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  margin-bottom: 1rem;
 }
 
-.env-intro-name {
-  font-size: 2.4rem;
+.cv-hero-name {
+  font-family: 'Merriweather', serif;
+  font-size: clamp(2.4rem, 6vw, 4rem);
   font-weight: 700;
   letter-spacing: -0.03em;
   background: linear-gradient(90deg, var(--text-primary) 0%, var(--accent-pink) 50%, var(--text-primary) 100%);
@@ -1431,265 +1424,276 @@ form {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  opacity: 0;
-  animation: fadeInDown 0.7s 0.2s cubic-bezier(0.22, 1, 0.36, 1) forwards, shimmer 5s 1s linear infinite;
-  margin: 0 0 0.4rem;
+  animation: shimmer 6s linear infinite;
+  margin: 0 0 0.6rem;
+  line-height: 1.15;
 }
 
-.env-intro-tagline {
-  font-size: 0.9rem;
+.cv-hero-tagline {
+  font-family: 'Montserrat', sans-serif;
+  font-size: clamp(0.82rem, 2vw, 1rem);
   color: var(--text-secondary);
   font-weight: 300;
-  margin: 0;
-  opacity: 0;
-  animation: fadeInUp 0.6s 0.35s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  margin: 0 0 2rem;
 }
 
-/* ── CSS Envelope (CodePen WNpbvwB style) ── */
-
-/* Envelope scene — perspective container */
-.env-scene {
-  position: relative;
-  width: min(92vw, 720px);
-  aspect-ratio: 3 / 2;
-  flex-shrink: 0;
-  overflow: visible;
-  perspective: 1200px;
-  perspective-origin: 50% 0%;
-}
-
-/* Envelope background rectangle */
-.env-wrapper {
-  position: absolute;
-  inset: 0;
-  background: #9FD6FF;
-}
-
-/* Клапан конверта: rotateX 0° (закрыт) → -180° (открыт, остаётся виден) */
-.env-lid {
-  position: absolute;
-  top: 0; left: 0;
-  width: 100%; height: 50%;
-  clip-path: polygon(0 0, 100% 0, 50% 100%);
-  background: #BBE2FF;
-  transform-origin: top center;
-  transform-style: preserve-3d;
-  backface-visibility: visible;
-  z-index: 4;
-}
-
-/* Fold-треугольники по бокам через псевдо-элементы */
-.env-body-folds {
-  position: absolute;
-  inset: 0;
-  z-index: 3;
-  pointer-events: none;
-}
-.env-body-folds::before {
-  content: ''; position: absolute; inset: 0;
-  background: #88CCFF;
-  clip-path: polygon(0 0, 50% 52%, 0 100%);
-}
-.env-body-folds::after {
-  content: ''; position: absolute; inset: 0;
-  background: #88CCFF;
-  clip-path: polygon(100% 0, 50% 52%, 100% 100%);
-}
-
-/* Нижний V-fold */
-.env-body-bottom {
-  position: absolute; inset: 0;
-  background: #9FD6FF;
-  clip-path: polygon(0 100%, 50% 52%, 100% 100%);
-  z-index: 2;
-  pointer-events: none;
-}
-
-/* Cards base */
-.env-card {
-  position: absolute;
-  border-radius: 12px;
-  background: #ffffff;
-}
-
-/* Flying card — rises from envelope on scroll */
-.env-card-main {
-  left: 5%;
-  width: 90%;
-  top: 55%;
-  min-height: 80%;
-  z-index: 2;
-  border-radius: 12px 12px 0 0;
-  box-shadow: 0 8px 32px rgba(135, 180, 230, 0.35), 0 2px 8px rgba(0, 0, 0, 0.06);
-}
-
-.env-card-fly-bar {
-  height: 4px;
-  background: linear-gradient(90deg, #1759B0, #9FD6FF);
-  border-radius: 12px 12px 0 0;
-}
-
-/* Permanent mask — always opaque, covers card until it rises above top edge */
-.env-front-mask {
-  position: absolute;
-  top: 53%;
-  left: -2px;
-  right: -2px;
-  bottom: -2px;
-  background: #9FD6FF;
-  z-index: 6;
-  pointer-events: none;
-}
-
-/* Card preview content (visible during flight) */
-.env-card-preview {
-  padding: 1rem 1.25rem;
-}
-.env-card-preview-from {
-  font-size: 1rem;
-  color: #1759B0;
+.cv-hero-hint {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.7rem;
   font-weight: 600;
-  margin: 0.5rem 0 0.75rem;
-}
-.env-card-preview-photo {
-  width: 100%;
-  max-height: 120px;
-  object-fit: cover;
-  border-radius: 8px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent-pink);
+  animation: scrollPulse 1.8s ease-in-out infinite;
 }
 
-/* Card 1 content */
-.env-card-1-bar {
-  height: 3px;
-  background: linear-gradient(90deg, #1759B0, #9FD6FF);
-  border-radius: 2px 2px 0 0;
-  margin: 0 -1.25rem 1rem;
+@keyframes scrollPulse {
+  0%, 100% { opacity: 0.4; transform: translateY(0); }
+  50%       { opacity: 1;   transform: translateY(5px); }
 }
 
-.env-card-1-text {
+/* ── Фаза 2: Карточка ── */
+.cv-card {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: min(88vw, 680px);
+  height: 72vh;
+  background: #ffffff;
+  border-radius: 32px;
+  box-shadow:
+    0 40px 80px -20px rgba(255, 126, 95, 0.18),
+    0 20px 40px -10px rgba(0, 0, 0, 0.08),
+    inset 0 1px 0 rgba(255,255,255,0.9);
+  overflow: hidden;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+}
+
+.cv-card-bar {
+  height: 4px;
+  background: linear-gradient(90deg, var(--accent-pink), var(--accent-gold));
+  flex-shrink: 0;
+}
+
+.cv-card-inner {
+  flex: 1;
+  overflow-y: auto;
+  padding: 2rem 2rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Сообщение */
+.cv-msg {
+  text-align: center;
+}
+
+.cv-msg-text {
   font-family: 'Merriweather', serif;
-  font-size: 0.88rem;
+  font-size: clamp(0.9rem, 2.2vw, 1.15rem);
   font-style: italic;
-  line-height: 1.8;
+  line-height: 1.9;
   color: var(--text-primary);
   margin: 0 0 0.75rem;
 }
 
-.env-card-1-from {
-  font-size: 0.62rem;
+.cv-msg-from {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.68rem;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: #1759B0;
-  font-weight: 500;
-  margin: 0;
-  text-align: right;
-}
-
-/* Card 2: video */
-.env-video-wrap {
-  width: 100%;
-  background: #000;
-  overflow: hidden;
-}
-
-.env-video {
-  width: 100%;
-  max-height: 198px;
-  display: block;
-  object-fit: contain;
-  background: #000;
-}
-
-/* Card 2: carousel inside envelope */
-.env-carousel {
-  border-radius: 0;
-  overflow: hidden;
-}
-
-.env-single-photo {
-  width: 100%;
-  max-height: 150px;
-  object-fit: contain;
-  display: block;
-  background: #000;
-}
-
-/* Scroll hint arrow */
-@keyframes scrollPulse {
-  0%, 100% { opacity: 0.3; transform: translateY(0); }
-  50%       { opacity: 0.8; transform: translateY(6px); }
-}
-
-.env-scroll-hint {
-  margin-top: auto;
-  padding-bottom: 1.25rem;
-  font-size: 1.6rem;
   color: var(--accent-pink);
-  text-shadow: 0 0 18px rgba(232, 155, 136, 0.55);
-  animation: scrollPulse 1.8s ease-in-out infinite;
-  transition: opacity 0.4s;
-  line-height: 1;
-  z-index: 10;
+  font-weight: 600;
+  margin: 0;
 }
 
-/* ── Content card (below envelope, seamlessly continues the flying card) ── */
-.env-content {
-  display: flex;
-  justify-content: center;
-  padding: 0 1rem 4rem;
-}
+/* Фото */
+.cv-photos {}
 
-.env-content-card {
-  width: min(90vw, 648px);
-  background: #ffffff;
-  border-radius: 0 0 14px 14px;
-  box-shadow: 0 12px 32px rgba(135, 180, 230, 0.3), 0 2px 8px rgba(0, 0, 0, 0.06);
-  overflow: hidden;
-}
-
-.env-content-message {
-  padding: 1.5rem 1.5rem 1rem;
-}
-
-.env-content-message .env-card-1-bar {
-  margin: 0 -1.5rem 1rem;
-}
-
-.env-content-photos {
-  padding: 0.5rem 1.5rem 1rem;
-}
-
-.env-content-single-photo {
+.cv-single-photo {
   width: 100%;
-  max-height: 70vh;
+  max-height: 55vh;
   object-fit: contain;
+  border-radius: 12px;
   display: block;
-  border-radius: 8px;
+  background: #f8f8f8;
 }
 
-.env-content-video {
-  padding: 0.5rem 1.5rem 1.5rem;
-}
+/* Карусель */
+.cv-carousel { position: relative; }
 
-.env-content-video-player {
-  width: 100%;
-  display: block;
-  border-radius: 8px;
+.cv-carousel-track-wrap {
+  overflow: hidden;
+  border-radius: 12px;
   background: #000;
 }
 
-/* ── Envelope card view — responsive ── */
+.cv-carousel-track {
+  display: flex;
+  transition: transform 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.cv-carousel-slide {
+  min-width: 100%;
+  max-height: 50vh;
+  width: 100%;
+  object-fit: contain;
+  display: block;
+  background: #000;
+}
+
+.cv-carousel-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 0.85rem;
+}
+
+.cv-carousel-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(12px);
+  color: var(--text-primary);
+  font-size: 1.2rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s, transform 0.15s;
+  line-height: 1;
+}
+
+.cv-carousel-btn:hover {
+  background: rgba(255, 126, 95, 0.12);
+  transform: scale(1.08);
+}
+
+.cv-carousel-dots {
+  display: flex;
+  gap: 0.4rem;
+  align-items: center;
+}
+
+.cv-carousel-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: rgba(181, 107, 93, 0.25);
+  transition: background 0.3s, transform 0.3s;
+  cursor: pointer;
+}
+
+.cv-carousel-dot.active {
+  background: var(--accent-pink);
+  transform: scale(1.35);
+}
+
+/* Видео */
+.cv-video {}
+
+.cv-video-player {
+  width: 100%;
+  display: block;
+  border-radius: 12px;
+  background: #000;
+  max-height: 55vh;
+}
+
+/* ── Фаза 3: CTA ── */
+.cv-cta {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2rem 1.5rem;
+  z-index: 8;
+  pointer-events: auto;
+}
+
+.cv-cta-title {
+  font-family: 'Merriweather', serif;
+  font-size: clamp(1.8rem, 4.5vw, 3rem);
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--text-primary);
+  margin: 0 0 1.25rem;
+  letter-spacing: -0.02em;
+}
+
+.cv-cta-sub {
+  font-family: 'Montserrat', sans-serif;
+  font-size: clamp(0.82rem, 1.8vw, 1rem);
+  color: var(--text-secondary);
+  font-weight: 300;
+  line-height: 1.8;
+  margin: 0 0 2.5rem;
+  max-width: 480px;
+}
+
+.cv-cta-btns {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  align-items: center;
+  width: 100%;
+  max-width: 320px;
+}
+
+.cv-cta-btn {
+  width: 100%;
+  padding: 0.9rem 2rem;
+  border-radius: 14px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition: transform 0.3s cubic-bezier(0.25,1,0.5,1), box-shadow 0.3s;
+  border: none;
+}
+
+.cv-cta-btn--primary {
+  background: linear-gradient(135deg, var(--accent-pink), var(--accent-gold));
+  color: #fff;
+  box-shadow: 0 4px 20px rgba(255, 126, 95, 0.35);
+}
+
+.cv-cta-btn--primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(255, 126, 95, 0.45);
+}
+
+.cv-cta-btn--secondary {
+  background: transparent;
+  color: var(--text-secondary);
+  border: 1.5px solid var(--glass-border);
+}
+
+.cv-cta-btn--secondary:hover {
+  background: rgba(255,126,95,0.06);
+  color: var(--accent-pink);
+  transform: translateY(-1px);
+}
+
+/* ── Responsive ── */
 @media (max-width: 480px) {
-  .env-scroll-section { height: 320vh; }
-  .env-sticky { padding: 1.5vh 0.75rem 1rem; gap: 1rem; }
-  .env-intro-name { font-size: 1.85rem; }
-  .env-intro-tagline { font-size: 0.82rem; }
-  .env-card-1-text { font-size: 0.8rem; }
-  .env-content { padding: 0 0.75rem 3rem; }
-  .env-content-message { padding: 1.25rem 1.25rem 0.75rem; }
-  .env-content-message .env-card-1-bar { margin: 0 -1.25rem 0.75rem; }
-  .env-content-photos { padding: 0.5rem 1.25rem 0.75rem; }
-  .env-content-video { padding: 0.5rem 1.25rem 1.25rem; }
+  .cv-card-inner { padding: 1.25rem 1.25rem 1rem; gap: 1.5rem; }
+  .cv-msg-text { font-size: 0.85rem; }
+  .cv-carousel-slide { max-height: 40vh; }
+  .cv-video-player { max-height: 40vh; }
+  .cv-cta-title { font-size: 1.6rem; }
 }
 
 /* Carousel */
