@@ -19,7 +19,7 @@
   - createLimiter: 10 req/15min per IP. statsLimiter: 30 req/min per IP.
   - If express-rate-limit not installed, implement simple in-memory rate limiter
 
-- [ ] [S1-4] Validate cardId format in all card endpoints
+- [x] [S1-4] Validate cardId format in all card endpoints
   - **File:** backend/server.js ~line 305 and all other routes with :cardId param
   - **AC:** Validate `/^[A-F0-9]{8}$/i` before using in SQL queries; return 400 if invalid
 

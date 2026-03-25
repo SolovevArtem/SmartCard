@@ -932,3 +932,45 @@ Iteration limit (50) reached. 0
 ### Result
 **Status:** ✅ Completed | **Completed:** 10:01
 Добавлена функция csvEscape, все 6 полей CSV (id, url, status, batch_name, storage_type, created_at) теперь обёрнуты в кавычки с экранированием внутренних кавычек через удвоение
+
+### Result
+**Status:** ✅ Completed | **Completed:** 10:49
+Iteration 1 completed
+
+---
+## [260325-code-review-sprints] [S1-2] Add requireAdminKey to /admin HTML endpoint
+**Status:** In Progress | **Time:** 2026-03-25 10:49 | **Model:** sonnet | **Mode:** production
+[10:49] Iteration 2/50: [S1-2] Add requireAdminKey to /admin HTML endpoint
+
+### Result
+**Status:** ✅ Completed | **Completed:** 10:51
+Iteration 2 completed
+
+---
+## [260325-code-review-sprints] [S1-3] Add rate limiting to /api/cards/create and /api/stats
+**Status:** In Progress | **Time:** 2026-03-25 10:51 | **Model:** sonnet | **Mode:** production
+[10:51] Iteration 3/50: [S1-3] Add rate limiting to /api/cards/create and 
+
+### Result
+**Status:** ✅ Completed | **Completed:** 10:52
+Iteration 3 completed
+
+---
+## [260325-code-review-sprints] [S1-4] Validate cardId format in all card endpoints
+**Status:** In Progress | **Time:** 2026-03-25 10:52 | **Model:** sonnet | **Mode:** production
+[10:52] Iteration 4/50: [S1-4] Validate cardId format in all card endpoint
+
+---
+## [260325-code-review-sprints] Task: [S1-4] Validate cardId format in all card endpoints
+**Status:** In Progress | **Time:** 2026-03-25 14:30 | **Model:** sonnet | **Mode:** production
+### Plan
+- Add CARD_ID_REGEX constant `/^[A-F0-9]{8}$/i`
+- Use `app.param('cardId', ...)` to centrally validate all :cardId routes
+- Syntax check passes
+
+- [14:30] Started: Validate cardId format in all card endpoints
+- [14:31] Completed: Added app.param('cardId') middleware with regex /^[A-F0-9]{8}$/i — all 4 :cardId routes now return 400 on invalid input
+
+### Result
+**Status:** ✅ Completed | **Completed:** 14:31
+Added CARD_ID_REGEX + app.param('cardId') to centrally validate all card endpoints. Syntax check passes.

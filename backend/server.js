@@ -169,6 +169,15 @@ function generateCardId() {
   return crypto.randomBytes(4).toString('hex').toUpperCase();
 }
 
+const CARD_ID_REGEX = /^[A-F0-9]{8}$/i;
+
+app.param('cardId', (req, res, next, cardId) => {
+  if (!CARD_ID_REGEX.test(cardId)) {
+    return res.status(400).json({ success: false, error: 'Invalid card ID format' });
+  }
+  next();
+});
+
 async function getCardData(cardId) {
   const result = await pool.query('SELECT * FROM cards WHERE id = $1', [cardId]);
   return result.rows[0] || null;

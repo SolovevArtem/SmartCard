@@ -850,3 +850,24 @@ Iteration 2 completed
 ### Result
 **Status:** ✅ Completed | **Completed:** 2026-03-25 14:10
 Added createLimiter (10 req/15min) and statsLimiter (30 req/min) to server.js. Applied to /api/cards/create and /api/stats routes. Syntax check passes.
+
+### Result
+**Status:** ✅ Completed | **Completed:** 10:52
+Iteration 3 completed
+
+---
+## [260325-code-review-sprints] [S1-4] Validate cardId format in all card endpoints
+**Status:** In Progress | **Time:** 2026-03-25 10:52 | **Model:** sonnet | **Mode:** production
+
+---
+## [260325-code-review-sprints] Task: [S1-4] Validate cardId format in all card endpoints
+**Status:** In Progress | **Time:** 2026-03-25 14:30 | **Model:** sonnet | **Mode:** production
+
+### Plan
+- Add CARD_ID_REGEX = /^[A-F0-9]{8}$/i near helper functions
+- Use app.param('cardId', ...) for centralized validation across all 4 routes
+- Return 400 with {success: false, error: 'Invalid card ID format'} on mismatch
+
+### Result
+**Status:** ✅ Completed | **Completed:** 14:31
+app.param middleware validates :cardId on all routes (GET /api/cards/:cardId, GET /api/cards/:cardId/upload-url, POST /api/cards/:cardId/confirm-upload, POST /api/cards/:cardId/upload). Returns 400 if format doesn't match /^[A-F0-9]{8}$/i.
