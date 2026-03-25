@@ -51,7 +51,7 @@
   - **File:** frontend/src/App.js ~lines 838–858 (CardWizard handleSubmit)
   - **AC:** Photo upload loop replaced with `Promise.all(photos.map(...))` for parallel execution
 
-- [ ] CHECKPOINT: Test Sprint 2
+- [x] CHECKPOINT: Test Sprint 2
   - **AC:** Backend syntax check passes
   - Verify cleanup function uses single batch DELETE
   - Verify photo upload uses Promise.all
@@ -59,7 +59,7 @@
 
 ### Sprint 3 — Чистота кода
 
-- [ ] [S3-1] Extract CardView component to separate file
+- [x] [S3-1] Extract CardView component to separate file
   - **File:** frontend/src/App.js → create frontend/src/components/CardView.jsx
   - **AC:** CardView component (scroll parallax envelope) extracted to its own file with all its dependencies (imports, SVG constants). App.js imports CardView from ./components/CardView
 

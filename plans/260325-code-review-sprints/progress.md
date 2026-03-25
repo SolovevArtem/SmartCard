@@ -1,6 +1,22 @@
 # Progress Log
 
 ---
+## [260325-code-review-sprints] Task 11: [S3-1] Extract CardView component to separate file
+**Status:** In Progress | **Time:** 2026-03-25 12:00 | **Model:** sonnet | **Mode:** production
+### Plan
+- Прочитать CardView (lines 429–737) и все его зависимости из App.js
+- Создать frontend/src/components/CardView.jsx с нужными импортами
+- Удалить CardView из App.js и добавить import из ./components/CardView
+- Проверить синтаксис: node -e require('./server') и frontend build
+
+[12:00] Started: Extract CardView component to separate file
+[12:05] Completed: CardView извлечён в frontend/src/components/CardView.jsx; App.js импортирует из ./components/CardView; сборка прошла успешно
+
+### Result
+**Status:** ✅ Completed | **Completed:** 12:05
+CardView (scroll parallax envelope, carousel, save photos) извлечён в отдельный файл `frontend/src/components/CardView.jsx`. App.js импортирует `CardView` из `./components/CardView`. `useCallback` убран из импортов App.js (больше не используется). Frontend build: OK, бандл уменьшился на 169 байт.
+
+---
 ## [260325-code-review-sprints] Task 10: [S2-4] Parallelize photo uploads with Promise.all
 **Status:** In Progress | **Time:** 2026-03-25 11:15 | **Model:** sonnet | **Mode:** production
 ### Plan
@@ -1115,3 +1131,27 @@ Iteration 3 completed
 ## [260325-code-review-sprints] [S2-4] Parallelize photo uploads with Promise.all in fronten
 **Status:** In Progress | **Time:** 2026-03-25 11:01 | **Model:** sonnet | **Mode:** production
 [11:01] Iteration 4/43: [S2-4] Parallelize photo uploads with Promise.all 
+
+### Result
+**Status:** ✅ Completed | **Completed:** 11:02
+Iteration 4 completed
+
+---
+## [260325-code-review-sprints] CHECKPOINT: Test Sprint 2
+**Status:** In Progress | **Time:** 2026-03-25 11:02 | **Model:** sonnet | **Mode:** production
+[11:02] Iteration 5/43: CHECKPOINT: Test Sprint 2
+
+---
+## CHECKPOINT: Manual Verification
+**Time:** 2026-03-25 11:02
+**Status:** Paused for manual testing
+Please verify Phase 1 works correctly before running Phase 2.
+
+### Result
+**Status:** ⏸️ Blocked | **Completed:** 11:03
+CHECKPOINT: Paused for manual verification
+
+---
+## [260325-code-review-sprints] [S3-1] Extract CardView component to separate file
+**Status:** In Progress | **Time:** 2026-03-25 11:03 | **Model:** sonnet | **Mode:** production
+[11:03] Iteration 1/38: [S3-1] Extract CardView component to separate file

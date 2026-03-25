@@ -1,6 +1,15 @@
 # Ralph Activity Log
 
 ---
+## [260325-code-review-sprints] Task 11: [S3-1] Extract CardView component to separate file
+**Time:** 2026-03-25 12:00 | **Model:** sonnet | **Mode:** production
+
+[12:00] READ: frontend/src/App.js lines 429–737 — изучена структура CardView
+[12:01] BASH: mkdir frontend/src/components
+[12:01] WRITE: frontend/src/components/CardView.jsx — извлечён CardView компонент
+[12:02] EDIT: frontend/src/App.js — удалён CardView, добавлен import
+
+---
 ## [260325-code-review-sprints] Task 10: [S2-4] Parallelize photo uploads with Promise.all
 **Time:** 2026-03-25 11:15 | **Model:** sonnet | **Mode:** production
 
@@ -957,3 +966,19 @@ Iteration 3 completed
 ---
 ## [260325-code-review-sprints] [S2-4] Parallelize photo uploads with Promise.all in fronten
 **Status:** In Progress | **Time:** 2026-03-25 11:01 | **Model:** sonnet | **Mode:** production
+
+### Result
+**Status:** ✅ Completed | **Completed:** 11:02
+Iteration 4 completed
+
+---
+## [260325-code-review-sprints] CHECKPOINT: Test Sprint 2
+**Status:** In Progress | **Time:** 2026-03-25 11:02 | **Model:** sonnet | **Mode:** production
+
+### Result
+**Status:** ⏸️ Blocked | **Completed:** 11:03
+CHECKPOINT: Paused for manual verification
+
+---
+## [260325-code-review-sprints] [S3-1] Extract CardView component to separate file
+**Status:** In Progress | **Time:** 2026-03-25 11:03 | **Model:** sonnet | **Mode:** production
