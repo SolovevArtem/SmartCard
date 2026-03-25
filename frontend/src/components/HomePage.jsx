@@ -4,6 +4,7 @@ import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '..
 import HeroScrollAnimation from '../HeroScrollAnimation';
 import TubeLightNav from '../TubeLightNav';
 import ProductCard from '../ProductCard';
+import { API_TIMEOUT_MS } from '../constants';
 
 const API_URL = process.env.REACT_APP_API_URL || 'https://smartcard-production.up.railway.app';
 
@@ -222,7 +223,7 @@ function HomePage() {
   const handleCreate = async () => {
     setLoading(true);
     const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), 9000);
+    const timer = setTimeout(() => controller.abort(), API_TIMEOUT_MS);
     try {
       const response = await fetch(`${API_URL}/api/cards/create`, {
         method: 'POST',

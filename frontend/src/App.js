@@ -17,6 +17,7 @@ import TubeLightNav from './TubeLightNav';
 import ProductCard from './ProductCard';
 import CardView from './components/CardView';
 import CardWizard from './components/CardWizard';
+import { API_TIMEOUT_MS } from './constants';
 import './App.css';
 
 const STORES = [
@@ -238,7 +239,7 @@ function HomePage() {
   const handleCreate = async () => {
     setLoading(true);
     const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), 9000);
+    const timer = setTimeout(() => controller.abort(), API_TIMEOUT_MS);
     try {
       const response = await fetch(`${API_URL}/api/cards/create`, {
         method: 'POST',
@@ -423,7 +424,7 @@ function CardPage() {
 
   const loadCard = async () => {
     const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), 9000);
+    const timer = setTimeout(() => controller.abort(), API_TIMEOUT_MS);
     try {
       const response = await fetch(`${API_URL}/api/cards/${cardId}`, {
         signal: controller.signal

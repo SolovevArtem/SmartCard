@@ -1,6 +1,21 @@
 # Progress Log
 
 ---
+## [260325-code-review-sprints] Task 16: [S3-5] Create src/constants.js and centralize API_TIMEOUT_MS
+**Status:** In Progress | **Time:** 2026-03-25 15:00 | **Model:** sonnet | **Mode:** production
+### Plan
+- Создать frontend/src/constants.js с экспортом API_TIMEOUT_MS = 9000
+- Обновить App.js (строки 241, 426): заменить 9000 на API_TIMEOUT_MS + добавить import
+- Обновить HomePage.jsx (строка 225): заменить 9000 на API_TIMEOUT_MS + добавить import
+
+[15:00] Started: Create src/constants.js and centralize API_TIMEOUT_MS
+[15:05] Completed: создан constants.js, обновлены App.js (2 вхождения) и HomePage.jsx (1 вхождение), frontend build OK
+
+### Result
+**Status:** ✅ Completed | **Completed:** 15:05
+Создан `frontend/src/constants.js` с `export const API_TIMEOUT_MS = 9000`. Все 3 вхождения `setTimeout(..., 9000)` в `App.js` и `HomePage.jsx` заменены на `API_TIMEOUT_MS`. Frontend build: OK (113.75 kB gzip).
+
+---
 ## [260325-code-review-sprints] Task 15: [S3-4] Add useCallback to prevPhoto/nextPhoto in CardView
 **Status:** In Progress | **Time:** 2026-03-25 14:30 | **Model:** sonnet | **Mode:** production
 ### Plan
@@ -1220,3 +1235,12 @@ Iteration 3 completed
 ## [260325-code-review-sprints] [S3-4] Add useCallback to prevPhoto/nextPhoto in CardView
 **Status:** In Progress | **Time:** 2026-03-25 11:17 | **Model:** sonnet | **Mode:** production
 [11:17] Iteration 4/38: [S3-4] Add useCallback to prevPhoto/nextPhoto in C
+
+### Result
+**Status:** ✅ Completed | **Completed:** 11:18
+Iteration 4 completed
+
+---
+## [260325-code-review-sprints] [S3-5] Create src/constants.js and centralize API_TIMEOUT_MS
+**Status:** In Progress | **Time:** 2026-03-25 11:18 | **Model:** sonnet | **Mode:** production
+[11:18] Iteration 5/38: [S3-5] Create src/constants.js and centralize API_

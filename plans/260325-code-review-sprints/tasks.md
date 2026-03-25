@@ -75,7 +75,7 @@
   - **File:** frontend/src/components/CardView.jsx (after S3-1)
   - **AC:** prevPhoto and nextPhoto wrapped in useCallback with correct dependency arrays
 
-- [ ] [S3-5] Create src/constants.js and centralize API_TIMEOUT_MS
+- [x] [S3-5] Create src/constants.js and centralize API_TIMEOUT_MS
   - **File:** create frontend/src/constants.js
   - **AC:** File exports `API_TIMEOUT_MS = 9000`; all usages in App.js components updated to import from constants
 
