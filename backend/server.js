@@ -17,6 +17,7 @@ Sentry.init({
 });
 
 const app = express();
+app.set('trust proxy', 1); // behind Nginx
 const PORT = process.env.PORT || 3001;
 
 // ===== DATABASE SETUP =====
@@ -281,10 +282,19 @@ app.get('/api/admin/export-cards', adminLimiter, requireAdminKey, async (req, re
 
     const frontendUrl = process.env.FRONTEND_URL || `${req.protocol}://${req.get('host')}`;
 
+    const csvEscape = (val) => `"${String(val ?? '').replace(/"/g, '""')}"`;
+
     let csv = 'ID,URL,Status,Batch,Storage,Created\n';
     cards.forEach(card => {
       const url = `${frontendUrl}/c/${card.id}`;
-      csv += `${card.id},${url},${card.status},${card.batch_name || ''},${card.storage_type || 's3'},${card.created_at}\n`;
+      csv += [
+        csvEscape(card.id),
+        csvEscape(url),
+        csvEscape(card.status),
+        csvEscape(card.batch_name || ''),
+        csvEscape(card.storage_type || 's3'),
+        csvEscape(card.created_at),
+      ].join(',') + '\n';
     });
 
     res.setHeader('Content-Type', 'text/csv');
@@ -671,9 +681,38 @@ app.use((err, req, res, next) => {
   res.status(500).json({ success: false, error: 'Internal server error' });
 });
 
+// ===== S3 CORS SETUP =====
+async function ensureS3Cors() {
+  const corsConfig = {
+    CORSRules: [
+      {
+        AllowedOrigins: [
+          'https://smartcardgift.ru',
+          'https://www.smartcardgift.ru',
+          'http://localhost:3000'
+        ],
+        AllowedMethods: ['GET', 'PUT', 'POST', 'DELETE', 'HEAD'],
+        AllowedHeaders: ['*'],
+        ExposeHeaders: ['ETag'],
+        MaxAgeSeconds: 3600
+      }
+    ]
+  };
+  try {
+    await s3.putBucketCors({
+      Bucket: process.env.S3_BUCKET,
+      CORSConfiguration: corsConfig
+    }).promise();
+    console.log('✅ S3 CORS configured');
+  } catch (err) {
+    console.error('⚠️  S3 CORS setup failed:', err.message);
+  }
+}
+
 // ===== STARTUP =====
 async function start() {
   await runMigrations();
+  await ensureS3Cors();
   app.listen(PORT, '0.0.0.0', () => {
     console.log(`🚀 ВидеоМиг Backend запущен на порту ${PORT}`);
     console.log(`🌍 Environment: ${process.env.NODE_ENV || 'development'}`);
