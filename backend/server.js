@@ -21,6 +21,13 @@ app.set('trust proxy', 1); // behind Nginx
 const PORT = process.env.PORT || 3001;
 const API_TIMEOUT_MS = 9000;
 
+// ===== CONSTANTS =====
+const MAX_CARDS_PER_BATCH = 500;
+const EXPORT_LIMIT = 5000;
+const PRESIGNED_TTL_SECONDS = 600;      // 10 minutes
+const MAX_PHOTOS = 10;
+const RATE_LIMIT_WINDOW_MS = 60 * 1000; // 1 minute
+
 // ===== DATABASE SETUP =====
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
@@ -67,7 +74,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // ===== RATE LIMITERS =====
 const uploadLimiter = rateLimit({
-  windowMs: 60 * 1000,
+  windowMs: RATE_LIMIT_WINDOW_MS,
   max: 10,
   standardHeaders: true,
   legacyHeaders: false,
@@ -75,7 +82,7 @@ const uploadLimiter = rateLimit({
 });
 
 const viewLimiter = rateLimit({
-  windowMs: 60 * 1000,
+  windowMs: RATE_LIMIT_WINDOW_MS,
   max: 60,
   standardHeaders: true,
   legacyHeaders: false,
@@ -83,7 +90,7 @@ const viewLimiter = rateLimit({
 });
 
 const adminLimiter = rateLimit({
-  windowMs: 60 * 1000,
+  windowMs: RATE_LIMIT_WINDOW_MS,
   max: 20,
   standardHeaders: true,
   legacyHeaders: false,
@@ -99,7 +106,7 @@ const createLimiter = rateLimit({
 });
 
 const statsLimiter = rateLimit({
-  windowMs: 60 * 1000,
+  windowMs: RATE_LIMIT_WINDOW_MS,
   max: 30,
   standardHeaders: true,
   legacyHeaders: false,
@@ -171,7 +178,7 @@ function generateCardId() {
   return crypto.randomBytes(4).toString('hex').toUpperCase();
 }
 
-const CARD_ID_REGEX = /^[A-F0-9]{8}$/i;
+const CARD_ID_REGEX = /^[A-Z0-9]{8}$/i;
 
 app.param('cardId', (req, res, next, cardId) => {
   if (!CARD_ID_REGEX.test(cardId)) {
@@ -183,6 +190,31 @@ app.param('cardId', (req, res, next, cardId) => {
 async function getCardData(cardId) {
   const result = await pool.query('SELECT * FROM cards WHERE id = $1', [cardId]);
   return result.rows[0] || null;
+}
+
+/**
+ * Validates card exists and is in the expected status.
+ * Returns true if valid, sends error response and returns false otherwise.
+ */
+function validateCardStatus(card, requiredStatus, res) {
+  if (!card) {
+    res.status(404).json({ success: false, error: 'Карточка не найдена' });
+    return false;
+  }
+  if (requiredStatus === 'active') {
+    if (card.status === 'new') {
+      res.status(400).json({ success: false, error: 'Карточка еще не активирована', code: 'NOT_ACTIVATED' });
+      return false;
+    }
+    if (card.status === 'filled') {
+      res.status(400).json({ success: false, error: 'Карточка уже заполнена', code: 'ALREADY_FILLED' });
+      return false;
+    }
+  } else if (card.status !== requiredStatus) {
+    res.status(400).json({ success: false, error: `Карточка не в статусе ${requiredStatus}`, code: 'WRONG_STATUS' });
+    return false;
+  }
+  return true;
 }
 
 async function saveCardData(cardId, data) {
@@ -234,10 +266,10 @@ app.post('/api/admin/generate-cards', adminLimiter, requireAdminKey, async (req,
   try {
     const { count = 1, batchName } = req.body;
 
-    if (count > 500) {
+    if (count > MAX_CARDS_PER_BATCH) {
       return res.status(400).json({
         success: false,
-        error: 'Максимум 500 карточек за раз'
+        error: `Максимум ${MAX_CARDS_PER_BATCH} карточек за раз`
       });
     }
 
@@ -290,7 +322,7 @@ app.get('/api/admin/export-cards', adminLimiter, requireAdminKey, async (req, re
   try {
     const { batchId } = req.query;
     const page = Math.max(1, parseInt(req.query.page) || 1);
-    const limit = Math.min(5000, Math.max(1, parseInt(req.query.limit) || 1000));
+    const limit = Math.min(EXPORT_LIMIT, Math.max(1, parseInt(req.query.limit) || 1000));
     const offset = (page - 1) * limit;
 
     let query = 'SELECT * FROM cards';
@@ -378,19 +410,9 @@ app.get('/api/cards/:cardId/upload-url', uploadLimiter, async (req, res) => {
     const { cardId } = req.params;
     const cardData = await getCardData(cardId);
 
-    if (!cardData) {
-      return res.status(404).json({ success: false, error: 'Карточка не найдена' });
-    }
+    if (!validateCardStatus(cardData, 'active', res)) return;
 
-    if (cardData.status !== 'active') {
-      return res.status(400).json({
-        success: false,
-        error: 'Карточка не активна',
-        code: 'NOT_ACTIVE'
-      });
-    }
-
-    const TTL = 600; // 10 minutes
+    const TTL = PRESIGNED_TTL_SECONDS; // 10 minutes
     const bucket = process.env.S3_BUCKET;
     const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
 
@@ -404,7 +426,7 @@ app.get('/api/cards/:cardId/upload-url', uploadLimiter, async (req, res) => {
     });
 
     const photoUploadUrls = await Promise.all(
-      [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((i) =>
+      Array.from({ length: MAX_PHOTOS }, (_, i) => i).map((i) =>
         s3.getSignedUrlPromise('putObject', {
           Bucket: bucket,
           Key: `${cardId}/photo-${uniqueSuffix}-${i}.jpg`,
@@ -420,7 +442,7 @@ app.get('/api/cards/:cardId/upload-url', uploadLimiter, async (req, res) => {
       videoUploadUrl,
       videoKey,
       photoUploadUrls,
-      photoKeys: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map(
+      photoKeys: Array.from({ length: MAX_PHOTOS }, (_, i) => i).map(
         (i) => `${cardId}/photo-${uniqueSuffix}-${i}.jpg`
       )
     });
@@ -438,25 +460,7 @@ app.post('/api/cards/:cardId/confirm-upload', uploadLimiter, async (req, res) =>
 
     const cardData = await getCardData(cardId);
 
-    if (!cardData) {
-      return res.status(404).json({ success: false, error: 'Карточка не найдена' });
-    }
-
-    if (cardData.status === 'new') {
-      return res.status(400).json({
-        success: false,
-        error: 'Карточка еще не активирована',
-        code: 'NOT_ACTIVATED'
-      });
-    }
-
-    if (cardData.status === 'filled') {
-      return res.status(400).json({
-        success: false,
-        error: 'Карточка уже заполнена',
-        code: 'ALREADY_FILLED'
-      });
-    }
+    if (!validateCardStatus(cardData, 'active', res)) return;
 
     const updatedData = {
       ...cardData,
@@ -491,28 +495,7 @@ app.post('/api/cards/:cardId/upload',
 
       const cardData = await getCardData(cardId);
 
-      if (!cardData) {
-        return res.status(404).json({
-          success: false,
-          error: 'Карточка не найдена'
-        });
-      }
-
-      if (cardData.status === 'new') {
-        return res.status(400).json({
-          success: false,
-          error: 'Карточка еще не активирована',
-          code: 'NOT_ACTIVATED'
-        });
-      }
-
-      if (cardData.status === 'filled') {
-        return res.status(400).json({
-          success: false,
-          error: 'Карточка уже заполнена',
-          code: 'ALREADY_FILLED'
-        });
-      }
+      if (!validateCardStatus(cardData, 'active', res)) return;
 
       const videoFile = req.files.video ? req.files.video[0] : null;
       const photoFiles = req.files.photos || [];
@@ -546,6 +529,9 @@ app.post('/api/cards/:cardId/upload',
 // Статистика
 app.get('/api/stats', statsLimiter, async (req, res) => {
   try {
+    const daysParam = parseInt(req.query.days, 10);
+    const days = Number.isInteger(daysParam) && daysParam >= 1 && daysParam <= 365 ? daysParam : 30;
+
     const mainResult = await pool.query(`
       SELECT
         COUNT(*) as total,
@@ -556,13 +542,15 @@ app.get('/api/stats', statsLimiter, async (req, res) => {
         COUNT(*) FILTER (WHERE created_at > NOW() - INTERVAL '7 days') as this_week,
         COALESCE(SUM(view_count), 0) as total_views
       FROM cards
-    `);
+      WHERE created_at > NOW() - ($1 || ' days')::INTERVAL
+    `, [days]);
 
     const channelResult = await pool.query(`
       SELECT COALESCE(channel, 'unknown') as channel, COUNT(*) as count
       FROM cards
+      WHERE created_at > NOW() - ($1 || ' days')::INTERVAL
       GROUP BY channel
-    `);
+    `, [days]);
 
     const by_channel = {};
     channelResult.rows.forEach(row => {
@@ -582,7 +570,8 @@ app.get('/api/stats', statsLimiter, async (req, res) => {
         this_week: parseInt(stats.this_week),
         total_views: parseInt(stats.total_views),
         by_channel,
-        storageType: 's3'
+        storageType: 's3',
+        days
       }
     });
   } catch (error) {

@@ -1,6 +1,22 @@
 # Progress Log
 
 ---
+## [260325-code-review-sprints] Task 22: [S4-1] Add time-window filter to stats query
+**Status:** In Progress | **Time:** 2026-03-25 17:00 | **Model:** sonnet | **Mode:** production
+### Plan
+- Добавить парсинг `?days=N` в /api/stats (default 30, validate integer 1-365)
+- Изменить основной SQL-запрос: добавить WHERE created_at > NOW() - INTERVAL '$1 days' (параметризованный)
+- Изменить запрос по каналам: добавить тот же фильтр
+- Вернуть `days` в ответе JSON для прозрачности
+
+[17:00] Started: Add time-window filter to stats query
+[17:05] Completed: добавлен ?days=N параметр (default 30, range 1-365), оба SQL-запроса фильтруют по INTERVAL, days возвращается в ответе
+
+### Result
+**Status:** ✅ Completed | **Completed:** 17:05
+В `/api/stats` добавлен опциональный параметр `?days=N` (default 30, валидация 1–365). Оба запроса (основная статистика и по каналам) фильтруют `WHERE created_at > NOW() - ($1 || ' days')::INTERVAL`. Поле `days` включено в JSON-ответ. Синтаксис OK.
+
+---
 ## [260325-code-review-sprints] Task 17: [S3-6] Create centralized API client src/api.js
 **Status:** In Progress | **Time:** 2026-03-25 15:30 | **Model:** sonnet | **Mode:** production
 ### Plan
@@ -1270,3 +1286,304 @@ Iteration 5 completed
 ## [260325-code-review-sprints] [S3-6] Create centralized API client src/api.js
 **Status:** In Progress | **Time:** 2026-03-25 11:20 | **Model:** sonnet | **Mode:** production
 [11:20] Iteration 6/38: [S3-6] Create centralized API client src/api.js
+
+### Result
+**Status:** ✅ Completed | **Completed:** 11:24
+Iteration 6 completed
+
+---
+## [260325-code-review-sprints] [S3-7] Remove dead CSS classes from App.css
+**Status:** In Progress | **Time:** 2026-03-25 11:24 | **Model:** sonnet | **Mode:** production
+[11:24] Iteration 7/38: [S3-7] Remove dead CSS classes from App.css
+
+### Result
+**Status:** ✅ Completed | **Completed:** 11:25
+Iteration 7 completed
+
+---
+## [260325-code-review-sprints] [S3-7] Remove dead CSS classes from App.css
+**Status:** In Progress | **Time:** 2026-03-25 11:25 | **Model:** sonnet | **Mode:** production
+[11:25] Iteration 8/38: [S3-7] Remove dead CSS classes from App.css
+
+### Result
+**Status:** ✅ Completed | **Completed:** 11:25
+Iteration 8 completed
+
+---
+## [260325-code-review-sprints] [S3-7] Remove dead CSS classes from App.css
+**Status:** In Progress | **Time:** 2026-03-25 11:25 | **Model:** sonnet | **Mode:** production
+[11:25] Iteration 9/38: [S3-7] Remove dead CSS classes from App.css
+
+### Result
+**Status:** ✅ Completed | **Completed:** 11:25
+Iteration 9 completed
+
+---
+## [260325-code-review-sprints] [S3-7] Remove dead CSS classes from App.css
+**Status:** In Progress | **Time:** 2026-03-25 11:25 | **Model:** sonnet | **Mode:** production
+[11:25] Iteration 10/38: [S3-7] Remove dead CSS classes from App.css
+
+### Result
+**Status:** ✅ Completed | **Completed:** 11:25
+Iteration 10 completed
+
+---
+## [260325-code-review-sprints] [S3-7] Remove dead CSS classes from App.css
+**Status:** In Progress | **Time:** 2026-03-25 11:25 | **Model:** sonnet | **Mode:** production
+[11:25] Iteration 11/38: [S3-7] Remove dead CSS classes from App.css
+
+### Result
+**Status:** ✅ Completed | **Completed:** 11:25
+Iteration 11 completed
+
+---
+## [260325-code-review-sprints] [S3-7] Remove dead CSS classes from App.css
+**Status:** In Progress | **Time:** 2026-03-25 11:25 | **Model:** sonnet | **Mode:** production
+[11:25] Iteration 12/38: [S3-7] Remove dead CSS classes from App.css
+
+### Result
+**Status:** ✅ Completed | **Completed:** 11:25
+Iteration 12 completed
+
+---
+## [260325-code-review-sprints] [S3-7] Remove dead CSS classes from App.css
+**Status:** In Progress | **Time:** 2026-03-25 11:25 | **Model:** sonnet | **Mode:** production
+[11:25] Iteration 13/38: [S3-7] Remove dead CSS classes from App.css
+
+### Result
+**Status:** ✅ Completed | **Completed:** 11:25
+Iteration 13 completed
+
+---
+## [260325-code-review-sprints] [S3-7] Remove dead CSS classes from App.css
+**Status:** In Progress | **Time:** 2026-03-25 11:25 | **Model:** sonnet | **Mode:** production
+[11:25] Iteration 14/38: [S3-7] Remove dead CSS classes from App.css
+
+### Result
+**Status:** ✅ Completed | **Completed:** 11:25
+Iteration 14 completed
+
+---
+## [260325-code-review-sprints] [S3-7] Remove dead CSS classes from App.css
+**Status:** In Progress | **Time:** 2026-03-25 11:25 | **Model:** sonnet | **Mode:** production
+[11:25] Iteration 15/38: [S3-7] Remove dead CSS classes from App.css
+
+### Result
+**Status:** ✅ Completed | **Completed:** 11:25
+Iteration 15 completed
+
+---
+## [260325-code-review-sprints] [S3-7] Remove dead CSS classes from App.css
+**Status:** In Progress | **Time:** 2026-03-25 11:25 | **Model:** sonnet | **Mode:** production
+[11:25] Iteration 16/38: [S3-7] Remove dead CSS classes from App.css
+
+### Result
+**Status:** ✅ Completed | **Completed:** 11:25
+Iteration 16 completed
+
+---
+## [260325-code-review-sprints] [S3-7] Remove dead CSS classes from App.css
+**Status:** In Progress | **Time:** 2026-03-25 11:25 | **Model:** sonnet | **Mode:** production
+[11:25] Iteration 17/38: [S3-7] Remove dead CSS classes from App.css
+
+### Result
+**Status:** ✅ Completed | **Completed:** 11:25
+Iteration 17 completed
+
+---
+## [260325-code-review-sprints] [S3-7] Remove dead CSS classes from App.css
+**Status:** In Progress | **Time:** 2026-03-25 11:25 | **Model:** sonnet | **Mode:** production
+[11:25] Iteration 18/38: [S3-7] Remove dead CSS classes from App.css
+
+### Result
+**Status:** ✅ Completed | **Completed:** 11:26
+Iteration 18 completed
+
+---
+## [260325-code-review-sprints] [S3-7] Remove dead CSS classes from App.css
+**Status:** In Progress | **Time:** 2026-03-25 11:26 | **Model:** sonnet | **Mode:** production
+[11:26] Iteration 19/38: [S3-7] Remove dead CSS classes from App.css
+
+### Result
+**Status:** ✅ Completed | **Completed:** 11:26
+Iteration 19 completed
+
+---
+## [260325-code-review-sprints] [S3-7] Remove dead CSS classes from App.css
+**Status:** In Progress | **Time:** 2026-03-25 11:26 | **Model:** sonnet | **Mode:** production
+[11:26] Iteration 20/38: [S3-7] Remove dead CSS classes from App.css
+
+### Result
+**Status:** ✅ Completed | **Completed:** 11:26
+Iteration 20 completed
+
+---
+## [260325-code-review-sprints] [S3-7] Remove dead CSS classes from App.css
+**Status:** In Progress | **Time:** 2026-03-25 11:26 | **Model:** sonnet | **Mode:** production
+[11:26] Iteration 21/38: [S3-7] Remove dead CSS classes from App.css
+
+### Result
+**Status:** ✅ Completed | **Completed:** 11:26
+Iteration 21 completed
+
+---
+## [260325-code-review-sprints] [S3-7] Remove dead CSS classes from App.css
+**Status:** In Progress | **Time:** 2026-03-25 11:26 | **Model:** sonnet | **Mode:** production
+[11:26] Iteration 22/38: [S3-7] Remove dead CSS classes from App.css
+
+### Result
+**Status:** ✅ Completed | **Completed:** 11:26
+Iteration 22 completed
+
+---
+## [260325-code-review-sprints] [S3-7] Remove dead CSS classes from App.css
+**Status:** In Progress | **Time:** 2026-03-25 11:26 | **Model:** sonnet | **Mode:** production
+[11:26] Iteration 23/38: [S3-7] Remove dead CSS classes from App.css
+
+### Result
+**Status:** ✅ Completed | **Completed:** 11:26
+Iteration 23 completed
+
+---
+## [260325-code-review-sprints] [S3-7] Remove dead CSS classes from App.css
+**Status:** In Progress | **Time:** 2026-03-25 11:26 | **Model:** sonnet | **Mode:** production
+[11:26] Iteration 24/38: [S3-7] Remove dead CSS classes from App.css
+
+### Result
+**Status:** ✅ Completed | **Completed:** 11:26
+Iteration 24 completed
+
+---
+## [260325-code-review-sprints] [S3-7] Remove dead CSS classes from App.css
+**Status:** In Progress | **Time:** 2026-03-25 11:26 | **Model:** sonnet | **Mode:** production
+[11:26] Iteration 25/38: [S3-7] Remove dead CSS classes from App.css
+
+### Result
+**Status:** ✅ Completed | **Completed:** 11:26
+Iteration 25 completed
+
+---
+## [260325-code-review-sprints] [S3-7] Remove dead CSS classes from App.css
+**Status:** In Progress | **Time:** 2026-03-25 11:26 | **Model:** sonnet | **Mode:** production
+[11:26] Iteration 26/38: [S3-7] Remove dead CSS classes from App.css
+
+### Result
+**Status:** ✅ Completed | **Completed:** 11:26
+Iteration 26 completed
+
+---
+## [260325-code-review-sprints] [S3-7] Remove dead CSS classes from App.css
+**Status:** In Progress | **Time:** 2026-03-25 11:26 | **Model:** sonnet | **Mode:** production
+[11:26] Iteration 27/38: [S3-7] Remove dead CSS classes from App.css
+
+### Result
+**Status:** ✅ Completed | **Completed:** 11:26
+Iteration 27 completed
+
+---
+## [260325-code-review-sprints] [S3-7] Remove dead CSS classes from App.css
+**Status:** In Progress | **Time:** 2026-03-25 11:26 | **Model:** sonnet | **Mode:** production
+[11:26] Iteration 28/38: [S3-7] Remove dead CSS classes from App.css
+
+### Result
+**Status:** ✅ Completed | **Completed:** 11:26
+Iteration 28 completed
+
+---
+## [260325-code-review-sprints] [S3-7] Remove dead CSS classes from App.css
+**Status:** In Progress | **Time:** 2026-03-25 11:26 | **Model:** sonnet | **Mode:** production
+[11:26] Iteration 29/38: [S3-7] Remove dead CSS classes from App.css
+
+### Result
+**Status:** ✅ Completed | **Completed:** 11:26
+Iteration 29 completed
+
+---
+## [260325-code-review-sprints] [S3-7] Remove dead CSS classes from App.css
+**Status:** In Progress | **Time:** 2026-03-25 11:26 | **Model:** sonnet | **Mode:** production
+[11:26] Iteration 30/38: [S3-7] Remove dead CSS classes from App.css
+
+### Result
+**Status:** ✅ Completed | **Completed:** 11:27
+Iteration 30 completed
+
+---
+## [260325-code-review-sprints] [S3-7] Remove dead CSS classes from App.css
+**Status:** In Progress | **Time:** 2026-03-25 11:27 | **Model:** sonnet | **Mode:** production
+[11:27] Iteration 31/38: [S3-7] Remove dead CSS classes from App.css
+
+### Result
+**Status:** ✅ Completed | **Completed:** 11:27
+Iteration 31 completed
+
+---
+## [260325-code-review-sprints] [S3-7] Remove dead CSS classes from App.css
+**Status:** In Progress | **Time:** 2026-03-25 11:27 | **Model:** sonnet | **Mode:** production
+[11:27] Iteration 32/38: [S3-7] Remove dead CSS classes from App.css
+
+### Result
+**Status:** ✅ Completed | **Completed:** 11:27
+Iteration 32 completed
+
+---
+## [260325-code-review-sprints] [S3-7] Remove dead CSS classes from App.css
+**Status:** In Progress | **Time:** 2026-03-25 11:27 | **Model:** sonnet | **Mode:** production
+[11:27] Iteration 33/38: [S3-7] Remove dead CSS classes from App.css
+
+### Result
+**Status:** ✅ Completed | **Completed:** 11:27
+Iteration 33 completed
+
+---
+## [260325-code-review-sprints] [S3-7] Remove dead CSS classes from App.css
+**Status:** In Progress | **Time:** 2026-03-25 11:27 | **Model:** sonnet | **Mode:** production
+[11:27] Iteration 34/38: [S3-7] Remove dead CSS classes from App.css
+
+### Result
+**Status:** ✅ Completed | **Completed:** 11:27
+Iteration 34 completed
+
+---
+## [260325-code-review-sprints] [S3-7] Remove dead CSS classes from App.css
+**Status:** In Progress | **Time:** 2026-03-25 11:27 | **Model:** sonnet | **Mode:** production
+[11:27] Iteration 35/38: [S3-7] Remove dead CSS classes from App.css
+
+### Result
+**Status:** ✅ Completed | **Completed:** 11:27
+Iteration 35 completed
+
+---
+## [260325-code-review-sprints] [S3-7] Remove dead CSS classes from App.css
+**Status:** In Progress | **Time:** 2026-03-25 11:27 | **Model:** sonnet | **Mode:** production
+[11:27] Iteration 36/38: [S3-7] Remove dead CSS classes from App.css
+
+### Result
+**Status:** ✅ Completed | **Completed:** 11:27
+Iteration 36 completed
+
+---
+## [260325-code-review-sprints] [S3-7] Remove dead CSS classes from App.css
+**Status:** In Progress | **Time:** 2026-03-25 11:27 | **Model:** sonnet | **Mode:** production
+[11:27] Iteration 37/38: [S3-7] Remove dead CSS classes from App.css
+
+### Result
+**Status:** ✅ Completed | **Completed:** 11:27
+Iteration 37 completed
+
+---
+## [260325-code-review-sprints] [S3-7] Remove dead CSS classes from App.css
+**Status:** In Progress | **Time:** 2026-03-25 11:27 | **Model:** sonnet | **Mode:** production
+[11:27] Iteration 38/38: [S3-7] Remove dead CSS classes from App.css
+
+### Result
+**Status:** ✅ Completed | **Completed:** 11:27
+Iteration 38 completed
+
+### Result
+**Status:** ⏸️ Blocked | **Completed:** 11:27
+Iteration limit (38) reached. 17 done, 9 remaining
+
+---
+## [260325-code-review-sprints] [S4-1] Add time-window filter to stats query
+**Status:** In Progress | **Time:** 2026-03-25 17:40 | **Model:** sonnet | **Mode:** production
+[17:40] Iteration 1/10: [S4-1] Add time-window filter to stats query

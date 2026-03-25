@@ -83,26 +83,26 @@
   - **File:** create frontend/src/api.js
   - **AC:** All 7 fetch() calls wrapped in named functions (getCard, createCard, uploadCard, confirmUpload, getPresignedUrls, getStats). Components use api.js functions instead of raw fetch
 
-- [ ] [S3-7] Remove dead CSS classes from App.css
+- [x] [S3-7] Remove dead CSS classes from App.css
   - **File:** frontend/src/App.css
   - **AC:** Remove class blocks for: .hero-section, .card-view (old), .card-header, .form-group, .form-header, .reveal, .reveal-right, .reveal-left — but ONLY after confirming they don't appear in any .jsx/.js file with grep
 
-- [ ] [S3-8] Extract magic numbers to constants in backend
+- [x] [S3-8] Extract magic numbers to constants in backend
   - **File:** backend/server.js
   - **AC:** Add named constants near top: RATE_LIMIT_WINDOW_MS, RATE_LIMIT_MAX_REQUESTS, MAX_CARDS_PER_BATCH, EXPORT_LIMIT, PRESIGNED_TTL_SECONDS, MAX_PHOTOS, CLEANUP_DAYS. Replace all magic number usages.
 
-- [ ] [S3-9] Extract validateCardStatus helper in backend
+- [x] [S3-9] Extract validateCardStatus helper in backend
   - **File:** backend/server.js
   - **AC:** Function `function validateCardStatus(card, requiredStatus, res)` extracted; used in the 4 endpoints that duplicate this check (lines 317, 349, 409, 465)
 
-- [ ] CHECKPOINT: Test Sprint 3
+- [x] CHECKPOINT: Test Sprint 3
   - **AC:** Backend syntax check passes. Frontend files exist: src/components/CardView.jsx, CardWizard.jsx, HomePage.jsx, src/api.js, src/constants.js
   - Verify App.js is now ~100 lines (routing only)
   - PAUSE: Stop here and report results before Sprint 4
 
 ### Sprint 4 — Производительность
 
-- [ ] [S4-1] Add time-window filter to stats query
+- [x] [S4-1] Add time-window filter to stats query
   - **File:** backend/server.js ~lines 513–523
   - **AC:** Stats endpoint accepts optional `?days=N` param (default 30). Query filters `WHERE created_at > NOW() - INTERVAL '$1 days'` using parameterized query
 
