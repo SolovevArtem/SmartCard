@@ -832,3 +832,21 @@ Iteration 1 completed
 Added requireAdminKey middleware to GET /admin route. Unauthorized requests now get 401.
 
 ---
+
+### Result
+**Status:** ✅ Completed | **Completed:** 10:51
+Iteration 2 completed
+
+---
+## [260325-code-review-sprints] [S1-3] Add rate limiting to /api/cards/create and /api/stats
+**Status:** In Progress | **Time:** 2026-03-25 10:51 | **Model:** sonnet | **Mode:** production
+
+### Plan
+- Add createLimiter (10 req/15min) and statsLimiter (30 req/min) in rate limiters section
+- Apply createLimiter to POST /api/cards/create
+- Apply statsLimiter to GET /api/stats
+- Verify backend syntax
+
+### Result
+**Status:** ✅ Completed | **Completed:** 2026-03-25 14:10
+Added createLimiter (10 req/15min) and statsLimiter (30 req/min) to server.js. Applied to /api/cards/create and /api/stats routes. Syntax check passes.

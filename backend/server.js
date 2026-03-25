@@ -88,6 +88,22 @@ const adminLimiter = rateLimit({
   message: { success: false, error: 'Too many admin requests, please try again later.' }
 });
 
+const createLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 10,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { success: false, error: 'Too many card creation requests, please try again later.' }
+});
+
+const statsLimiter = rateLimit({
+  windowMs: 60 * 1000,
+  max: 30,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { success: false, error: 'Too many stats requests, please try again later.' }
+});
+
 // ===== ADMIN AUTH =====
 function requireAdminKey(req, res, next) {
   const key = req.headers['x-admin-key'];
@@ -517,7 +533,7 @@ app.post('/api/cards/:cardId/upload',
 );
 
 // Статистика
-app.get('/api/stats', async (req, res) => {
+app.get('/api/stats', statsLimiter, async (req, res) => {
   try {
     const mainResult = await pool.query(`
       SELECT
@@ -565,7 +581,7 @@ app.get('/api/stats', async (req, res) => {
 });
 
 // Демо создание карточки
-app.post('/api/cards/create', async (req, res) => {
+app.post('/api/cards/create', createLimiter, async (req, res) => {
   try {
     const cardId = generateCardId();
     const cardData = {

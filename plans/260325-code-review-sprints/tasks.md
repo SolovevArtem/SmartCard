@@ -13,7 +13,7 @@
   - **File:** backend/server.js ~line 590
   - **AC:** GET /admin route has requireAdminKey middleware — unauthorized requests get 401
 
-- [ ] [S1-3] Add rate limiting to /api/cards/create and /api/stats
+- [x] [S1-3] Add rate limiting to /api/cards/create and /api/stats
   - **File:** backend/server.js
   - **AC:** Use express-rate-limit (already in package.json or add inline with `require`).
   - createLimiter: 10 req/15min per IP. statsLimiter: 30 req/min per IP.
