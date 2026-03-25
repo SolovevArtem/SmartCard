@@ -207,35 +207,6 @@ body {
 }
 
 /* ── Hero Section ── */
-.hero-section {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: 2rem 2rem 4rem;
-  position: relative;
-  overflow: hidden;
-}
-
-.hero-section::before {
-  content: '';
-  position: absolute;
-  width: 900px;
-  height: 900px;
-  background: radial-gradient(
-    circle,
-    rgba(232, 155, 136, 0.18) 0%,
-    rgba(255, 126, 95, 0.07)   45%,
-    transparent               70%
-  );
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  pointer-events: none;
-}
-
 .hero-title {
   font-size: 3.5rem;
   font-weight: 700;
@@ -902,30 +873,6 @@ body {
   background: linear-gradient(160deg, var(--bg-deep) 0%, var(--bg-mid) 50%, var(--bg-surface) 100%);
 }
 
-.form-header {
-  text-align: center;
-  margin-bottom: 2.75rem;
-}
-
-.form-header h1 {
-  font-family: 'Merriweather', sans-serif;
-  font-size: 2.75rem;
-  font-weight: 300;
-  background: linear-gradient(135deg, var(--text-primary) 30%, var(--accent-pink) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  margin-bottom: 0.5rem;
-}
-
-.form-header .subtitle {
-  font-size: 0.68rem;
-  color: var(--text-muted);
-  font-weight: 300;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-}
-
 form {
   background: var(--glass-bg);
   border: 1px solid var(--glass-border);
@@ -935,46 +882,6 @@ form {
   border-radius: 16px;
   max-width: 520px;
   width: 100%;
-}
-
-.form-group {
-  margin-bottom: 1.75rem;
-}
-
-.form-group label {
-  display: block;
-  margin-bottom: 0.6rem;
-  font-size: 0.67rem;
-  font-weight: 500;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-}
-
-.form-group input[type="text"],
-.form-group textarea {
-  width: 100%;
-  padding: 0.65rem 0;
-  background: transparent;
-  border: none;
-  border-bottom: 1px solid rgba(181, 107, 93, 0.15);
-  color: var(--text-primary);
-  font-size: 0.95rem;
-  font-family: 'Montserrat', sans-serif;
-  font-weight: 300;
-  transition: border-color 0.25s;
-  resize: none;
-}
-
-.form-group input[type="text"]::placeholder,
-.form-group textarea::placeholder {
-  color: rgba(181, 107, 93, 0.22);
-}
-
-.form-group input[type="text"]:focus,
-.form-group textarea:focus {
-  outline: none;
-  border-bottom-color: var(--accent-pink);
 }
 
 .file-upload {
@@ -1007,14 +914,6 @@ form {
   letter-spacing: 0.04em;
 }
 
-.form-group small {
-  display: block;
-  margin-top: 0.45rem;
-  color: var(--text-muted);
-  font-size: 0.7rem;
-  font-weight: 300;
-}
-
 .submit-button {
   width: 100%;
   background: linear-gradient(135deg, var(--accent-pink) 0%, var(--accent-pink-deep) 100%);
@@ -1045,41 +944,6 @@ form {
 /* ═══════════════════════════════════════
    CARD VIEW (CardPage — filled)
 ═══════════════════════════════════════ */
-
-.card-view {
-  min-height: 100vh;
-  padding: 4rem 2rem;
-  background: linear-gradient(160deg, var(--bg-deep) 0%, var(--bg-mid) 50%, var(--bg-surface) 100%);
-}
-
-.card-header {
-  text-align: center;
-  margin-bottom: 3.5rem;
-}
-
-.card-header h1 {
-  font-family: 'Merriweather', sans-serif;
-  font-size: 3.25rem;
-  font-weight: 300;
-  background: linear-gradient(135deg, var(--text-primary) 30%, var(--accent-pink) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  margin-bottom: 0.75rem;
-}
-
-.card-header .from {
-  font-size: 0.7rem;
-  color: var(--text-muted);
-  font-weight: 300;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-}
-
-.card-header .from span {
-  color: var(--accent-pink);
-  font-weight: 500;
-}
 
 .card-content {
   max-width: 760px;
@@ -1486,43 +1350,6 @@ form {
    VIEW MODE (filled card)
 ═══════════════════════════════════════ */
 
-/* Scroll reveal */
-.reveal {
-  opacity: 0;
-  transform: translateY(40px);
-  transition: opacity 0.75s ease, transform 0.75s cubic-bezier(0.22, 1, 0.36, 1);
-  will-change: transform, opacity;
-}
-
-.reveal.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.reveal-right {
-  opacity: 0;
-  transform: translateX(60px);
-  transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
-  will-change: transform, opacity;
-}
-
-.reveal-right.visible {
-  opacity: 1;
-  transform: translateX(0);
-}
-
-.reveal-left {
-  opacity: 0;
-  transform: translateX(-60px);
-  transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
-  will-change: transform, opacity;
-}
-
-.reveal-left.visible {
-  opacity: 1;
-  transform: translateX(0);
-}
-
 /* Intro section */
 /* ═══════════════════════════════════════
    ENVELOPE CARD VIEW (scroll-parallax)
@@ -1808,9 +1635,16 @@ form {
 .env-content-card {
   width: min(90vw, 648px);
   background: #ffffff;
-  border-radius: 0 0 14px 14px;
+  border-radius: 14px;
   box-shadow: 0 8px 32px rgba(135, 180, 230, 0.3), 0 2px 8px rgba(0, 0, 0, 0.06);
   overflow: hidden;
+}
+
+.env-content-card::before {
+  content: '';
+  display: block;
+  height: 4px;
+  background: linear-gradient(90deg, #1759B0, #9FD6FF);
 }
 
 .env-content-message {
@@ -2202,16 +2036,8 @@ form {
     font-size: 0.82rem;
   }
 
-  .form-header h1 {
-    font-size: 2.25rem;
-  }
-
   form {
     padding: 1.75rem;
-  }
-
-  .card-header h1 {
-    font-size: 2.5rem;
   }
 
   .photos-grid {
