@@ -86,9 +86,12 @@ function CardView({ card }) {
     touchStartX.current = null;
   };
 
-  // Single lid: rotateX 0° (closed) → -180° (open, stays visible), scroll 0 → 0.65
+  // Single lid: rotateX 0° (closed) → -180° (open), scroll 0 → 0.65
   const lidProg = Math.min(1, scrollProg / 0.65);
   const lidRotateX = -(lidProg * 180);
+  // Card rises: scroll 0.35 → 1.0
+  const cardProg = Math.max(0, Math.min(1, (scrollProg - 0.35) / 0.65));
+  const cardY = -(cardProg * Math.min(window.innerWidth * 0.42, 420));
   // Intro text fades as animation starts
   const introOpacity = Math.max(0, 1 - scrollProg * 5);
   const scrollHintOpacity = Math.max(0, 1 - scrollProg * 8);
@@ -119,7 +122,19 @@ function CardView({ card }) {
               <div className="env-body-bottom" />
             </div>
 
-            {/* Permanent mask — always opaque */}
+            {/* Flying card — rises from envelope on scroll */}
+            <div
+              className="env-card env-card-main"
+              style={{
+                transform: `translateY(${cardY}px)`,
+                willChange: 'transform',
+                opacity: Math.min(1, cardProg * 4),
+              }}
+            >
+              <div className="env-card-fly-bar" />
+            </div>
+
+            {/* Permanent mask — always opaque, hides card while inside envelope */}
             <div className="env-front-mask" />
 
           </div>
