@@ -17,7 +17,7 @@ import TubeLightNav from './TubeLightNav';
 import ProductCard from './ProductCard';
 import CardView from './components/CardView';
 import CardWizard from './components/CardWizard';
-import { API_TIMEOUT_MS } from './constants';
+import { createCard, getCard } from './api';
 import './App.css';
 
 const STORES = [
@@ -32,8 +32,6 @@ const PRODUCTS = [
   { imageUrl: '/card-2.png', title: 'Смело Смотри Вперед', stores: STORES },
   { imageUrl: '/card-3.png', title: 'Сияй',                stores: STORES },
 ];
-
-const API_URL = process.env.REACT_APP_API_URL || 'https://smartcard-production.up.railway.app';
 
 // ── Floating Particles decoration ──
 const FloatingParticles = memo(function FloatingParticles({ count = 6 }) {
@@ -238,15 +236,8 @@ function HomePage() {
 
   const handleCreate = async () => {
     setLoading(true);
-    const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), API_TIMEOUT_MS);
     try {
-      const response = await fetch(`${API_URL}/api/cards/create`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        signal: controller.signal
-      });
-      const data = await response.json();
+      const data = await createCard();
       if (data.success) {
         navigate(`/c/${data.cardId}`);
       } else {
@@ -260,7 +251,6 @@ function HomePage() {
         alert('Ошибка подключения к серверу');
       }
     } finally {
-      clearTimeout(timer);
       setLoading(false);
     }
   };
@@ -423,13 +413,8 @@ function CardPage() {
   }, [cardId]);
 
   const loadCard = async () => {
-    const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), API_TIMEOUT_MS);
     try {
-      const response = await fetch(`${API_URL}/api/cards/${cardId}`, {
-        signal: controller.signal
-      });
-      const data = await response.json();
+      const data = await getCard(cardId);
       if (data.success) {
         setCard(data.card);
       } else {
@@ -443,7 +428,6 @@ function CardPage() {
         setError('Ошибка подключения к серверу');
       }
     } finally {
-      clearTimeout(timer);
       setLoading(false);
     }
   };

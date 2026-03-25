@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef, memo } from 'react';
 import CardView from './CardView';
-
-const API_URL = process.env.REACT_APP_API_URL || 'https://smartcard-production.up.railway.app';
+import { getPresignedUrls, confirmUpload, uploadCard } from '../api';
 
 // ── Floating Particles decoration ──
 const FloatingParticles = memo(function FloatingParticles({ count = 6 }) {
@@ -112,56 +111,48 @@ function CardWizard({ cardId, onComplete }) {
       // Attempt presigned URL upload flow
       let usedPresigned = false;
       try {
-        const urlRes = await fetch(`${API_URL}/api/cards/${cardId}/upload-url`);
-        if (urlRes.ok) {
-          const urlData = await urlRes.json();
-          if (urlData.success) {
-            usedPresigned = true;
+        const urlData = await getPresignedUrls(cardId);
+        if (urlData.success) {
+          usedPresigned = true;
 
-            // Upload video directly to S3
-            let finalVideoUrl = '';
-            if (videoFile) {
-              const videoRes = await fetch(urlData.videoUploadUrl, {
-                method: 'PUT',
-                body: videoFile,
-                headers: { 'Content-Type': videoFile.type || 'video/mp4' }
-              });
-              if (!videoRes.ok) throw new Error('Video upload to S3 failed');
-              // Derive public URL from the presigned URL (strip query params)
-              finalVideoUrl = urlData.videoUploadUrl.split('?')[0];
-            }
-
-            // Upload all photos to S3 in parallel
-            const finalPhotoUrls = await Promise.all(
-              photoFiles.map(async (photo, i) => {
-                const photoRes = await fetch(urlData.photoUploadUrls[i], {
-                  method: 'PUT',
-                  body: photo,
-                  headers: { 'Content-Type': photo.type || 'image/jpeg' }
-                });
-                if (!photoRes.ok) throw new Error(`Photo ${i} upload to S3 failed`);
-                return urlData.photoUploadUrls[i].split('?')[0];
-              })
-            );
-
-            // Confirm upload
-            const confirmRes = await fetch(`${API_URL}/api/cards/${cardId}/confirm-upload`, {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                senderName,
-                message,
-                videoUrl: finalVideoUrl,
-                photoUrls: finalPhotoUrls
-              })
+          // Upload video directly to S3
+          let finalVideoUrl = '';
+          if (videoFile) {
+            const videoRes = await fetch(urlData.videoUploadUrl, {
+              method: 'PUT',
+              body: videoFile,
+              headers: { 'Content-Type': videoFile.type || 'video/mp4' }
             });
-            const confirmData = await confirmRes.json();
-            if (confirmData.success) {
-              onComplete();
-              return;
-            }
-            throw new Error(confirmData.error || 'Confirm upload failed');
+            if (!videoRes.ok) throw new Error('Video upload to S3 failed');
+            // Derive public URL from the presigned URL (strip query params)
+            finalVideoUrl = urlData.videoUploadUrl.split('?')[0];
           }
+
+          // Upload all photos to S3 in parallel
+          const finalPhotoUrls = await Promise.all(
+            photoFiles.map(async (photo, i) => {
+              const photoRes = await fetch(urlData.photoUploadUrls[i], {
+                method: 'PUT',
+                body: photo,
+                headers: { 'Content-Type': photo.type || 'image/jpeg' }
+              });
+              if (!photoRes.ok) throw new Error(`Photo ${i} upload to S3 failed`);
+              return urlData.photoUploadUrls[i].split('?')[0];
+            })
+          );
+
+          // Confirm upload
+          const confirmData = await confirmUpload(cardId, {
+            senderName,
+            message,
+            videoUrl: finalVideoUrl,
+            photoUrls: finalPhotoUrls
+          });
+          if (confirmData.success) {
+            onComplete();
+            return;
+          }
+          throw new Error(confirmData.error || 'Confirm upload failed');
         }
       } catch (presignedErr) {
         if (usedPresigned) throw presignedErr;
@@ -175,11 +166,7 @@ function CardWizard({ cardId, onComplete }) {
       if (videoFile) formData.append('video', videoFile);
       photoFiles.forEach((photo) => formData.append('photos', photo));
 
-      const response = await fetch(`${API_URL}/api/cards/${cardId}/upload`, {
-        method: 'POST',
-        body: formData
-      });
-      const data = await response.json();
+      const data = await uploadCard(cardId, formData);
       if (data.success) {
         onComplete();
       } else {

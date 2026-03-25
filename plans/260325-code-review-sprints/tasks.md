@@ -79,7 +79,7 @@
   - **File:** create frontend/src/constants.js
   - **AC:** File exports `API_TIMEOUT_MS = 9000`; all usages in App.js components updated to import from constants
 
-- [ ] [S3-6] Create centralized API client src/api.js
+- [x] [S3-6] Create centralized API client src/api.js
   - **File:** create frontend/src/api.js
   - **AC:** All 7 fetch() calls wrapped in named functions (getCard, createCard, uploadCard, confirmUpload, getPresignedUrls, getStats). Components use api.js functions instead of raw fetch
 

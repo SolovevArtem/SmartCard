@@ -1,6 +1,20 @@
 # Ralph Activity Log
 
 ---
+## [260325-code-review-sprints] Task 17: [S3-6] Create centralized API client src/api.js
+**Time:** 2026-03-25 15:30 | **Model:** sonnet | **Mode:** production
+
+[15:30] READ: frontend/src/App.js — изучены fetch вызовы на lines 244, 429
+[15:30] READ: frontend/src/components/CardWizard.jsx — изучены fetch вызовы на lines 115, 124, 137, 148, 178
+[15:30] READ: frontend/src/components/HomePage.jsx — изучен fetch вызов на line 228
+[15:30] READ: frontend/src/components/CardView.jsx — fetch calls на 92/122 — это S3 медиа, не API, не оборачиваем
+[15:31] WRITE: frontend/src/api.js — создан с 6 функциями (createCard, getCard, getPresignedUrls, confirmUpload, uploadCard, getStats)
+[15:32] EDIT: frontend/src/App.js — заменён import API_TIMEOUT_MS на {createCard, getCard} из api; убран API_URL; заменены fetch в handleCreate и loadCard
+[15:35] EDIT: frontend/src/components/HomePage.jsx — убраны API_URL и API_TIMEOUT_MS; добавлен import createCard; заменён fetch в handleCreate
+[15:37] EDIT: frontend/src/components/CardWizard.jsx — убран API_URL; добавлены imports; заменены fetch вызовы на getPresignedUrls, confirmUpload, uploadCard
+[15:40] BASH: cd frontend && npx react-scripts build — SUCCESS (113.86 kB gzip, 0 errors)
+
+---
 ## [260325-code-review-sprints] Task 15: [S3-4] Add useCallback to prevPhoto/nextPhoto in CardView
 **Time:** 2026-03-25 14:30 | **Model:** sonnet | **Mode:** production
 
@@ -1019,3 +1033,19 @@ Iteration 3 completed
 ---
 ## [260325-code-review-sprints] [S3-4] Add useCallback to prevPhoto/nextPhoto in CardView
 **Status:** In Progress | **Time:** 2026-03-25 11:17 | **Model:** sonnet | **Mode:** production
+
+### Result
+**Status:** ✅ Completed | **Completed:** 11:18
+Iteration 4 completed
+
+---
+## [260325-code-review-sprints] [S3-5] Create src/constants.js and centralize API_TIMEOUT_MS
+**Status:** In Progress | **Time:** 2026-03-25 11:18 | **Model:** sonnet | **Mode:** production
+
+### Result
+**Status:** ✅ Completed | **Completed:** 11:20
+Iteration 5 completed
+
+---
+## [260325-code-review-sprints] [S3-6] Create centralized API client src/api.js
+**Status:** In Progress | **Time:** 2026-03-25 11:20 | **Model:** sonnet | **Mode:** production

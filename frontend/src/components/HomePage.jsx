@@ -4,9 +4,7 @@ import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '..
 import HeroScrollAnimation from '../HeroScrollAnimation';
 import TubeLightNav from '../TubeLightNav';
 import ProductCard from '../ProductCard';
-import { API_TIMEOUT_MS } from '../constants';
-
-const API_URL = process.env.REACT_APP_API_URL || 'https://smartcard-production.up.railway.app';
+import { createCard } from '../api';
 
 const STORES = [
   { name: 'OZON',        href: '#', logo: '/logos/ozon.svg'     },
@@ -222,15 +220,8 @@ function HomePage() {
 
   const handleCreate = async () => {
     setLoading(true);
-    const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), API_TIMEOUT_MS);
     try {
-      const response = await fetch(`${API_URL}/api/cards/create`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        signal: controller.signal
-      });
-      const data = await response.json();
+      const data = await createCard();
       if (data.success) {
         navigate(`/c/${data.cardId}`);
       } else {
@@ -244,7 +235,6 @@ function HomePage() {
         alert('Ошибка подключения к серверу');
       }
     } finally {
-      clearTimeout(timer);
       setLoading(false);
     }
   };

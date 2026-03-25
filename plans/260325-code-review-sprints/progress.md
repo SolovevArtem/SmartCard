@@ -1,6 +1,23 @@
 # Progress Log
 
 ---
+## [260325-code-review-sprints] Task 17: [S3-6] Create centralized API client src/api.js
+**Status:** In Progress | **Time:** 2026-03-25 15:30 | **Model:** sonnet | **Mode:** production
+### Plan
+- Создать frontend/src/api.js с функциями: createCard, getCard, getPresignedUrls, uploadCard, confirmUpload, getStats
+- Обновить App.js: заменить fetch в handleCreate и loadCard на api.js функции
+- Обновить HomePage.jsx: заменить fetch в handleCreate на api.js функцию
+- Обновить CardWizard.jsx: заменить fetch вызовы (getPresignedUrls, confirmUpload, uploadCard) на api.js функции
+- Убрать дублирующиеся const API_URL из компонентов
+
+[15:30] Started: Create centralized API client src/api.js
+[15:45] Completed: создан api.js с 6 функциями, обновлены App.js, HomePage.jsx, CardWizard.jsx; frontend build OK (113.86 kB)
+
+### Result
+**Status:** ✅ Completed | **Completed:** 15:45
+Создан `frontend/src/api.js` с функциями: `createCard`, `getCard`, `getPresignedUrls`, `confirmUpload`, `uploadCard`, `getStats`. Все 5 API fetch-вызовов в App.js, HomePage.jsx, CardWizard.jsx заменены на вызовы из api.js. Дублирующиеся `const API_URL` и `API_TIMEOUT_MS` убраны из компонентов. Frontend build: OK (113.86 kB gzip).
+
+---
 ## [260325-code-review-sprints] Task 16: [S3-5] Create src/constants.js and centralize API_TIMEOUT_MS
 **Status:** In Progress | **Time:** 2026-03-25 15:00 | **Model:** sonnet | **Mode:** production
 ### Plan
@@ -1244,3 +1261,12 @@ Iteration 4 completed
 ## [260325-code-review-sprints] [S3-5] Create src/constants.js and centralize API_TIMEOUT_MS
 **Status:** In Progress | **Time:** 2026-03-25 11:18 | **Model:** sonnet | **Mode:** production
 [11:18] Iteration 5/38: [S3-5] Create src/constants.js and centralize API_
+
+### Result
+**Status:** ✅ Completed | **Completed:** 11:20
+Iteration 5 completed
+
+---
+## [260325-code-review-sprints] [S3-6] Create centralized API client src/api.js
+**Status:** In Progress | **Time:** 2026-03-25 11:20 | **Model:** sonnet | **Mode:** production
+[11:20] Iteration 6/38: [S3-6] Create centralized API client src/api.js
