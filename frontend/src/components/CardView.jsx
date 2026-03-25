@@ -89,9 +89,6 @@ function CardView({ card }) {
   // Single lid: rotateX 0° (closed) → -180° (open, stays visible), scroll 0 → 0.65
   const lidProg = Math.min(1, scrollProg / 0.65);
   const lidRotateX = -(lidProg * 180);
-  // Card rises: scroll 0.35→1.0
-  const cardProg = Math.max(0, Math.min(1, (scrollProg - 0.35) / 0.65));
-  const cardY = -(cardProg * Math.min(window.innerWidth * 0.38, 380));
   // Intro text fades as animation starts
   const introOpacity = Math.max(0, 1 - scrollProg * 5);
   const scrollHintOpacity = Math.max(0, 1 - scrollProg * 8);
@@ -122,17 +119,7 @@ function CardView({ card }) {
               <div className="env-body-bottom" />
             </div>
 
-            {/* Flying card — hidden behind mask until animation starts */}
-            <div
-              className="env-card env-card-main"
-              style={{
-                transform: `translateY(${cardY}px)`,
-                willChange: 'transform',
-                opacity: Math.min(1, cardProg * 5),
-              }}
-            />
-
-            {/* Permanent mask — always opaque, hides card until it rises above */}
+            {/* Permanent mask — always opaque */}
             <div className="env-front-mask" />
 
           </div>
