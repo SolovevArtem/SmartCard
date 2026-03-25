@@ -114,7 +114,7 @@
   - **File:** frontend/src/App.js
   - **AC:** CardPage wrapped in React.lazy() + Suspense with fallback spinner. Import changed from static to dynamic.
 
-- [ ] [S4-4] Remove backend dependencies from frontend/package.json
+- [x] [S4-4] Remove backend dependencies from frontend/package.json
   - **File:** frontend/package.json
   - **AC:** Remove from dependencies: aws-sdk, express, multer, multer-s3, pg, cors. These are backend-only packages with no usage in frontend src/
 

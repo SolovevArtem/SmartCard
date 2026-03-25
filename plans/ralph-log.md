@@ -1,6 +1,14 @@
 # Ralph Activity Log
 
 ---
+## [260325-code-review-sprints] Task 25: [S4-4] Remove backend dependencies
+**Time:** 2026-03-25 17:45 | **Model:** sonnet | **Mode:** production
+17:45 READ: frontend/package.json
+17:45 GREP: frontend/src — проверка импортов aws-sdk/express/multer/pg/cors
+17:46 EDIT: frontend/package.json — удалены aws-sdk, cors, express, multer, multer-s3, pg
+17:47 BASH: cd frontend && npx react-scripts build — OK
+
+---
 ## [260325-code-review-sprints] Task 24: [S4-3] Add lazy loading for CardPage
 **Time:** 2026-03-25 17:30 | **Model:** sonnet | **Mode:** production
 
@@ -1356,3 +1364,11 @@ Iteration 2 completed
 ---
 ## [260325-code-review-sprints] [S4-3] Add lazy loading for CardPage route
 **Status:** In Progress | **Time:** 2026-03-25 17:42 | **Model:** sonnet | **Mode:** production
+
+### Result
+**Status:** ✅ Completed | **Completed:** 17:45
+Iteration 3 completed
+
+---
+## [260325-code-review-sprints] [S4-4] Remove backend dependencies from frontend/package.jso
+**Status:** In Progress | **Time:** 2026-03-25 17:45 | **Model:** sonnet | **Mode:** production

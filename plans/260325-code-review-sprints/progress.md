@@ -1,6 +1,21 @@
 # Progress Log
 
 ---
+## [260325-code-review-sprints] Task 25: [S4-4] Remove backend dependencies from frontend/package.json
+**Status:** In Progress | **Time:** 2026-03-25 17:45 | **Model:** sonnet | **Mode:** production
+### Plan
+- Проверить grep: aws-sdk, express, multer, multer-s3, pg, cors не используются в frontend/src
+- Удалить из dependencies в frontend/package.json
+- Проверить синтаксис JSON / build
+
+[17:45] Started: Remove backend dependencies from frontend/package.json
+[17:47] Completed: удалены aws-sdk, cors, express, multer, multer-s3, pg из frontend/package.json; build OK
+
+### Result
+**Status:** ✅ Completed | **Completed:** 17:47
+Удалено 6 backend-only зависимостей из `frontend/package.json`: `aws-sdk`, `cors`, `express`, `multer`, `multer-s3`, `pg`. Grep подтвердил: ни одно из этих имён не импортируется в `frontend/src/`. Frontend build прошёл без ошибок.
+
+---
 ## [260325-code-review-sprints] Task 24: [S4-3] Add lazy loading for CardPage route
 **Status:** In Progress | **Time:** 2026-03-25 17:30 | **Model:** sonnet | **Mode:** production
 ### Plan
@@ -1633,3 +1648,12 @@ Iteration 2 completed
 ## [260325-code-review-sprints] [S4-3] Add lazy loading for CardPage route
 **Status:** In Progress | **Time:** 2026-03-25 17:42 | **Model:** sonnet | **Mode:** production
 [17:42] Iteration 3/10: [S4-3] Add lazy loading for CardPage route
+
+### Result
+**Status:** ✅ Completed | **Completed:** 17:45
+Iteration 3 completed
+
+---
+## [260325-code-review-sprints] [S4-4] Remove backend dependencies from frontend/package.jso
+**Status:** In Progress | **Time:** 2026-03-25 17:45 | **Model:** sonnet | **Mode:** production
+[17:45] Iteration 4/10: [S4-4] Remove backend dependencies from frontend/p
