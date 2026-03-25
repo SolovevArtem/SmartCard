@@ -596,7 +596,7 @@ app.post('/api/cards/create', async (req, res) => {
 });
 
 // Админ-панель
-app.get('/admin', (req, res) => {
+app.get('/admin', requireAdminKey, (req, res) => {
   res.sendFile(path.join(__dirname, 'admin.html'));
 });
 

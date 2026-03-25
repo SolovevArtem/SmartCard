@@ -9,7 +9,7 @@
   - **AC:** All CSV fields wrapped in quotes and internal quotes escaped: `"${String(val ?? '').replace(/"/g, '""')}"`
   - Apply to: card.id, url, card.status, card.batch_name, card.storage_type, card.created_at
 
-- [ ] [S1-2] Add requireAdminKey to /admin HTML endpoint
+- [x] [S1-2] Add requireAdminKey to /admin HTML endpoint
   - **File:** backend/server.js ~line 590
   - **AC:** GET /admin route has requireAdminKey middleware — unauthorized requests get 401
 

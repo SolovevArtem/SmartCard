@@ -813,3 +813,22 @@ Iteration limit (50) reached. 0
 ---
 ## [260325-code-review-sprints] [S1-1] Fix CSV Injection in export endpoint
 **Status:** In Progress | **Time:** 2026-03-25 10:48 | **Model:** sonnet | **Mode:** production
+
+### Result
+**Status:** ✅ Completed | **Completed:** 10:49
+Iteration 1 completed
+
+---
+## [260325-code-review-sprints] [S1-2] Add requireAdminKey to /admin HTML endpoint
+**Status:** In Progress | **Time:** 2026-03-25 10:49 | **Model:** sonnet | **Mode:** production
+
+### Plan
+- Read server.js to find /admin route (~line 590)
+- Add requireAdminKey middleware to GET /admin
+- Verify syntax
+
+### Result
+**Status:** ✅ Completed | **Completed:** 12:00
+Added requireAdminKey middleware to GET /admin route. Unauthorized requests now get 401.
+
+---
