@@ -1,10 +1,15 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 
 export default function CardCarousel({ images, onCardClick }) {
   const [currentIndex, setCurrentIndex] = useState(Math.floor(images.length / 2));
+  const touchStartX = useRef(null);
 
   const handleNext = useCallback(() => {
     setCurrentIndex(prev => (prev + 1) % images.length);
+  }, [images.length]);
+
+  const handlePrev = useCallback(() => {
+    setCurrentIndex(prev => (prev - 1 + images.length) % images.length);
   }, [images.length]);
 
   useEffect(() => {
@@ -14,7 +19,17 @@ export default function CardCarousel({ images, onCardClick }) {
 
   return (
     <div className="card-carousel">
-      <div className="card-carousel__track" style={{ perspective: '1000px' }}>
+      <div
+        className="card-carousel__track"
+        style={{ perspective: '1000px' }}
+        onTouchStart={(e) => { touchStartX.current = e.touches[0].clientX; }}
+        onTouchEnd={(e) => {
+          if (touchStartX.current === null) return;
+          const delta = touchStartX.current - e.changedTouches[0].clientX;
+          if (Math.abs(delta) > 50) delta > 0 ? handleNext() : handlePrev();
+          touchStartX.current = null;
+        }}
+      >
         {images.map((image, index) => {
           const total = images.length;
           let pos = ((index - currentIndex) + total) % total;
