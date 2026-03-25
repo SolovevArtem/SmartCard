@@ -47,7 +47,7 @@
   - **File:** backend/server.js
   - **AC:** Add `const API_TIMEOUT_MS = 9000;` near top of file; use wherever timeout appears
 
-- [ ] [S2-4] Parallelize photo uploads with Promise.all in frontend
+- [x] [S2-4] Parallelize photo uploads with Promise.all in frontend
   - **File:** frontend/src/App.js ~lines 838–858 (CardWizard handleSubmit)
   - **AC:** Photo upload loop replaced with `Promise.all(photos.map(...))` for parallel execution
 

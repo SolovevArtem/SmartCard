@@ -828,18 +828,18 @@ function CardWizard({ cardId, onComplete }) {
               finalVideoUrl = urlData.videoUploadUrl.split('?')[0];
             }
 
-            // Upload each photo directly to S3
-            const finalPhotoUrls = [];
-            for (let i = 0; i < photoFiles.length; i++) {
-              const photo = photoFiles[i];
-              const photoRes = await fetch(urlData.photoUploadUrls[i], {
-                method: 'PUT',
-                body: photo,
-                headers: { 'Content-Type': photo.type || 'image/jpeg' }
-              });
-              if (!photoRes.ok) throw new Error(`Photo ${i} upload to S3 failed`);
-              finalPhotoUrls.push(urlData.photoUploadUrls[i].split('?')[0]);
-            }
+            // Upload all photos to S3 in parallel
+            const finalPhotoUrls = await Promise.all(
+              photoFiles.map(async (photo, i) => {
+                const photoRes = await fetch(urlData.photoUploadUrls[i], {
+                  method: 'PUT',
+                  body: photo,
+                  headers: { 'Content-Type': photo.type || 'image/jpeg' }
+                });
+                if (!photoRes.ok) throw new Error(`Photo ${i} upload to S3 failed`);
+                return urlData.photoUploadUrls[i].split('?')[0];
+              })
+            );
 
             // Confirm upload
             const confirmRes = await fetch(`${API_URL}/api/cards/${cardId}/confirm-upload`, {

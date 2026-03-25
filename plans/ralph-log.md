@@ -1,6 +1,13 @@
 # Ralph Activity Log
 
 ---
+## [260325-code-review-sprints] Task 10: [S2-4] Parallelize photo uploads with Promise.all
+**Time:** 2026-03-25 11:15 | **Model:** sonnet | **Mode:** production
+
+[11:15] READ: frontend/src/App.js ~lines 830-842 — найден for-loop загрузки фото
+[11:17] EDIT: frontend/src/App.js — заменён for-loop на Promise.all(photoFiles.map(async ...))
+
+---
 ## [260325-code-review-sprints] Task 9: [S2-3] Extract API timeout as named constant in backend
 **Time:** 2026-03-25 11:10 | **Model:** sonnet | **Mode:** production
 
@@ -942,3 +949,11 @@ Iteration 2 completed
 ---
 ## [260325-code-review-sprints] [S2-3] Extract API timeout as named constant in backend
 **Status:** In Progress | **Time:** 2026-03-25 10:59 | **Model:** sonnet | **Mode:** production
+
+### Result
+**Status:** ✅ Completed | **Completed:** 11:01
+Iteration 3 completed
+
+---
+## [260325-code-review-sprints] [S2-4] Parallelize photo uploads with Promise.all in fronten
+**Status:** In Progress | **Time:** 2026-03-25 11:01 | **Model:** sonnet | **Mode:** production

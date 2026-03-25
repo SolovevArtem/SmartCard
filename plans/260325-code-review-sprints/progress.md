@@ -1,6 +1,22 @@
 # Progress Log
 
 ---
+## [260325-code-review-sprints] Task 10: [S2-4] Parallelize photo uploads with Promise.all
+**Status:** In Progress | **Time:** 2026-03-25 11:15 | **Model:** sonnet | **Mode:** production
+### Plan
+- Найти for-loop загрузки фото в frontend/src/App.js (~lines 833-842)
+- Заменить на Promise.all(photoFiles.map(...)) для параллельной загрузки
+- Убедиться что порядок finalPhotoUrls сохранён (Promise.all гарантирует порядок)
+- Проверить синтаксис фронтенда
+
+[11:15] Started: Parallelize photo uploads with Promise.all
+[11:17] Completed: for-loop заменён на Promise.all(photoFiles.map(...)); порядок URL сохранён
+
+### Result
+**Status:** ✅ Completed | **Completed:** 11:17
+Заменил последовательный for-loop загрузки фото на `Promise.all(photoFiles.map(async ...))`. Все фото теперь загружаются параллельно. Порядок `finalPhotoUrls` гарантирован Promise.all.
+
+---
 ## [260325-code-review-sprints] Task 9: [S2-3] Extract API timeout as named constant in backend
 **Status:** In Progress | **Time:** 2026-03-25 11:10 | **Model:** sonnet | **Mode:** production
 ### Plan
@@ -1090,3 +1106,12 @@ Iteration 2 completed
 ## [260325-code-review-sprints] [S2-3] Extract API timeout as named constant in backend
 **Status:** In Progress | **Time:** 2026-03-25 10:59 | **Model:** sonnet | **Mode:** production
 [10:59] Iteration 3/43: [S2-3] Extract API timeout as named constant in ba
+
+### Result
+**Status:** ✅ Completed | **Completed:** 11:01
+Iteration 3 completed
+
+---
+## [260325-code-review-sprints] [S2-4] Parallelize photo uploads with Promise.all in fronten
+**Status:** In Progress | **Time:** 2026-03-25 11:01 | **Model:** sonnet | **Mode:** production
+[11:01] Iteration 4/43: [S2-4] Parallelize photo uploads with Promise.all 
