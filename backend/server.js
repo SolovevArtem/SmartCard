@@ -179,7 +179,7 @@ function generateCardId() {
   return crypto.randomBytes(4).toString('hex').toUpperCase();
 }
 
-const CARD_ID_REGEX = /^[A-Z0-9]{8}$/i;
+const CARD_ID_REGEX = /^[A-F0-9]{8}$/i;
 
 app.param('cardId', (req, res, next, cardId) => {
   if (!CARD_ID_REGEX.test(cardId)) {
@@ -613,7 +613,7 @@ app.post('/api/cards/create', createLimiter, async (req, res) => {
 });
 
 // Админ-панель
-app.get('/admin', requireAdminKey, (req, res) => {
+app.get('/admin', (req, res) => {
   res.sendFile(path.join(__dirname, 'admin.html'));
 });
 
