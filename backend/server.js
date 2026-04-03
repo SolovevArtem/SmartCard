@@ -230,15 +230,16 @@ async function saveCardData(cardId, data) {
     is_demo,
     storage_type,
     activated_at,
-    filled_at
+    filled_at,
+    channel
   } = data;
 
   await pool.query(`
     INSERT INTO cards (
       id, status, sender_name, message, video_url, photos_urls,
-      batch_id, batch_name, is_demo, storage_type, activated_at, filled_at
+      batch_id, batch_name, is_demo, storage_type, activated_at, filled_at, channel
     )
-    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
+    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)
     ON CONFLICT (id)
     DO UPDATE SET
       status = $2,
@@ -252,11 +253,12 @@ async function saveCardData(cardId, data) {
       storage_type = $10,
       activated_at = $11,
       filled_at = $12,
+      channel = COALESCE(cards.channel, $13),
       updated_at = NOW()
   `, [
     cardId, status, sender_name, message, video_url,
     photos_urls, batch_id, batch_name, is_demo, storage_type,
-    activated_at, filled_at
+    activated_at, filled_at, channel || null
   ]);
 }
 
@@ -265,7 +267,7 @@ async function saveCardData(cardId, data) {
 // Генерация партии карточек
 app.post('/api/admin/generate-cards', adminLimiter, requireAdminKey, async (req, res) => {
   try {
-    const { count = 1, batchName } = req.body;
+    const { count = 1, batchName, channel } = req.body;
 
     if (count > MAX_CARDS_PER_BATCH) {
       return res.status(400).json({
@@ -287,6 +289,7 @@ app.post('/api/admin/generate-cards', adminLimiter, requireAdminKey, async (req,
         batch_name: batchName || `Партия ${batchId}`,
         storage_type: 's3',
         is_demo: false,
+        channel: channel || null,
         sender_name: null,
         message: null,
         video_url: null,
@@ -372,6 +375,7 @@ app.get('/api/admin/export-cards', adminLimiter, requireAdminKey, async (req, re
 app.get('/api/cards/:cardId', viewLimiter, async (req, res) => {
   try {
     const { cardId } = req.params;
+    const { channel } = req.query;
     let cardData = await getCardData(cardId);
 
     if (!cardData) {
@@ -386,6 +390,13 @@ app.get('/api/cards/:cardId', viewLimiter, async (req, res) => {
     if (cardData.status === 'new') {
       cardData.status = 'active';
       cardData.activated_at = new Date().toISOString();
+      if (channel && !cardData.channel) {
+        cardData.channel = channel;
+      }
+      await saveCardData(cardId, cardData);
+    } else if (channel && !cardData.channel) {
+      // Set channel on first visit even if already active
+      cardData.channel = channel;
       await saveCardData(cardId, cardData);
     }
 
